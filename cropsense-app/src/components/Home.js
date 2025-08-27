@@ -412,14 +412,6 @@ const Home = () => {
                   </div>
                 )}
               </div>
-              
-              <button 
-                type="submit" 
-                className="search-button"
-                disabled={isLoading || !cityName.trim()}
-              >
-                {isLoading ? t('home.analyzing') : t('home.searchButton')}
-              </button>
             </form>
 
 

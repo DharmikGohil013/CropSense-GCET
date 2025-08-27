@@ -19,7 +19,7 @@ const Results = () => {
             className="back-button"
             onClick={() => navigate('/')}
           >
-            {t('results.backToSearch')}
+            {t('results.backToHome')}
           </button>
         </div>
       </div>
@@ -33,7 +33,7 @@ const Results = () => {
           className="back-button"
           onClick={() => navigate('/')}
         >
-          ← {t('results.backToSearch')}
+          {t('results.backToHome')}
         </button>
         <h1 className="results-title">{t('results.analysisTitle', { city: searchResults.city })}</h1>
       </div>
