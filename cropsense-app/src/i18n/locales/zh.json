@@ -1,0 +1,23 @@
+{
+  "navbar": {
+    "overview": "概览",
+    "generate": "生成",
+    "diseases": "疾病",
+    "financial": "财务",
+    "brandName": "CropSense AI"
+  },
+  "home": {
+    "title": "精准农业智能",
+    "subtitle": "先进的AI驱动作物监测和疾病检测智能农业解决方案",
+    "searchPlaceholder": "输入城市名称进行作物分析...",
+    "searchButton": "分析作物",
+    "recommendedCrops": "推荐作物",
+    "climate": "气候",
+    "temperature": "温度"
+  },
+  "common": {
+    "loading": "加载中...",
+    "search": "搜索",
+    "home": "首页"
+  }
+}

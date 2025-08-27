@@ -1,0 +1,23 @@
+{
+  "navbar": {
+    "overview": "সংক্ষিপ্ত বিবরণ",
+    "generate": "তৈরি করুন",
+    "diseases": "রোগ",
+    "financial": "আর্থিক",
+    "brandName": "CropSense AI"
+  },
+  "home": {
+    "title": "নির্ভুল কৃষি বুদ্ধিমত্তা",
+    "subtitle": "স্মার্ট কৃষি সমাধানের জন্য উন্নত AI-চালিত ফসল নিরীক্ষণ এবং রোগ সনাক্তকরণ",
+    "searchPlaceholder": "ফসল বিশ্লেষণের জন্য শহরের নাম প্রবেশ করুন...",
+    "searchButton": "ফসল বিশ্লেষণ করুন",
+    "recommendedCrops": "প্রস্তাবিত ফসল",
+    "climate": "জলবায়ু",
+    "temperature": "তাপমাত্রা"
+  },
+  "common": {
+    "loading": "লোড হচ্ছে...",
+    "search": "অনুসন্ধান",
+    "home": "হোম"
+  }
+}

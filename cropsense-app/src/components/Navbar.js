@@ -1,25 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './Navbar.css';
 import logo from '../crop-logo.svg';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const Navbar = () => {
-  const [selectedLanguage, setSelectedLanguage] = useState('English');
-  
-  const languages = [
-    { code: 'en', name: 'English', native: 'English' },
-    { code: 'es', name: 'Spanish', native: 'Español' },
-    { code: 'fr', name: 'French', native: 'Français' },
-    { code: 'de', name: 'German', native: 'Deutsch' },
-    { code: 'zh', name: 'Chinese', native: '中文' },
-    { code: 'gu', name: 'Gujarati', native: 'ગુજરાતી' },
-    { code: 'hi', name: 'Hindi', native: 'हिन्दी' }
-  ];
+  const { t } = useTranslation();
+  const { languages, getCurrentLanguage, changeLanguage } = useLanguage();
+  const currentLang = getCurrentLanguage();
 
   const handleLanguageChange = (language) => {
-    setSelectedLanguage(language.name);
-    // Here you would typically implement the translation logic
-    console.log('Language changed to:', language);
+    changeLanguage(language.code);
   };
 
   return (
@@ -34,7 +26,7 @@ const Navbar = () => {
           </div>
           <div className="language-dropdown">
             <div className="current-language">
-              <span>{selectedLanguage}</span>
+              <span>{currentLang.name}</span>
               <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M1 1L6 6L11 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
@@ -43,7 +35,7 @@ const Navbar = () => {
               {languages.map((language) => (
                 <button
                   key={language.code}
-                  className={`language-option ${selectedLanguage === language.name ? 'active' : ''}`}
+                  className={`language-option ${currentLang.code === language.code ? 'active' : ''}`}
                   onClick={() => handleLanguageChange(language)}
                 >
                   <span className="language-name">{language.name}</span>
@@ -56,36 +48,36 @@ const Navbar = () => {
 
         <ul className="nav-links">
           <li className="nav-item">
-            <Link to="/" className="nav-trigger overview-link">Overview</Link>
+            <Link to="/" className="nav-trigger overview-link">{t('navbar.overview')}</Link>
           </li>
           <li className="nav-item dropdown">
-            <span className="nav-trigger">Generate</span>
+            <span className="nav-trigger">{t('navbar.generate')}</span>
             <div className="dropdown-panel">
               <div className="dropdown-group">
-                <span className="dropdown-label">Generate</span>
-                <a href="#generate-info">Info to Generate</a>
-                <a href="#generate-image">Image to Image</a>
+                <span className="dropdown-label">{t('navbar.generate')}</span>
+                <a href="#generate-info">{t('navbar.generateInfo')}</a>
+                <a href="#generate-image">{t('navbar.generateImage')}</a>
               </div>
             </div>
           </li>
           <li className="nav-item dropdown">
-            <span className="nav-trigger">Diseases</span>
+            <span className="nav-trigger">{t('navbar.diseases')}</span>
             <div className="dropdown-panel">
               <div className="dropdown-group">
-                <span className="dropdown-label">Diseases</span>
-                <a href="#disease-info">Info to Disease</a>
-                <a href="#disease-image">Image to Disease</a>
+                <span className="dropdown-label">{t('navbar.diseases')}</span>
+                <a href="#disease-info">{t('navbar.diseaseInfo')}</a>
+                <a href="#disease-image">{t('navbar.diseaseImage')}</a>
               </div>
             </div>
           </li>
           <li className="nav-item dropdown">
-            <span className="nav-trigger">Financial</span>
+            <span className="nav-trigger">{t('navbar.financial')}</span>
             <div className="dropdown-panel">
               <div className="dropdown-group">
-                <span className="dropdown-label">Financial</span>
-                <a href="#yield">Yield Analytics</a>
-                <a href="#costs">Cost & Inputs</a>
-                <a href="#market">Market Trends</a>
+                <span className="dropdown-label">{t('navbar.financial')}</span>
+                <a href="#yield">{t('navbar.yieldAnalytics')}</a>
+                <a href="#costs">{t('navbar.costInputs')}</a>
+                <a href="#market">{t('navbar.marketTrends')}</a>
               </div>
             </div>
           </li>
@@ -95,7 +87,7 @@ const Navbar = () => {
       <div className="navbar-right">
         <Link to="/" className="app-brand" aria-label="Go to Home">
           <img src={logo} alt="CropSense AI Logo" className="navbar-logo" />
-          <span className="app-name">CropSense AI</span>
+          <span className="app-name">{t('navbar.brandName')}</span>
         </Link>
       </div>
     </nav>

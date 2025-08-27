@@ -1,0 +1,23 @@
+{
+  "navbar": {
+    "overview": "Überblick",
+    "generate": "Generieren",
+    "diseases": "Krankheiten",
+    "financial": "Finanziell",
+    "brandName": "CropSense AI"
+  },
+  "home": {
+    "title": "Präzisions-Landwirtschafts-Intelligenz",
+    "subtitle": "Erweiterte KI-gestützte Pflanzenüberwachung und Krankheitserkennung",
+    "searchPlaceholder": "Stadtname für Pflanzenanalyse eingeben...",
+    "searchButton": "Pflanzen Analysieren",
+    "recommendedCrops": "Empfohlene Pflanzen für",
+    "climate": "Klima",
+    "temperature": "Temperatur"
+  },
+  "common": {
+    "loading": "Laden...",
+    "search": "Suchen",
+    "home": "Startseite"
+  }
+}
