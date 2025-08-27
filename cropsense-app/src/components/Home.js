@@ -416,6 +416,366 @@ const Home = () => {
           </div>
         </div>
       </div>
+
+      {/* Extended Content Section */}
+      <div className="extended-content">
+        {/* Features Section */}
+        <div className="features-section">
+          <div className="container">
+            <h2 className="section-title handwriting-font">Smart Farming Solutions</h2>
+            <p className="section-subtitle">Revolutionize your agricultural practices with AI-powered insights and precision farming technologies</p>
+            
+            <div className="features-grid">
+              <div className="feature-card">
+                <div className="feature-icon">
+                  <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L13.09 8.26L20 9L13.09 9.74L12 16L10.91 9.74L4 9L10.91 8.26L12 2Z" fill="#00FF7F"/>
+                    <path d="M19 11L19.75 13.5L22 14L19.75 14.5L19 17L18.25 14.5L16 14L18.25 13.5L19 11Z" fill="#064E3B"/>
+                    <path d="M5 5L5.5 6.5L7 7L5.5 7.5L5 9L4.5 7.5L3 7L4.5 6.5L5 5Z" fill="#00FF7F"/>
+                  </svg>
+                </div>
+                <h3>AI-Powered Analysis</h3>
+                <p>Advanced machine learning algorithms analyze soil conditions, weather patterns, and crop health to provide personalized recommendations for optimal yields.</p>
+              </div>
+
+              <div className="feature-card">
+                <div className="feature-icon">
+                  <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2Z" fill="#00FF7F"/>
+                    <path d="M21 9V7L15 6L13 7H11L9 6L3 7V9L9 8V22H11V16H13V22H15V8L21 9Z" fill="#064E3B"/>
+                    <circle cx="8" cy="10" r="2" fill="#00FF7F"/>
+                    <circle cx="16" cy="12" r="1.5" fill="#00FF7F"/>
+                  </svg>
+                </div>
+                <h3>Precision Farming</h3>
+                <p>Monitor crop health in real-time using satellite imagery and IoT sensors to optimize irrigation, fertilization, and pest management strategies.</p>
+              </div>
+
+              <div className="feature-card">
+                <div className="feature-icon">
+                  <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 3V21L9 18L15 21L21 18V3L15 6L9 3L3 3Z" fill="none" stroke="#00FF7F" strokeWidth="2"/>
+                    <path d="M9 3V18" stroke="#064E3B" strokeWidth="2"/>
+                    <path d="M15 6V21" stroke="#064E3B" strokeWidth="2"/>
+                    <circle cx="7" cy="8" r="1" fill="#00FF7F"/>
+                    <circle cx="17" cy="12" r="1" fill="#00FF7F"/>
+                    <circle cx="11" cy="15" r="1" fill="#00FF7F"/>
+                  </svg>
+                </div>
+                <h3>Weather Forecasting</h3>
+                <p>Get accurate long-term weather predictions and climate analysis to plan your farming activities and protect crops from adverse conditions.</p>
+              </div>
+
+              <div className="feature-card">
+                <div className="feature-icon">
+                  <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L3.09 8.26L4 21L20 21L20.91 8.26L12 2Z" fill="none" stroke="#00FF7F" strokeWidth="2"/>
+                    <path d="M12 8V16" stroke="#064E3B" strokeWidth="2"/>
+                    <path d="M8 12H16" stroke="#064E3B" strokeWidth="2"/>
+                    <circle cx="9" cy="10" r="1" fill="#00FF7F"/>
+                    <circle cx="15" cy="14" r="1" fill="#00FF7F"/>
+                  </svg>
+                </div>
+                <h3>Market Intelligence</h3>
+                <p>Access real-time market prices, demand forecasts, and supply chain insights to maximize profitability and reduce post-harvest losses.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Premium AI Packages Section */}
+        <div className="premium-section">
+          <div className="container">
+            <div className="premium-header">
+              <h2 className="section-title handwriting-font">Premium AI Packages</h2>
+              <p className="section-subtitle">Unlock the full potential of smart agriculture with our advanced AI-powered solutions</p>
+            </div>
+
+            <div className="packages-grid">
+              {/* Basic Package */}
+              <div className="package-card">
+                <div className="package-header">
+                  <div className="package-icon">
+                    <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#00FF7F"/>
+                      <path d="M2 17L12 22L22 17" stroke="#064E3B" strokeWidth="2" fill="none"/>
+                      <path d="M2 12L12 17L22 12" stroke="#064E3B" strokeWidth="2" fill="none"/>
+                    </svg>
+                  </div>
+                  <h3>Basic AI</h3>
+                  <div className="package-price">
+                    <span className="currency">₹</span>
+                    <span className="amount">2,999</span>
+                    <span className="period">/month</span>
+                  </div>
+                </div>
+                <div className="package-features">
+                  <div className="feature-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 12L11 14L15 10" stroke="#00FF7F" strokeWidth="2" strokeLinecap="round"/>
+                      <circle cx="12" cy="12" r="9" stroke="#00FF7F" strokeWidth="2"/>
+                    </svg>
+                    <span>Basic crop analysis</span>
+                  </div>
+                  <div className="feature-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 12L11 14L15 10" stroke="#00FF7F" strokeWidth="2" strokeLinecap="round"/>
+                      <circle cx="12" cy="12" r="9" stroke="#00FF7F" strokeWidth="2"/>
+                    </svg>
+                    <span>Weather forecasting</span>
+                  </div>
+                  <div className="feature-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 12L11 14L15 10" stroke="#00FF7F" strokeWidth="2" strokeLinecap="round"/>
+                      <circle cx="12" cy="12" r="9" stroke="#00FF7F" strokeWidth="2"/>
+                    </svg>
+                    <span>Soil health monitoring</span>
+                  </div>
+                  <div className="feature-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 12L11 14L15 10" stroke="#00FF7F" strokeWidth="2" strokeLinecap="round"/>
+                      <circle cx="12" cy="12" r="9" stroke="#00FF7F" strokeWidth="2"/>
+                    </svg>
+                    <span>Basic reports</span>
+                  </div>
+                </div>
+                <button className="package-button">Get Started</button>
+              </div>
+
+              {/* Professional Package - Highlighted */}
+              <div className="package-card featured">
+                <div className="featured-badge">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="#000"/>
+                  </svg>
+                  Most Popular
+                </div>
+                <div className="package-header">
+                  <div className="package-icon premium">
+                    <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 2L3.09 8.26L4 21L20 21L20.91 8.26L12 2Z" fill="#FFD700"/>
+                      <path d="M12 8L9 12H15L12 8Z" fill="#FF6B35"/>
+                      <circle cx="12" cy="15" r="2" fill="#FF6B35"/>
+                    </svg>
+                  </div>
+                  <h3>Professional AI</h3>
+                  <div className="package-price">
+                    <span className="currency">₹</span>
+                    <span className="amount">7,999</span>
+                    <span className="period">/month</span>
+                  </div>
+                </div>
+                <div className="package-features">
+                  <div className="feature-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 12L11 14L15 10" stroke="#FFD700" strokeWidth="2" strokeLinecap="round"/>
+                      <circle cx="12" cy="12" r="9" stroke="#FFD700" strokeWidth="2"/>
+                    </svg>
+                    <span>Advanced crop analytics</span>
+                  </div>
+                  <div className="feature-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 12L11 14L15 10" stroke="#FFD700" strokeWidth="2" strokeLinecap="round"/>
+                      <circle cx="12" cy="12" r="9" stroke="#FFD700" strokeWidth="2"/>
+                    </svg>
+                    <span>Satellite monitoring</span>
+                  </div>
+                  <div className="feature-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 12L11 14L15 10" stroke="#FFD700" strokeWidth="2" strokeLinecap="round"/>
+                      <circle cx="12" cy="12" r="9" stroke="#FFD700" strokeWidth="2"/>
+                    </svg>
+                    <span>Disease detection AI</span>
+                  </div>
+                  <div className="feature-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 12L11 14L15 10" stroke="#FFD700" strokeWidth="2" strokeLinecap="round"/>
+                      <circle cx="12" cy="12" r="9" stroke="#FFD700" strokeWidth="2"/>
+                    </svg>
+                    <span>Precision irrigation</span>
+                  </div>
+                  <div className="feature-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 12L11 14L15 10" stroke="#FFD700" strokeWidth="2" strokeLinecap="round"/>
+                      <circle cx="12" cy="12" r="9" stroke="#FFD700" strokeWidth="2"/>
+                    </svg>
+                    <span>Market predictions</span>
+                  </div>
+                  <div className="feature-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 12L11 14L15 10" stroke="#FFD700" strokeWidth="2" strokeLinecap="round"/>
+                      <circle cx="12" cy="12" r="9" stroke="#FFD700" strokeWidth="2"/>
+                    </svg>
+                    <span>24/7 support</span>
+                  </div>
+                </div>
+                <button className="package-button premium">Upgrade Now</button>
+              </div>
+
+              {/* Enterprise Package */}
+              <div className="package-card">
+                <div className="package-header">
+                  <div className="package-icon">
+                    <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M2 3H22L20 21H4L2 3Z" fill="none" stroke="#00FF7F" strokeWidth="2"/>
+                      <path d="M8 7V17" stroke="#064E3B" strokeWidth="2"/>
+                      <path d="M12 7V17" stroke="#064E3B" strokeWidth="2"/>
+                      <path d="M16 7V17" stroke="#064E3B" strokeWidth="2"/>
+                      <circle cx="8" cy="5" r="1" fill="#00FF7F"/>
+                      <circle cx="12" cy="5" r="1" fill="#00FF7F"/>
+                      <circle cx="16" cy="5" r="1" fill="#00FF7F"/>
+                    </svg>
+                  </div>
+                  <h3>Enterprise AI</h3>
+                  <div className="package-price">
+                    <span className="currency">₹</span>
+                    <span className="amount">15,999</span>
+                    <span className="period">/month</span>
+                  </div>
+                </div>
+                <div className="package-features">
+                  <div className="feature-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 12L11 14L15 10" stroke="#00FF7F" strokeWidth="2" strokeLinecap="round"/>
+                      <circle cx="12" cy="12" r="9" stroke="#00FF7F" strokeWidth="2"/>
+                    </svg>
+                    <span>Full AI suite</span>
+                  </div>
+                  <div className="feature-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 12L11 14L15 10" stroke="#00FF7F" strokeWidth="2" strokeLinecap="round"/>
+                      <circle cx="12" cy="12" r="9" stroke="#00FF7F" strokeWidth="2"/>
+                    </svg>
+                    <span>Custom AI models</span>
+                  </div>
+                  <div className="feature-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 12L11 14L15 10" stroke="#00FF7F" strokeWidth="2" strokeLinecap="round"/>
+                      <circle cx="12" cy="12" r="9" stroke="#00FF7F" strokeWidth="2"/>
+                    </svg>
+                    <span>Multi-farm management</span>
+                  </div>
+                  <div className="feature-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 12L11 14L15 10" stroke="#00FF7F" strokeWidth="2" strokeLinecap="round"/>
+                      <circle cx="12" cy="12" r="9" stroke="#00FF7F" strokeWidth="2"/>
+                    </svg>
+                    <span>API access</span>
+                  </div>
+                  <div className="feature-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 12L11 14L15 10" stroke="#00FF7F" strokeWidth="2" strokeLinecap="round"/>
+                      <circle cx="12" cy="12" r="9" stroke="#00FF7F" strokeWidth="2"/>
+                    </svg>
+                    <span>Dedicated support</span>
+                  </div>
+                </div>
+                <button className="package-button">Contact Sales</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Technology Section */}
+        <div className="technology-section">
+          <div className="container">
+            <h2 className="section-title handwriting-font">Powered by Advanced Technology</h2>
+            <div className="tech-grid">
+              <div className="tech-item">
+                <div className="tech-icon">
+                  <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="3" fill="#00FF7F"/>
+                    <path d="M12 1V3M12 21V23M4.22 4.22L5.64 5.64M18.36 18.36L19.78 19.78M1 12H3M21 12H23M4.22 19.78L5.64 18.36M18.36 5.64L19.78 4.22" stroke="#064E3B" strokeWidth="2" strokeLinecap="round"/>
+                    <circle cx="12" cy="12" r="8" stroke="#00FF7F" strokeWidth="1" fill="none" strokeDasharray="2 2"/>
+                  </svg>
+                </div>
+                <h3>Satellite Imagery</h3>
+                <p>High-resolution satellite data for precise field monitoring and crop health assessment</p>
+              </div>
+              
+              <div className="tech-item">
+                <div className="tech-icon">
+                  <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#00FF7F"/>
+                    <path d="M2 17L12 22L22 17" stroke="#064E3B" strokeWidth="2" fill="none"/>
+                    <path d="M2 12L12 17L22 12" stroke="#064E3B" strokeWidth="2" fill="none"/>
+                    <circle cx="8" cy="9" r="1" fill="#064E3B"/>
+                    <circle cx="16" cy="9" r="1" fill="#064E3B"/>
+                    <circle cx="12" cy="15" r="1" fill="#064E3B"/>
+                  </svg>
+                </div>
+                <h3>Machine Learning</h3>
+                <p>Advanced algorithms that learn from your farm data to provide personalized insights</p>
+              </div>
+              
+              <div className="tech-item">
+                <div className="tech-icon">
+                  <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="4" width="18" height="16" rx="2" fill="none" stroke="#00FF7F" strokeWidth="2"/>
+                    <path d="M7 8H17M7 12H17M7 16H13" stroke="#064E3B" strokeWidth="2" strokeLinecap="round"/>
+                    <circle cx="19" cy="6" r="2" fill="#00FF7F"/>
+                    <circle cx="19" cy="18" r="2" fill="#00FF7F"/>
+                  </svg>
+                </div>
+                <h3>IoT Integration</h3>
+                <p>Seamless connectivity with sensors and smart farming equipment for real-time monitoring</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Stats Section */}
+        <div className="stats-section">
+          <div className="container">
+            <div className="stats-grid">
+              <div className="stat-item">
+                <div className="stat-icon">
+                  <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 8V16H8V8H16Z" fill="#00FF7F"/>
+                    <path d="M2 2V22H22V2H2Z" stroke="#064E3B" strokeWidth="2" fill="none"/>
+                    <path d="M6 6V18M10 6V18M14 6V18M18 6V18" stroke="#064E3B" strokeWidth="1"/>
+                  </svg>
+                </div>
+                <div className="stat-number">50,000+</div>
+                <div className="stat-label">Farmers Empowered</div>
+              </div>
+              
+              <div className="stat-item">
+                <div className="stat-icon">
+                  <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="10" fill="none" stroke="#00FF7F" strokeWidth="2"/>
+                    <path d="M12 6V12L16 14" stroke="#064E3B" strokeWidth="2" strokeLinecap="round"/>
+                  </svg>
+                </div>
+                <div className="stat-number">2M+</div>
+                <div className="stat-label">Acres Monitored</div>
+              </div>
+              
+              <div className="stat-item">
+                <div className="stat-icon">
+                  <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 13H9L11 7L13 17L15 11H21" stroke="#00FF7F" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                    <circle cx="7" cy="13" r="2" fill="#064E3B"/>
+                    <circle cx="17" cy="11" r="2" fill="#064E3B"/>
+                  </svg>
+                </div>
+                <div className="stat-number">35%</div>
+                <div className="stat-label">Average Yield Increase</div>
+              </div>
+              
+              <div className="stat-item">
+                <div className="stat-icon">
+                  <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L15.09 8.26L22 9L16 14.74L17.18 21.02L12 18.27L6.82 21.02L8 14.74L2 9L8.91 8.26L12 2Z" fill="#FFD700"/>
+                  </svg>
+                </div>
+                <div className="stat-number">4.9</div>
+                <div className="stat-label">User Rating</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
