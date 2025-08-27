@@ -1,0 +1,23 @@
+{
+  "navbar": {
+    "overview": "അവലോകനം",
+    "generate": "സൃഷ്ടിക്കുക",
+    "diseases": "രോഗങ്ങൾ",
+    "financial": "സാമ്പത്തിക",
+    "brandName": "CropSense AI"
+  },
+  "home": {
+    "title": "കൃത്യമായ കാർഷിക ബുദ്ധി",
+    "subtitle": "സ്മാർട്ട് കാർഷിക പരിഹാരങ്ങൾക്കായി വിപുലമായ AI-പവർഡ് വിള നിരീക്ഷണവും രോഗ കണ്ടെത്തലും",
+    "searchPlaceholder": "വിള വിശകലനത്തിനായി നഗര നാമം നൽകുക...",
+    "searchButton": "വിളകൾ വിശകലനം ചെയ്യുക",
+    "recommendedCrops": "ശുപാർശ ചെയ്യുന്ന വിളകൾ",
+    "climate": "കാലാവസ്ഥ",
+    "temperature": "താപനില"
+  },
+  "common": {
+    "loading": "ലോഡിംഗ്...",
+    "search": "തിരയുക",
+    "home": "ഹോം"
+  }
+}

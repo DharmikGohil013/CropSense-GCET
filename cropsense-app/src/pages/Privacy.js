@@ -1,67 +1,58 @@
 import React from 'react';
 import './Legal.css';
+import { useTranslation } from 'react-i18next';
 
 const Privacy = () => {
+  const { t } = useTranslation();
+  
   return (
     <div className="legal-page">
-      <h1>Privacy Policy</h1>
-      <p className="lead">This policy explains how CropSense AI collects, uses, and protects your information.</p>
+      <h1>{t('privacy.title')}</h1>
+      <p className="lead">{t('privacy.introText')}</p>
 
       <section>
-        <h2>1. Data We Collect</h2>
-        <ul>
-          <li>Account & contact details you provide.</li>
-          <li>Uploaded images, agronomic notes, and field metadata.</li>
-          <li>Usage logs and device/browser data for security & performance.</li>
-        </ul>
+        <h2>1. {t('privacy.dataCollection')}</h2>
+        <p>{t('privacy.dataCollectionText')}</p>
       </section>
 
       <section>
-        <h2>2. How We Use Data</h2>
-        <ul>
-          <li>Generate insights, diagnostics, and forecasts.</li>
-          <li>Improve AI model accuracy (with anonymization where practicable).</li>
-          <li>Provide support, security monitoring, and feature development.</li>
-        </ul>
+        <h2>2. {t('privacy.dataUse')}</h2>
+        <p>{t('privacy.dataUseText')}</p>
       </section>
 
       <section>
-        <h2>3. Sharing</h2>
-        <p>We do not sell personal data. Limited sharing with infrastructure providers under confidentiality and data processing agreements.</p>
+        <h2>3. {t('privacy.dataSharing')}</h2>
+        <p>{t('privacy.dataSharingText')}</p>
       </section>
 
       <section>
-        <h2>4. Security</h2>
-        <p>We apply encryption in transit, access controls, and monitoring. No system is 100% secure; report concerns to security@cropsense.ai.</p>
+        <h2>4. {t('privacy.dataStorage')}</h2>
+        <p>{t('privacy.dataStorageText')}</p>
       </section>
 
       <section>
-        <h2>5. Retention</h2>
-        <p>Data retained while your account is active and as needed for legal or analytical purposes, then deleted or anonymized.</p>
+        <h2>5. {t('privacy.userRights')}</h2>
+        <p>{t('privacy.userRightsText')}</p>
       </section>
 
       <section>
-        <h2>6. Your Choices</h2>
-        <ul>
-          <li>Request export or deletion of your data.</li>
-          <li>Opt out of non-essential communications.</li>
-          <li>Restrict certain processing where applicable by law.</li>
-        </ul>
+        <h2>6. {t('privacy.cookies')}</h2>
+        <p>{t('privacy.cookiesText')}</p>
       </section>
 
       <section>
-        <h2>7. Children</h2>
-        <p>Service not directed to individuals under 16.</p>
+        <h2>7. {t('privacy.minors')}</h2>
+        <p>{t('privacy.minorsText')}</p>
       </section>
 
       <section>
-        <h2>8. Changes</h2>
-        <p>We will post updates here and adjust the revision date.</p>
+        <h2>8. {t('privacy.changes')}</h2>
+        <p>{t('privacy.changesText')}</p>
       </section>
 
       <section>
-        <h2>9. Contact</h2>
-        <p>Privacy inquiries: <a href="mailto:privacy@cropsense.ai">privacy@cropsense.ai</a></p>
+        <h2>9. {t('privacy.contact')}</h2>
+        <p>{t('privacy.contactText')} <a href={`mailto:${t('privacy.email')}`}>{t('privacy.email')}</a></p>
       </section>
     </div>
   );

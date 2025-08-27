@@ -1,0 +1,23 @@
+{
+  "navbar": {
+    "overview": "ସାରାଂଶ",
+    "generate": "ସୃଷ୍ଟି କରନ୍ତୁ",
+    "diseases": "ରୋଗ",
+    "financial": "ଆର୍ଥିକ",
+    "brandName": "CropSense AI"
+  },
+  "home": {
+    "title": "ସଠିକ କୃଷି ବୁଦ୍ଧିମତ୍ତା",
+    "subtitle": "ସ୍ମାର୍ଟ କୃଷି ସମାଧାନ ପାଇଁ ଉନ୍ନତ AI-ଚାଳିତ ଫସଲ ନଜରଦାରି ଏବଂ ରୋଗ ଚିହ୍ନଟ",
+    "searchPlaceholder": "ଫସଲ ବିଶ୍ଳେଷଣ ପାଇଁ ସହର ନାମ ପ୍ରବେଶ କରନ୍ତୁ...",
+    "searchButton": "ଫସଲ ବିଶ୍ଳେଷଣ କରନ୍ତୁ",
+    "recommendedCrops": "ସୁପାରିଶିତ ଫସଲ",
+    "climate": "ଜଳବାୟୁ",
+    "temperature": "ତାପମାତ୍ରା"
+  },
+  "common": {
+    "loading": "ଲୋଡ୍ ହେଉଛି...",
+    "search": "ଖୋଜନ୍ତୁ",
+    "home": "ଘର"
+  }
+}

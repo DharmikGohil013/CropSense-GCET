@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import './Home.css';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const Home = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [cityName, setCityName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -361,8 +363,8 @@ const Home = () => {
         {/* Right Side - Search Section */}
         <div className="home-search">
           <div className="search-section">
-            <h1 className="home-title">Discover Your City's Crop Potential</h1>
-            <p className="home-subtitle">Enter your city name to get comprehensive agricultural analysis and recommendations</p>
+            <h1 className="home-title">{t('home.title')}</h1>
+            <p className="home-subtitle">{t('home.subtitle')}</p>
             
             <form onSubmit={(e) => { e.preventDefault(); handleSearch(); }} className="search-form">
               <div className="search-input-container">
@@ -384,7 +386,7 @@ const Home = () => {
                   onKeyPress={handleKeyPress}
                   onFocus={() => cityName.length > 0 && setShowSuggestions(true)}
                   onBlur={handleInputBlur}
-                  placeholder="Enter city name (e.g., Mumbai, Delhi, Bangalore)"
+                  placeholder={t('home.searchPlaceholder')}
                   className="search-input"
                 />
                 {isLoading && (
@@ -410,6 +412,14 @@ const Home = () => {
                   </div>
                 )}
               </div>
+              
+              <button 
+                type="submit" 
+                className="search-button"
+                disabled={isLoading || !cityName.trim()}
+              >
+                {isLoading ? t('home.analyzing') : t('home.searchButton')}
+              </button>
             </form>
 
 

@@ -1,0 +1,23 @@
+{
+  "navbar": {
+    "overview": "विहंगावलोकन",
+    "generate": "तयार करा",
+    "diseases": "रोग",
+    "financial": "आर्थिक",
+    "brandName": "CropSense AI"
+  },
+  "home": {
+    "title": "अचूक शेती बुद्धिमत्ता",
+    "subtitle": "स्मार्ट शेती समाधानांसाठी प्रगत AI-चालित पीक निरीक्षण आणि रोग शोध",
+    "searchPlaceholder": "पीक विश्लेषणासाठी शहराचे नाव टाका...",
+    "searchButton": "पिकांचे विश्लेषण करा",
+    "recommendedCrops": "शिफारस केलेली पिके",
+    "climate": "हवामान",
+    "temperature": "तापमान"
+  },
+  "common": {
+    "loading": "लोड होत आहे...",
+    "search": "शोध",
+    "home": "होम"
+  }
+}

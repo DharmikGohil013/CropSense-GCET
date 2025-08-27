@@ -1,0 +1,23 @@
+{
+  "navbar": {
+    "overview": "ಅವಲೋಕನ",
+    "generate": "ಉತ್ಪಾದಿಸು",
+    "diseases": "ರೋಗಗಳು",
+    "financial": "ಆರ್ಥಿಕ",
+    "brandName": "CropSense AI"
+  },
+  "home": {
+    "title": "ನಿಖರ ಕೃಷಿ ಬುದ್ಧಿವಂತಿಕೆ",
+    "subtitle": "ಸ್ಮಾರ್ಟ್ ಕೃಷಿ ಪರಿಹಾರಗಳಿಗಾಗಿ ಮುಂದುವರಿದ AI-ಚಾಲಿತ ಬೆಳೆ ಮೇಲ್ವಿಚಾರಣೆ ಮತ್ತು ರೋಗ ಪತ್ತೆ",
+    "searchPlaceholder": "ಬೆಳೆ ವಿಶ್ಲೇಷಣೆಗಾಗಿ ನಗರದ ಹೆಸರನ್ನು ನಮೂದಿಸಿ...",
+    "searchButton": "ಬೆಳೆಗಳನ್ನು ವಿಶ್ಲೇಷಿಸಿ",
+    "recommendedCrops": "ಶಿಫಾರಸು ಮಾಡಿದ ಬೆಳೆಗಳು",
+    "climate": "ಹವಾಮಾನ",
+    "temperature": "ತಾಪಮಾನ"
+  },
+  "common": {
+    "loading": "ಲೋಡ್ ಆಗುತ್ತಿದೆ...",
+    "search": "ಹುಡುಕಿ",
+    "home": "ಮುಖಪುಟ"
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "navbar": {
+    "overview": "Aperçu",
+    "generate": "Générer",
+    "diseases": "Maladies",
+    "financial": "Financier",
+    "brandName": "CropSense AI",
+    "generateInfo": "Infos à Générer",
+    "generateImage": "Image à Image",
+    "diseaseInfo": "Infos sur les Maladies",
+    "diseaseImage": "Image à Maladie",
+    "yieldAnalytics": "Analyses de Rendement",
+    "costInputs": "Coûts et Intrants",
+    "marketTrends": "Tendances du Marché"
+  },
+  "home": {
+    "title": "Intelligence Agricole de Précision",
+    "subtitle": "Surveillance des cultures et détection des maladies alimentées par IA avancée pour des solutions agricoles intelligentes",
+    "searchPlaceholder": "Entrez le nom de la ville pour l'analyse des cultures...",
+    "searchButton": "Analyser les Cultures",
+    "citySearching": "Recherche des cultures optimales dans",
+    "noCityMessage": "Veuillez entrer le nom d'une ville",
+    "loadingMessage": "Analyse des conditions agricoles...",
+    "locationIcon": "📍",
+    "recommendedCrops": "Cultures Recommandées pour",
+    "climate": "Climat",
+    "temperature": "Température",
+    "humidity": "Humidité",
+    "rainfall": "Précipitations",
+    "soilType": "Type de Sol",
+    "growingSeason": "Saison de Croissance"
+  },
+  "results": {
+    "title": "Résultats de l'Analyse Agricole",
+    "backToHome": "← Retour à l'Accueil",
+    "analysisComplete": "Analyse Terminée",
+    "cropRecommendations": "Recommandations de Cultures",
+    "weatherConditions": "Conditions Météorologiques",
+    "soilAnalysis": "Analyse du Sol",
+    "growingTips": "Conseils de Culture",
+    "expectedYield": "Rendement Attendu",
+    "profitability": "Rentabilité",
+    "riskFactors": "Facteurs de Risque",
+    "marketDemand": "Demande du Marché"
+  },
+  "about": {
+    "title": "À Propos de CropSense AI",
+    "subtitle": "Révolutionner l'Agriculture grâce à l'Intelligence Artificielle",
+    "mission": "Notre Mission",
+    "vision": "Notre Vision",
+    "features": "Caractéristiques Clés",
+    "contact": "Contactez-nous"
+  },
+  "footer": {
+    "brandName": "CropSense AI",
+    "tagline": "Solutions Agricoles Intelligentes",
+    "quickLinks": "Liens Rapides",
+    "home": "Accueil",
+    "about": "À Propos",
+    "features": "Caractéristiques",
+    "contact": "Contact"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Erreur survenue",
+    "search": "Rechercher",
+    "home": "Accueil",
+    "back": "Retour"
+  }
+}

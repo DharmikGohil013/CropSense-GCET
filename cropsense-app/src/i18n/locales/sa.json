@@ -1,0 +1,23 @@
+{
+  "navbar": {
+    "overview": "अवलोकनम्",
+    "generate": "उत्पादयति",
+    "diseases": "रोगाः",
+    "financial": "आर्थिकम्",
+    "brandName": "CropSense AI"
+  },
+  "home": {
+    "title": "सुनिश्चितं कृषि बुद्धिमत्ता",
+    "subtitle": "बुद्धिमत् कृषि समाधानानाम् कृते उन्नत AI-चालित शस्य निरीक्षणम् रोग संसूचनम् च",
+    "searchPlaceholder": "शस्य विश्लेषणाय नगर नाम प्रविशति...",
+    "searchButton": "शस्यानि विश्लेषयति",
+    "recommendedCrops": "सुझावित शस्यानि",
+    "climate": "वायुमण्डलम्",
+    "temperature": "तापमानम्"
+  },
+  "common": {
+    "loading": "भारयति...",
+    "search": "अन्वेषणम्",
+    "home": "गृहम्"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "navbar": {
+    "overview": "ਝਲਕ",
+    "generate": "ਬਣਾਓ",
+    "diseases": "ਬਿਮਾਰੀਆਂ",
+    "financial": "ਵਿਤਤੀ",
+    "brandName": "CropSense AI"
+  },
+  "home": {
+    "title": "ਸਟੀਕ ਖੇਤੀਬਾੜੀ ਬੁੱਧੀ",
+    "subtitle": "ਸਮਾਰਟ ਖੇਤੀਬਾੜੀ ਹੱਲਾਂ ਲਈ ਉੱਨਤ AI-ਸੰਚਾਲਿਤ ਫਸਲ ਨਿਗਰਾਨੀ ਅਤੇ ਰੋਗ ਖੋਜ",
+    "searchPlaceholder": "ਫਸਲ ਵਿਸ਼ਲੇਸ਼ਣ ਲਈ ਸ਼ਹਿਰ ਦਾ ਨਾਮ ਦਰਜ ਕਰੋ...",
+    "searchButton": "ਫਸਲਾਂ ਦਾ ਵਿਸ਼ਲੇਸ਼ਣ ਕਰੋ",
+    "recommendedCrops": "ਸਿਫਾਰਸ਼ੀ ਫਸਲਾਂ",
+    "climate": "ਮੌਸਮ",
+    "temperature": "ਤਾਪਮਾਨ"
+  },
+  "common": {
+    "loading": "ਲੋਡ ਹੋ ਰਿਹਾ ਹੈ...",
+    "search": "ਖੋਜੋ",
+    "home": "ਘਰ"
+  }
+}

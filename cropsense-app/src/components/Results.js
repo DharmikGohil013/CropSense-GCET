@@ -1,23 +1,25 @@
 import React from 'react';
 import './Results.css';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const Results = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { searchResults } = location.state || {};
 
   if (!searchResults) {
     return (
       <div className="results-container">
         <div className="no-results">
-          <h2>No Analysis Data Found</h2>
-          <p>Please go back to the home page and search for a city.</p>
+          <h2>{t('results.noDataTitle')}</h2>
+          <p>{t('results.noDataMessage')}</p>
           <button 
             className="back-button"
             onClick={() => navigate('/')}
           >
-            Go Back to Search
+            {t('results.backToSearch')}
           </button>
         </div>
       </div>
@@ -31,9 +33,9 @@ const Results = () => {
           className="back-button"
           onClick={() => navigate('/')}
         >
-          ← Back to Search
+          ← {t('results.backToSearch')}
         </button>
-        <h1 className="results-title">Agricultural Analysis for {searchResults.city}</h1>
+        <h1 className="results-title">{t('results.analysisTitle', { city: searchResults.city })}</h1>
       </div>
 
       <div className="results-content">
@@ -42,28 +44,28 @@ const Results = () => {
           <div className="overview-card">
             <div className="card-icon climate-icon">🌡️</div>
             <div className="card-content">
-              <h4>Climate</h4>
+              <h4>{t('results.climate')}</h4>
               <p>{searchResults.climate}</p>
             </div>
           </div>
           <div className="overview-card">
             <div className="card-icon soil-icon">🌱</div>
             <div className="card-content">
-              <h4>Soil Type</h4>
+              <h4>{t('results.soilType')}</h4>
               <p>{searchResults.soilType}</p>
             </div>
           </div>
           <div className="overview-card">
             <div className="card-icon season-icon">🌾</div>
             <div className="card-content">
-              <h4>Best Season</h4>
+              <h4>{t('results.bestSeason')}</h4>
               <p>{searchResults.season}</p>
             </div>
           </div>
           <div className="overview-card">
             <div className="card-icon irrigation-icon">💧</div>
             <div className="card-content">
-              <h4>Irrigation</h4>
+              <h4>{t('results.irrigation')}</h4>
               <p>{searchResults.irrigation}</p>
             </div>
           </div>
@@ -72,24 +74,24 @@ const Results = () => {
         <div className="results-grid">
           {/* Climate Details */}
           <div className="result-card">
-            <h3>Climate Conditions</h3>
+            <h3>{t('results.climateConditions')}</h3>
             <div className="result-item">
-              <span className="label">Temperature:</span>
+              <span className="label">{t('results.temperature')}:</span>
               <span className="value">{searchResults.temperature}</span>
             </div>
             <div className="result-item">
-              <span className="label">Humidity:</span>
+              <span className="label">{t('results.humidity')}:</span>
               <span className="value">{searchResults.humidity}</span>
             </div>
             <div className="result-item">
-              <span className="label">Annual Rainfall:</span>
+              <span className="label">{t('results.annualRainfall')}:</span>
               <span className="value">{searchResults.rainfall}</span>
             </div>
           </div>
 
           {/* Crop Yield Chart */}
           <div className="result-card chart-card">
-            <h3>Crop Yield Potential (%)</h3>
+            <h3>{t('results.cropYieldPotential')}</h3>
             <div className="chart-container">
               {Object.entries(searchResults.cropYield).map(([crop, yieldValue]) => (
                 <div key={crop} className="bar-chart-item">
@@ -108,7 +110,7 @@ const Results = () => {
 
           {/* Soil Health Pie Chart */}
           <div className="result-card chart-card">
-            <h3>Soil Health Indicators</h3>
+            <h3>{t('results.soilHealthIndicators')}</h3>
             <div className="soil-health-grid">
               {Object.entries(searchResults.soilHealth).map(([nutrient, value]) => (
                 <div key={nutrient} className="soil-indicator">
@@ -123,7 +125,7 @@ const Results = () => {
 
           {/* Monthly Rainfall Chart */}
           <div className="result-card chart-card full-width">
-            <h3>Monthly Rainfall Distribution (mm)</h3>
+            <h3>{t('results.monthlyRainfall')}</h3>
             <div className="rainfall-chart">
               {searchResults.monthlyRainfall.map((rainfall, index) => (
                 <div key={index} className="rainfall-bar">
@@ -142,7 +144,7 @@ const Results = () => {
 
           {/* Recommended Crops */}
           <div className="result-card">
-            <h3>Recommended Crops</h3>
+            <h3>{t('results.recommendedCrops')}</h3>
             <div className="crops-list">
               {searchResults.recommendedCrops.map((crop, index) => (
                 <span key={index} className="crop-tag">{crop}</span>
@@ -152,7 +154,7 @@ const Results = () => {
 
           {/* Fertilizer Recommendations */}
           <div className="result-card">
-            <h3>Fertilizer Recommendations</h3>
+            <h3>{t('results.fertilizerRecommendations')}</h3>
             <div className="fertilizers-list">
               {searchResults.fertilizers.map((fertilizer, index) => (
                 <span key={index} className="fertilizer-tag">{fertilizer}</span>
@@ -167,13 +169,13 @@ const Results = () => {
             className="action-btn primary"
             onClick={() => navigate('/', { state: { searchAgain: true } })}
           >
-            Search Another City
+            {t('results.searchAnotherCity')}
           </button>
           <button 
             className="action-btn secondary"
             onClick={() => window.print()}
           >
-            Print Report
+            {t('results.printReport')}
           </button>
           <button 
             className="action-btn secondary"
@@ -188,7 +190,7 @@ const Results = () => {
               URL.revokeObjectURL(url);
             }}
           >
-            Download Report
+            {t('results.downloadReport')}
           </button>
         </div>
       </div>
