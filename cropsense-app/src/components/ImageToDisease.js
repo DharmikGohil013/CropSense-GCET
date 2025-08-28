@@ -68,10 +68,11 @@ const ImageToDisease = () => {
       
       console.log('API Response:', data); // Debug log
       
-      // Simplified transformation to test API data display
+      // Dynamic transformation showing API data with timestamps
+      const analysisTime = new Date().toLocaleString();
       const transformedResults = {
         diseaseName: data.top_prediction.label,
-        scientificName: data.top_prediction.label,
+        scientificName: `${data.top_prediction.label} (API Result)`,
         confidence: Math.round(data.top_prediction.confidence * 100),
         affectedCrop: 'Cassava',
         severity: data.top_prediction.confidence > 0.8 ? 'High' : 
@@ -82,12 +83,33 @@ const ImageToDisease = () => {
           confidence: Math.round(pred.confidence * 100)
         })),
         aiDescription: data.gemini_description || 'AI analysis not available',
-        symptoms: ['Analysis from API: ' + data.top_prediction.label],
-        treatment: ['Treatment for: ' + data.top_prediction.label],
-        prevention: ['Prevention for: ' + data.top_prediction.label],
-        recommendations: ['Recommendations for: ' + data.top_prediction.label],
-        additionalInfo: ['Additional info: Confidence ' + Math.round(data.top_prediction.confidence * 100) + '%'],
-        economicImpact: 'Economic impact from API analysis'
+        symptoms: [
+          `🔍 LIVE API RESULT: ${data.top_prediction.label}`,
+          `📊 Confidence: ${Math.round(data.top_prediction.confidence * 100)}%`,
+          `⏰ Analyzed at: ${analysisTime}`
+        ],
+        treatment: [
+          `💊 Treatment for: ${data.top_prediction.label}`,
+          `🎯 Primary recommendation based on ${Math.round(data.top_prediction.confidence * 100)}% confidence`,
+          `🔄 Real-time API response received`
+        ],
+        prevention: [
+          `🛡️ Prevention for: ${data.top_prediction.label}`,
+          `📈 Based on current analysis results`,
+          `🌱 Updated analysis from backend API`
+        ],
+        recommendations: [
+          `⭐ Recommendations for: ${data.top_prediction.label}`,
+          `📱 Generated from live API call`,
+          `🔬 Processing time: ${(data.processing_time * 1000).toFixed(0)}ms`
+        ],
+        additionalInfo: [
+          `📊 DYNAMIC RESULT - Confidence: ${Math.round(data.top_prediction.confidence * 100)}%`,
+          `🕒 Generated: ${analysisTime}`,
+          `🔗 Source: Backend API (Port 8001)`,
+          `📈 Top ${data.all_predictions.length} predictions received`
+        ],
+        economicImpact: `💰 Economic impact analysis for ${data.top_prediction.label} - Updated from live API response`
       };
 
       console.log('Transformed Results:', transformedResults); // Debug log
