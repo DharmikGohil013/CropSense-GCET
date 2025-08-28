@@ -1,0 +1,578 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;900&display=swap');
+
+.image-to-disease-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+  color: #FFFFFF;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.image-to-disease-container::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 300px;
+  height: 300px;
+  background: rgba(0, 255, 127, 0.1);
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+.image-to-disease-container::after {
+  content: '';
+  position: absolute;
+  bottom: -100px;
+  left: -100px;
+  width: 250px;
+  height: 250px;
+  background: rgba(6, 78, 59, 0.15);
+  border-radius: 50%;
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  position: relative;
+  z-index: 1;
+}
+
+.back-button {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: rgba(18, 18, 18, 0.8);
+  color: #FFFFFF;
+  border: 1px solid #064E3B;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.back-button:hover {
+  background: rgba(6, 78, 59, 0.3);
+  transform: translateX(-2px);
+  color: #00FF7F;
+}
+
+.page-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 2.5rem;
+  margin: 0 0 1rem;
+  background: linear-gradient(135deg, #00FF7F 0%, #064E3B 50%, #00FF7F 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.page-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.upload-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.upload-card {
+  background: rgba(18, 18, 18, 0.95);
+  border: 1px solid #064E3B;
+  border-radius: 16px;
+  padding: 3rem;
+  margin-bottom: 3rem;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.upload-area {
+  border: 2px dashed #064E3B;
+  border-radius: 12px;
+  padding: 3rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  transition: all 0.3s ease;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.upload-area:hover {
+  border-color: #00FF7F;
+  background: rgba(0, 255, 127, 0.05);
+}
+
+.upload-placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.upload-icon {
+  color: #00FF7F;
+  margin-bottom: 1rem;
+}
+
+.upload-placeholder h3 {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.8rem;
+  margin: 1rem 0;
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+.upload-placeholder p {
+  font-family: 'Inter', sans-serif;
+  margin: 0.5rem 0;
+  line-height: 1.6;
+}
+
+.file-types {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.image-preview {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+}
+
+.preview-image {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.remove-image-btn {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: #FF4444;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.remove-image-btn:hover {
+  transform: scale(1.1);
+  background: #FF6666;
+}
+
+.file-input {
+  display: none;
+}
+
+.upload-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.upload-btn {
+  background: linear-gradient(135deg, #00FF7F 0%, #064E3B 100%);
+  color: #000000;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.upload-btn:hover {
+  background: linear-gradient(135deg, #064E3B 0%, #00FF7F 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(0, 255, 127, 0.4);
+}
+
+.analyze-btn {
+  background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+  color: #FFFFFF;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.analyze-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #F7931E 0%, #FF6B35 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(255, 107, 53, 0.4);
+}
+
+.analyze-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.loading-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid #FFFFFF;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.info-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.info-card {
+  background: rgba(18, 18, 18, 0.8);
+  border: 1px solid #064E3B;
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s ease;
+}
+
+.info-card:hover {
+  transform: translateY(-5px);
+  border-color: #00FF7F;
+}
+
+.info-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.info-card h3 {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.5rem;
+  color: #00FF7F;
+  margin: 0 0 1rem;
+  font-weight: 600;
+}
+
+.info-card p {
+  font-family: 'Inter', sans-serif;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.results-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.results-header h2 {
+  font-family: 'Orbitron', monospace;
+  font-size: 2rem;
+  color: #00FF7F;
+  margin: 0;
+  font-weight: 600;
+}
+
+.new-analysis-btn {
+  background: linear-gradient(135deg, #00FF7F 0%, #064E3B 100%);
+  color: #000000;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.new-analysis-btn:hover {
+  background: linear-gradient(135deg, #064E3B 0%, #00FF7F 100%);
+  transform: translateY(-2px);
+}
+
+.results-content {
+  display: grid;
+  gap: 2rem;
+}
+
+.image-result-card, .disease-info-card {
+  background: rgba(18, 18, 18, 0.95);
+  border: 1px solid #064E3B;
+  border-radius: 16px;
+  padding: 2rem;
+  backdrop-filter: blur(20px);
+}
+
+.image-result-card h3, .disease-info-card h3 {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.5rem;
+  color: #00FF7F;
+  margin: 0 0 1rem;
+  font-weight: 600;
+}
+
+.analyzed-image {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.disease-header {
+  margin-bottom: 1rem;
+}
+
+.disease-header h3 {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.8rem;
+  color: #FFFFFF;
+  margin: 0 0 0.5rem;
+  font-weight: 700;
+}
+
+.disease-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
+.scientific-name {
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1rem;
+}
+
+.severity-badge, .confidence-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #FFFFFF;
+}
+
+.confidence-badge {
+  background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+}
+
+.affected-crop {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.1rem;
+  color: #FFFFFF;
+  margin-top: 1rem;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.detail-card {
+  background: rgba(18, 18, 18, 0.8);
+  border: 1px solid #064E3B;
+  border-radius: 12px;
+  padding: 1.5rem;
+  backdrop-filter: blur(10px);
+}
+
+.detail-card h4 {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.3rem;
+  color: #00FF7F;
+  margin: 0 0 1rem;
+  font-weight: 600;
+}
+
+.detail-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.detail-card li {
+  font-family: 'Inter', sans-serif;
+  color: rgba(255, 255, 255, 0.9);
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  line-height: 1.5;
+}
+
+.detail-card li:last-child {
+  border-bottom: none;
+}
+
+.detail-card li::before {
+  content: '•';
+  color: #00FF7F;
+  margin-right: 0.5rem;
+  font-weight: bold;
+}
+
+.economic-impact-card {
+  background: rgba(18, 18, 18, 0.95);
+  border: 1px solid #FF6B35;
+  border-radius: 16px;
+  padding: 2rem;
+  backdrop-filter: blur(20px);
+  margin: 2rem 0;
+}
+
+.economic-impact-card h4 {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.5rem;
+  color: #FF6B35;
+  margin: 0 0 1rem;
+  font-weight: 600;
+}
+
+.economic-impact-card p {
+  font-family: 'Inter', sans-serif;
+  color: #FFFFFF;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.action-btn.primary {
+  background: linear-gradient(135deg, #00FF7F 0%, #064E3B 100%);
+  color: #000000;
+}
+
+.action-btn.primary:hover {
+  background: linear-gradient(135deg, #064E3B 0%, #00FF7F 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(0, 255, 127, 0.4);
+}
+
+.action-btn.secondary {
+  background: rgba(18, 18, 18, 0.8);
+  color: #FFFFFF;
+  border: 1px solid #064E3B;
+}
+
+.action-btn.secondary:hover {
+  background: rgba(6, 78, 59, 0.3);
+  border-color: #00FF7F;
+  color: #00FF7F;
+  transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .image-to-disease-container {
+    padding: 1rem;
+  }
+  
+  .page-title {
+    font-size: 2rem;
+  }
+  
+  .upload-card {
+    padding: 2rem;
+  }
+  
+  .upload-area {
+    padding: 2rem;
+    min-height: 200px;
+  }
+  
+  .results-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
+  
+  .disease-meta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .back-button {
+    position: static;
+    margin-bottom: 1rem;
+    align-self: flex-start;
+  }
+}

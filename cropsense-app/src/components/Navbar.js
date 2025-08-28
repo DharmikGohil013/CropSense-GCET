@@ -66,7 +66,7 @@ const Navbar = () => {
               <div className="dropdown-group">
                 <span className="dropdown-label">{t('navbar.diseases')}</span>
                 <a href="#disease-info">{t('navbar.diseaseInfo')}</a>
-                <a href="#disease-image">{t('navbar.diseaseImage')}</a>
+                <Link to="/image-to-disease">{t('navbar.diseaseImage')}</Link>
               </div>
             </div>
           </li>

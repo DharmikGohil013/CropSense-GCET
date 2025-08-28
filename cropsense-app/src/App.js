@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './components/Home';
 import Results from './components/Results';
+import ImageToDisease from './components/ImageToDisease';
 import { Routes, Route } from 'react-router-dom';
 import About from './pages/About';
 import Terms from './pages/Terms';
@@ -16,6 +17,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/results" element={<Results />} />
+          <Route path="/image-to-disease" element={<ImageToDisease />} />
           <Route path="/about" element={<About />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />
