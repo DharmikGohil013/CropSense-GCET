@@ -51,21 +51,11 @@ const Navbar = () => {
             <Link to="/" className="nav-trigger overview-link">{t('navbar.overview')}</Link>
           </li>
           <li className="nav-item dropdown">
-            <span className="nav-trigger">{t('navbar.generate')}</span>
-            <div className="dropdown-panel">
-              <div className="dropdown-group">
-                <span className="dropdown-label">{t('navbar.generate')}</span>
-                <a href="#generate-info">{t('navbar.generateInfo')}</a>
-                <a href="#generate-image">{t('navbar.generateImage')}</a>
-              </div>
-            </div>
-          </li>
-          <li className="nav-item dropdown">
             <span className="nav-trigger">{t('navbar.diseases')}</span>
             <div className="dropdown-panel">
               <div className="dropdown-group">
                 <span className="dropdown-label">{t('navbar.diseases')}</span>
-                <a href="#disease-info">{t('navbar.diseaseInfo')}</a>
+                <Link to="/disease-info">{t('navbar.diseaseInfo')}</Link>
                 <Link to="/image-to-disease">{t('navbar.diseaseImage')}</Link>
               </div>
             </div>
