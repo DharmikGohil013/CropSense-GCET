@@ -55,7 +55,7 @@ const ImageToDisease = () => {
       const formData = new FormData();
       formData.append('file', selectedImage);
 
-      const response = await fetch('http://localhost:8000/analyze-disease', {
+      const response = await fetch('http://localhost:8001/analyze-disease', {
         method: 'POST',
         body: formData,
       });
@@ -66,12 +66,14 @@ const ImageToDisease = () => {
 
       const data = await response.json();
       
-      // Transform API response to match UI expectations
+      console.log('API Response:', data); // Debug log
+      
+      // Simplified transformation to test API data display
       const transformedResults = {
         diseaseName: data.top_prediction.label,
-        scientificName: data.top_prediction.label, // API doesn't provide separate scientific name
+        scientificName: data.top_prediction.label,
         confidence: Math.round(data.top_prediction.confidence * 100),
-        affectedCrop: 'Cassava', // Based on model training
+        affectedCrop: 'Cassava',
         severity: data.top_prediction.confidence > 0.8 ? 'High' : 
                  data.top_prediction.confidence > 0.5 ? 'Medium' : 'Low',
         processingTime: `${(data.processing_time * 1000).toFixed(0)}ms`,
@@ -80,26 +82,15 @@ const ImageToDisease = () => {
           confidence: Math.round(pred.confidence * 100)
         })),
         aiDescription: data.gemini_description || 'AI analysis not available',
-        symptoms: data.gemini_description ? 
-          extractSectionFromDescription(data.gemini_description, 'symptoms') : 
-          ['Detailed analysis available in AI description'],
-        treatment: data.gemini_description ? 
-          extractSectionFromDescription(data.gemini_description, 'treatment') : 
-          ['Detailed treatment plan available in AI description'],
-        prevention: data.gemini_description ? 
-          extractSectionFromDescription(data.gemini_description, 'prevention') : 
-          ['Detailed prevention measures available in AI description'],
-        recommendations: data.gemini_description ? 
-          extractSectionFromDescription(data.gemini_description, 'recommendations') : 
-          ['Detailed recommendations available in AI description'],
-        additionalInfo: data.gemini_description ? 
-          extractSectionFromDescription(data.gemini_description, 'additional') : 
-          ['Additional information available in AI description'],
-        economicImpact: data.gemini_description ? 
-          extractSectionFromDescription(data.gemini_description, 'economic')[0] || 
-          'Economic impact analysis available in AI description' : 
-          'Economic impact analysis available in AI description'
+        symptoms: ['Analysis from API: ' + data.top_prediction.label],
+        treatment: ['Treatment for: ' + data.top_prediction.label],
+        prevention: ['Prevention for: ' + data.top_prediction.label],
+        recommendations: ['Recommendations for: ' + data.top_prediction.label],
+        additionalInfo: ['Additional info: Confidence ' + Math.round(data.top_prediction.confidence * 100) + '%'],
+        economicImpact: 'Economic impact from API analysis'
       };
+
+      console.log('Transformed Results:', transformedResults); // Debug log
 
       setDiseaseResults(transformedResults);
       setShowResults(true);
@@ -234,24 +225,6 @@ const ImageToDisease = () => {
                 <p>{error}</p>
               </div>
             )}
-          </div>
-
-          <div className="info-cards">
-            <div className="info-card">
-              <div className="info-icon">🔬</div>
-              <h3>{t('imageToDisease.accurateAnalysis')}</h3>
-              <p>{t('imageToDisease.accurateAnalysisDesc')}</p>
-            </div>
-            <div className="info-card">
-              <div className="info-icon">⚡</div>
-              <h3>{t('imageToDisease.fastResults')}</h3>
-              <p>{t('imageToDisease.fastResultsDesc')}</p>
-            </div>
-            <div className="info-card">
-              <div className="info-icon">🌱</div>
-              <h3>{t('imageToDisease.expertAdvice')}</h3>
-              <p>{t('imageToDisease.expertAdviceDesc')}</p>
-            </div>
           </div>
         </div>
       ) : (
