@@ -86,6 +86,25 @@
   line-height: 1.6;
 }
 
+.error-message {
+  background: rgba(255, 68, 68, 0.1);
+  border: 1px solid #FF4444;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem auto 2rem;
+  max-width: 800px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #FF6666;
+  font-family: 'Inter', sans-serif;
+  backdrop-filter: blur(10px);
+}
+
+.error-icon {
+  font-size: 1.2rem;
+}
+
 .upload-section {
   max-width: 1200px;
   margin: 0 auto;
@@ -411,6 +430,109 @@
   font-size: 1.1rem;
   color: #FFFFFF;
   margin-top: 1rem;
+}
+
+.analysis-meta {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.analysis-meta p {
+  font-family: 'Inter', sans-serif;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+}
+
+.predictions-card, .ai-description-card {
+  background: rgba(18, 18, 18, 0.95);
+  border: 1px solid #064E3B;
+  border-radius: 16px;
+  padding: 2rem;
+  margin: 1.5rem 0;
+  backdrop-filter: blur(20px);
+}
+
+.predictions-card h4, .ai-description-card h4 {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.5rem;
+  color: #00FF7F;
+  margin: 0 0 1.5rem;
+  font-weight: 600;
+}
+
+.predictions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.prediction-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background: rgba(6, 78, 59, 0.1);
+  border: 1px solid rgba(6, 78, 59, 0.3);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.prediction-item:hover {
+  background: rgba(6, 78, 59, 0.2);
+  border-color: #00FF7F;
+}
+
+.prediction-rank {
+  background: linear-gradient(135deg, #00FF7F 0%, #064E3B 100%);
+  color: #000000;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  min-width: 40px;
+  text-align: center;
+}
+
+.prediction-label {
+  font-family: 'Inter', sans-serif;
+  color: #FFFFFF;
+  font-weight: 500;
+  flex: 1;
+  margin: 0 1rem;
+}
+
+.prediction-confidence {
+  font-family: 'Orbitron', monospace;
+  color: #00FF7F;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.ai-description-card {
+  border-color: #FF6B35;
+}
+
+.ai-description-card h4 {
+  color: #FF6B35;
+}
+
+.description-content {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 107, 53, 0.2);
+}
+
+.description-text {
+  font-family: 'Inter', sans-serif;
+  color: #FFFFFF;
+  line-height: 1.7;
+  margin: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-size: 1rem;
 }
 
 .details-grid {

@@ -1,56 +1,36 @@
-import React, { useState } from 'react';
-import './ImageToDisease.css';
-import { useTranslation } from 'react-i18next';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import './ImageToDisease.css';
 
 const ImageToDisease = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const fileInputRef = useRef(null);
+  
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [diseaseResults, setDiseaseResults] = useState(null);
-
-  // Static disease data for demonstration
-  const staticDiseaseData = {
-    diseaseName: "Late Blight",
-    scientificName: "Phytophthora infestans",
-    severity: "High",
-    confidence: "92%",
-    affectedCrop: "Tomato",
-    symptoms: [
-      "Dark brown to black lesions on leaves",
-      "White fungal growth on leaf undersides",
-      "Rapid spreading during humid conditions",
-      "Fruit rot with dark patches"
-    ],
-    causes: [
-      "High humidity (>80%)",
-      "Cool temperatures (15-20°C)",
-      "Poor air circulation",
-      "Overhead watering"
-    ],
-    treatment: [
-      "Apply copper-based fungicides",
-      "Remove affected plant parts immediately",
-      "Improve air circulation",
-      "Avoid overhead watering",
-      "Use resistant varieties"
-    ],
-    prevention: [
-      "Ensure proper plant spacing",
-      "Water at soil level",
-      "Regular monitoring",
-      "Crop rotation",
-      "Remove plant debris"
-    ],
-    economicImpact: "Can cause 50-100% crop loss if untreated"
-  };
+  const [error, setError] = useState('');
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        setError(t('imageToDisease.invalidFileType'));
+        return;
+      }
+      
+      // Validate file size (max 10MB)
+      if (file.size > 10 * 1024 * 1024) {
+        setError(t('imageToDisease.fileTooLarge'));
+        return;
+      }
+
+      setError('');
       setSelectedImage(file);
       
       // Create preview
@@ -62,21 +42,95 @@ const ImageToDisease = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleAnalyze = async () => {
     if (!selectedImage) {
-      alert(t('imageToDisease.noImageSelected'));
+      setError(t('imageToDisease.pleaseSelectImage'));
       return;
     }
 
     setIsAnalyzing(true);
-    
-    // Simulate API call with static data
-    setTimeout(() => {
-      setDiseaseResults(staticDiseaseData);
-      setIsAnalyzing(false);
+    setError('');
+
+    try {
+      const formData = new FormData();
+      formData.append('file', selectedImage);
+
+      const response = await fetch('http://localhost:8000/analyze-disease', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      // Transform API response to match UI expectations
+      const transformedResults = {
+        diseaseName: data.top_prediction.label,
+        scientificName: data.top_prediction.label, // API doesn't provide separate scientific name
+        confidence: Math.round(data.top_prediction.confidence * 100),
+        affectedCrop: 'Cassava', // Based on model training
+        severity: data.top_prediction.confidence > 0.8 ? 'High' : 
+                 data.top_prediction.confidence > 0.5 ? 'Medium' : 'Low',
+        processingTime: `${(data.processing_time * 1000).toFixed(0)}ms`,
+        predictions: data.all_predictions.map(pred => ({
+          label: pred.label,
+          confidence: Math.round(pred.confidence * 100)
+        })),
+        aiDescription: data.gemini_description || 'AI analysis not available',
+        symptoms: data.gemini_description ? 
+          extractSectionFromDescription(data.gemini_description, 'symptoms') : 
+          ['Detailed analysis available in AI description'],
+        treatment: data.gemini_description ? 
+          extractSectionFromDescription(data.gemini_description, 'treatment') : 
+          ['Detailed treatment plan available in AI description'],
+        prevention: data.gemini_description ? 
+          extractSectionFromDescription(data.gemini_description, 'prevention') : 
+          ['Detailed prevention measures available in AI description'],
+        recommendations: data.gemini_description ? 
+          extractSectionFromDescription(data.gemini_description, 'recommendations') : 
+          ['Detailed recommendations available in AI description'],
+        additionalInfo: data.gemini_description ? 
+          extractSectionFromDescription(data.gemini_description, 'additional') : 
+          ['Additional information available in AI description'],
+        economicImpact: data.gemini_description ? 
+          extractSectionFromDescription(data.gemini_description, 'economic')[0] || 
+          'Economic impact analysis available in AI description' : 
+          'Economic impact analysis available in AI description'
+      };
+
+      setDiseaseResults(transformedResults);
       setShowResults(true);
-    }, 3000);
+    } catch (error) {
+      console.error('Analysis error:', error);
+      setError(t('imageToDisease.analysisError') + ': ' + error.message);
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
+
+  // Helper function to extract sections from Gemini description
+  const extractSectionFromDescription = (description, section) => {
+    const lines = description.split('\n').filter(line => line.trim());
+    const sectionKeywords = {
+      symptoms: ['symptom', 'sign', 'appear', 'visible'],
+      treatment: ['treatment', 'control', 'manage', 'spray', 'apply'],
+      prevention: ['prevent', 'avoid', 'practice', 'hygiene', 'sanitation'],
+      recommendations: ['recommend', 'suggest', 'should', 'advice'],
+      additional: ['note', 'important', 'consider', 'remember'],
+      economic: ['economic', 'loss', 'yield', 'impact', 'cost']
+    };
+
+    const keywords = sectionKeywords[section] || [];
+    const relevantLines = lines.filter(line => 
+      keywords.some(keyword => 
+        line.toLowerCase().includes(keyword)
+      )
+    );
+
+    return relevantLines.length > 0 ? relevantLines : [description.substring(0, 100) + '...'];
   };
 
   const handleReset = () => {
@@ -84,15 +138,16 @@ const ImageToDisease = () => {
     setImagePreview(null);
     setShowResults(false);
     setDiseaseResults(null);
+    setError('');
     setIsAnalyzing(false);
   };
 
   const getSeverityColor = (severity) => {
-    switch(severity.toLowerCase()) {
+    switch (severity?.toLowerCase()) {
       case 'high': return '#FF4444';
       case 'medium': return '#FF8800';
       case 'low': return '#44AA44';
-      default: return '#666666';
+      default: return '#888888';
     }
   };
 
@@ -142,24 +197,24 @@ const ImageToDisease = () => {
 
             <input
               type="file"
-              id="image-upload"
-              accept="image/*"
+              ref={fileInputRef}
               onChange={handleImageUpload}
-              className="file-input"
+              accept="image/*"
+              style={{ display: 'none' }}
             />
-            
+
             <div className="upload-actions">
-              <label htmlFor="image-upload" className="upload-btn">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 16V4M12 4L8 8M12 4L16 8M4 17V19C4 19.5523 4.44772 20 5 20H19C19.5523 20 20 19.5523 20 19V17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                {t('imageToDisease.chooseImage')}
-              </label>
+              <button 
+                className="upload-btn" 
+                onClick={() => fileInputRef.current?.click()}
+              >
+                {t('imageToDisease.chooseFile')}
+              </button>
               
               {selectedImage && (
                 <button 
-                  className="analyze-btn"
-                  onClick={handleSubmit}
+                  className="analyze-btn" 
+                  onClick={handleAnalyze}
                   disabled={isAnalyzing}
                 >
                   {isAnalyzing ? (
@@ -168,36 +223,34 @@ const ImageToDisease = () => {
                       {t('imageToDisease.analyzing')}
                     </>
                   ) : (
-                    <>
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M15.5 14H20L22 16L20 18H15.5C15.0858 18 14.6667 17.8334 14.3333 17.5L11 14.5C10.3333 14 9.66667 14 9 14.5L6.66667 16.5C6.33333 16.8334 5.91421 17 5.5 17H2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                        <circle cx="3" cy="3" r="1" fill="currentColor"/>
-                        <circle cx="6" cy="6" r="1" fill="currentColor"/>
-                        <circle cx="12" cy="4" r="1" fill="currentColor"/>
-                      </svg>
-                      {t('imageToDisease.analyzeImage')}
-                    </>
+                    t('imageToDisease.analyze')
                   )}
                 </button>
               )}
             </div>
+
+            {error && (
+              <div className="error-message">
+                <p>{error}</p>
+              </div>
+            )}
           </div>
 
           <div className="info-cards">
             <div className="info-card">
-              <div className="info-icon">🔍</div>
-              <h3>{t('imageToDisease.howItWorks')}</h3>
-              <p>{t('imageToDisease.howItWorksDesc')}</p>
-            </div>
-            <div className="info-card">
-              <div className="info-icon">🎯</div>
-              <h3>{t('imageToDisease.accuracy')}</h3>
-              <p>{t('imageToDisease.accuracyDesc')}</p>
+              <div className="info-icon">🔬</div>
+              <h3>{t('imageToDisease.accurateAnalysis')}</h3>
+              <p>{t('imageToDisease.accurateAnalysisDesc')}</p>
             </div>
             <div className="info-card">
               <div className="info-icon">⚡</div>
               <h3>{t('imageToDisease.fastResults')}</h3>
               <p>{t('imageToDisease.fastResultsDesc')}</p>
+            </div>
+            <div className="info-card">
+              <div className="info-icon">🌱</div>
+              <h3>{t('imageToDisease.expertAdvice')}</h3>
+              <p>{t('imageToDisease.expertAdviceDesc')}</p>
             </div>
           </div>
         </div>
@@ -206,14 +259,18 @@ const ImageToDisease = () => {
           <div className="results-header">
             <h2>{t('imageToDisease.analysisResults')}</h2>
             <button className="new-analysis-btn" onClick={handleReset}>
-              {t('imageToDisease.analyzeNew')}
+              {t('imageToDisease.newAnalysis')}
             </button>
           </div>
 
           <div className="results-content">
             <div className="image-result-card">
-              <h3>{t('imageToDisease.uploadedImage')}</h3>
-              <img src={imagePreview} alt="Analyzed" className="analyzed-image" />
+              <h3>{t('imageToDisease.analyzedImage')}</h3>
+              <img 
+                src={imagePreview} 
+                alt="Analyzed crop" 
+                className="analyzed-image"
+              />
             </div>
 
             <div className="disease-info-card">
@@ -221,86 +278,120 @@ const ImageToDisease = () => {
                 <h3>{diseaseResults.diseaseName}</h3>
                 <div className="disease-meta">
                   <span className="scientific-name">{diseaseResults.scientificName}</span>
-                  <div className="severity-badge" style={{backgroundColor: getSeverityColor(diseaseResults.severity)}}>
-                    {diseaseResults.severity} {t('imageToDisease.severity')}
-                  </div>
-                  <div className="confidence-badge">
-                    {diseaseResults.confidence} {t('imageToDisease.confidence')}
-                  </div>
+                  <span className="confidence-badge">
+                    {t('imageToDisease.confidence')}: {diseaseResults.confidence}%
+                  </span>
                 </div>
+                <p className="affected-crop">
+                  {t('imageToDisease.affectedCrop')}: {diseaseResults.affectedCrop}
+                </p>
               </div>
 
-              <div className="affected-crop">
-                <strong>{t('imageToDisease.affectedCrop')}:</strong> {diseaseResults.affectedCrop}
-              </div>
-            </div>
-
-            <div className="details-grid">
-              <div className="detail-card symptoms">
-                <h4>🔴 {t('imageToDisease.symptoms')}</h4>
-                <ul>
-                  {diseaseResults.symptoms.map((symptom, index) => (
-                    <li key={index}>{symptom}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="detail-card causes">
-                <h4>⚠️ {t('imageToDisease.causes')}</h4>
-                <ul>
-                  {diseaseResults.causes.map((cause, index) => (
-                    <li key={index}>{cause}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="detail-card treatment">
-                <h4>💊 {t('imageToDisease.treatment')}</h4>
-                <ul>
-                  {diseaseResults.treatment.map((treatment, index) => (
-                    <li key={index}>{treatment}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="detail-card prevention">
-                <h4>🛡️ {t('imageToDisease.prevention')}</h4>
-                <ul>
-                  {diseaseResults.prevention.map((prevention, index) => (
-                    <li key={index}>{prevention}</li>
-                  ))}
-                </ul>
+              <div className="analysis-meta">
+                <p>{t('imageToDisease.analysisDate')}: {new Date().toLocaleDateString()}</p>
+                <p>{t('imageToDisease.processingTime')}: {diseaseResults.processingTime}</p>
               </div>
             </div>
+          </div>
 
-            <div className="economic-impact-card">
-              <h4>💰 {t('imageToDisease.economicImpact')}</h4>
-              <p>{diseaseResults.economicImpact}</p>
+          {diseaseResults.predictions && (
+            <div className="predictions-card">
+              <h4>🎯 {t('imageToDisease.topPredictions')}</h4>
+              <div className="predictions-list">
+                {diseaseResults.predictions.map((prediction, index) => (
+                  <div key={index} className="prediction-item">
+                    <span className="prediction-rank">#{index + 1}</span>
+                    <span className="prediction-label">{prediction.label}</span>
+                    <span className="prediction-confidence">{prediction.confidence}%</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {diseaseResults.aiDescription && (
+            <div className="ai-description-card">
+              <h4>🤖 {t('imageToDisease.aiAnalysis')}</h4>
+              <div className="description-content">
+                <p className="description-text">{diseaseResults.aiDescription}</p>
+              </div>
+            </div>
+          )}
+
+          <div className="details-grid">
+            <div className="detail-card">
+              <h4>🔍 {t('imageToDisease.symptoms')}</h4>
+              <ul>
+                {diseaseResults.symptoms?.map((symptom, index) => (
+                  <li key={index}>{symptom}</li>
+                ))}
+              </ul>
             </div>
 
-            <div className="action-buttons">
-              <button className="action-btn primary" onClick={handleReset}>
-                {t('imageToDisease.analyzeAnother')}
-              </button>
-              <button className="action-btn secondary" onClick={() => window.print()}>
-                {t('common.print')}
-              </button>
-              <button 
-                className="action-btn secondary"
-                onClick={() => {
-                  const data = JSON.stringify(diseaseResults, null, 2);
-                  const blob = new Blob([data], { type: 'application/json' });
-                  const url = URL.createObjectURL(blob);
-                  const a = document.createElement('a');
-                  a.href = url;
-                  a.download = `disease_analysis_${Date.now()}.json`;
-                  a.click();
-                  URL.revokeObjectURL(url);
-                }}
-              >
-                {t('common.download')}
-              </button>
+            <div className="detail-card">
+              <h4>🛡️ {t('imageToDisease.treatment')}</h4>
+              <ul>
+                {diseaseResults.treatment?.map((treatment, index) => (
+                  <li key={index}>{treatment}</li>
+                ))}
+              </ul>
             </div>
+
+            <div className="detail-card">
+              <h4>🚫 {t('imageToDisease.prevention')}</h4>
+              <ul>
+                {diseaseResults.prevention?.map((prevention, index) => (
+                  <li key={index}>{prevention}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="detail-card">
+              <h4>🌿 {t('imageToDisease.recommendations')}</h4>
+              <ul>
+                {diseaseResults.recommendations?.map((recommendation, index) => (
+                  <li key={index}>{recommendation}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <div className="detail-card">
+            <h4>📚 {t('imageToDisease.additionalInfo')}</h4>
+            <ul>
+              {diseaseResults.additionalInfo?.map((info, index) => (
+                <li key={index}>{info}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="economic-impact-card">
+            <h4>💰 {t('imageToDisease.economicImpact')}</h4>
+            <p>{diseaseResults.economicImpact}</p>
+          </div>
+
+          <div className="action-buttons">
+            <button className="action-btn primary" onClick={handleReset}>
+              {t('imageToDisease.analyzeAnother')}
+            </button>
+            <button className="action-btn secondary" onClick={() => window.print()}>
+              {t('common.print')}
+            </button>
+            <button 
+              className="action-btn secondary"
+              onClick={() => {
+                const data = JSON.stringify(diseaseResults, null, 2);
+                const blob = new Blob([data], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `disease_analysis_${Date.now()}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+              }}
+            >
+              {t('common.download')}
+            </button>
           </div>
         </div>
       )}
