@@ -26,28 +26,24 @@ const Navbar = ({ currentPage, onNavigateToHome, onNavigateToPredict, onNavigate
             className={`nav-item ${currentPage === 'home' ? 'active' : ''}`}
             onClick={() => handleNavClick(onNavigateToHome)}
           >
-            <i className="nav-icon-home"></i>
             Home
           </div>
           <div 
             className={`nav-item ${currentPage === 'predict' ? 'active' : ''}`}
             onClick={() => handleNavClick(onNavigateToPredict)}
           >
-            <i className="nav-icon-disease"></i>
             Disease Prediction
           </div>
           <div 
             className={`nav-item ${currentPage === 'fertilizer' ? 'active' : ''}`}
             onClick={() => handleNavClick(onNavigateToFertilizer)}
           >
-            <i className="nav-icon-fertilizer"></i>
             Fertilizer
           </div>
           <div 
             className={`nav-item ${currentPage === 'about' ? 'active' : ''}`}
             onClick={() => handleNavClick(onNavigateToAbout)}
           >
-            <i className="nav-icon-about"></i>
             About
           </div>
         </div>
