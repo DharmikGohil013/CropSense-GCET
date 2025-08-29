@@ -1,29 +1,35 @@
 import React, { useState } from 'react';
 import './Navbar.css';
-import logo from '../../public/logo.svg';
 
-<<<<<<< Updated upstream
 const Navbar = ({ currentPage, onNavigateToHome, onNavigateToPredict, onNavigateToFertilizer, onNavigateToAbout }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-=======
-const Navbar = ({ currentPage, onNavigateToHome, onNavigateToPredict, onNavigateToAbout }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
+    setIsMenuOpen(!isMenuOpen);
   };
 
-  const handleNavigation = (navFunction) => {
-    navFunction();
-    setMenuOpen(false);
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
+  const handleNavigation = (page, handler) => {
+    handler();
+    closeMenu();
   };
 
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        <div className="navbar-logo" onClick={() => handleNavigation(onNavigateToHome)}>
-          <img src={logo} alt="CropSense Logo" />
-          <span>CropSense</span>
+        <div className="navbar-brand" onClick={() => handleNavigation('home', onNavigateToHome)}>
+          <img 
+            src="/logo.svg" 
+            alt="CropSense AI Logo" 
+            className="navbar-logo"
+            onError={(e) => {
+              e.target.style.display = 'none';
+            }}
+          />
+          <span className="navbar-title">CropSense AI</span>
         </div>
         <div className={`navbar-menu ${isMenuOpen ? 'active' : ''}`}>
           <ul className="navbar-nav">
