@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <!-- Background Circle -->
+  <circle cx="50" cy="50" r="48" fill="#4a7c59" stroke="#2c5530" stroke-width="2"/>
+  
+  <!-- Leaf Shape -->
+  <path d="M30 60 Q35 35 50 40 Q65 35 70 60 Q65 75 50 70 Q35 75 30 60 Z" fill="#7fb069" stroke="#2c5530" stroke-width="1"/>
+  
+  <!-- Leaf Vein -->
+  <path d="M50 40 L50 70" stroke="#2c5530" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M50 45 Q42 50 45 55" stroke="#2c5530" stroke-width="1" stroke-linecap="round" fill="none"/>
+  <path d="M50 45 Q58 50 55 55" stroke="#2c5530" stroke-width="1" stroke-linecap="round" fill="none"/>
+  
+  <!-- AI Circuit Pattern -->
+  <circle cx="35" cy="25" r="2" fill="#ffffff"/>
+  <circle cx="45" cy="20" r="1.5" fill="#ffffff"/>
+  <circle cx="55" cy="20" r="1.5" fill="#ffffff"/>
+  <circle cx="65" cy="25" r="2" fill="#ffffff"/>
+  
+  <!-- Connecting lines for AI circuit -->
+  <path d="M35 25 L45 20 M45 20 L55 20 M55 20 L65 25" stroke="#ffffff" stroke-width="1" opacity="0.8"/>
+  
+  <!-- Bottom text area indicator -->
+  <rect x="25" y="80" width="50" height="8" rx="4" fill="#ffffff" opacity="0.3"/>
+</svg>

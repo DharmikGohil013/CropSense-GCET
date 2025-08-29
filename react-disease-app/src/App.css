@@ -7,9 +7,17 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
+  background-color: #f8f9fa;
 }
 
 .App {
   width: 100%;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Ensure main content doesn't overlap with fixed navbar */
+.App > *:not(nav) {
+  flex: 1;
 }
