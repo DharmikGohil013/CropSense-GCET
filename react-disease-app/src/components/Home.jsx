@@ -4,32 +4,32 @@ import './Home.css';
 const Home = ({ onNavigateToPredict }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   
-  // Crop data for carousel
+  // Crop data for carousel - Real disease images
   const cropData = [
     {
-      name: "Tomato",
-      image: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop",
-      diseases: "Blight, Leaf Spot, Mosaic Virus"
+      name: "Rice",
+      image: "/images/diseases/r.jpg",
+      diseases: "Blast Disease Detected"
     },
     {
       name: "Corn",
-      image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=300&fit=crop",
-      diseases: "Rust, Smut, Leaf Blight"
+      image: "/images/diseases/corn-smut.jpg",
+      diseases: "Smut Disease Detected"
     },
     {
-      name: "Wheat",
-      image: "https://images.unsplash.com/photo-1518843875459-f738682238a6?w=400&h=300&fit=crop",
-      diseases: "Rust, Powdery Mildew, Fusarium"
+      name: "Corn",
+      image: "/images/diseases/corn-rust.jpg",
+      diseases: "Rust Disease Detected"
     },
     {
-      name: "Rice",
-      image: "https://images.unsplash.com/photo-1586771107445-d3ca888129ff?w=400&h=300&fit=crop",
-      diseases: "Blast, Bacterial Blight, Sheath Rot"
+      name: "Strawberry",
+      image: "/images/diseases/strawberry-leaf-scorch.jpg",
+      diseases: "Leaf Scorch Detected"
     },
     {
       name: "Potato",
-      image: "https://images.unsplash.com/photo-1592921870789-04563d55041c?w=400&h=300&fit=crop",
-      diseases: "Late Blight, Early Blight, Scab"
+      image: "/images/diseases/potato-scab.jpg",
+      diseases: "Scab Disease Detected"
     }
   ];
   
@@ -86,7 +86,7 @@ const Home = ({ onNavigateToPredict }) => {
                       className={`crop-slide ${index === currentSlide ? 'active' : ''}`}
                     >
                       <div className="crop-image">
-                        <img src={crop.image} alt={`${crop.name} Plant`} />
+                        <img src={crop.image} alt={`${crop.name} Disease - ${crop.diseases}`} />
                       </div>
                       <div className="crop-info">
                         <h3 className="crop-name">{crop.name}</h3>
