@@ -29,16 +29,16 @@ const Home = ({ onNavigateToPredict }) => {
               <svg viewBox="0 0 200 200" className="hero-svg">
                 <defs>
                   <linearGradient id="leafGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#7fb069" />
-                    <stop offset="100%" stopColor="#4a7c59" />
+                    <stop offset="0%" stopColor="#00b1d2" />
+                    <stop offset="100%" stopColor="#00639b" />
                   </linearGradient>
                 </defs>
                 <circle cx="100" cy="100" r="95" fill="url(#leafGradient)" opacity="0.1" />
                 <path d="M60 120 Q70 70 100 80 Q130 70 140 120 Q130 150 100 140 Q70 150 60 120 Z" 
                       fill="url(#leafGradient)" />
-                <path d="M100 80 L100 140" stroke="#2c5530" strokeWidth="2" />
-                <path d="M100 90 Q85 100 90 110" stroke="#2c5530" strokeWidth="1" fill="none" />
-                <path d="M100 90 Q115 100 110 110" stroke="#2c5530" strokeWidth="1" fill="none" />
+                <path d="M100 80 L100 140" stroke="#001f3d" strokeWidth="2" />
+                <path d="M100 90 Q85 100 90 110" stroke="#001f3d" strokeWidth="1" fill="none" />
+                <path d="M100 90 Q115 100 110 110" stroke="#001f3d" strokeWidth="1" fill="none" />
                 <circle cx="70" cy="50" r="3" fill="#ffffff" />
                 <circle cx="85" cy="40" r="2" fill="#ffffff" />
                 <circle cx="115" cy="40" r="2" fill="#ffffff" />

@@ -13,7 +13,8 @@ html, body {
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
-  background-color: #f8f9fa;
+  background-color: #b3e2f0;
+  color: #001f3d;
 }
 
 #root {
@@ -27,6 +28,7 @@ body {
   display: flex;
   flex-direction: column;
   position: relative;
+  background-color: #b3e2f0;
 }
 
 .main-content {
