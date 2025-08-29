@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Navbar.css';
 
-const Navbar = ({ currentPage, onNavigateToHome, onNavigateToPredict, onNavigateToAbout }) => {
+const Navbar = ({ currentPage, onNavigateToHome, onNavigateToPredict, onNavigateToFertilizer, onNavigateToAbout }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -47,6 +47,14 @@ const Navbar = ({ currentPage, onNavigateToHome, onNavigateToPredict, onNavigate
                 onClick={() => handleNavigation('predict', onNavigateToPredict)}
               >
                 Disease Prediction
+              </button>
+            </li>
+            <li className="nav-item">
+              <button 
+                className={`nav-link ${currentPage === 'fertilizer' ? 'active' : ''}`}
+                onClick={() => handleNavigation('fertilizer', onNavigateToFertilizer)}
+              >
+                Fertilizer Prediction
               </button>
             </li>
             <li className="nav-item">
