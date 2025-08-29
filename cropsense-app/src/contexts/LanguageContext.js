@@ -13,29 +13,12 @@ export const useLanguage = () => {
 
 export const LanguageProvider = ({ children }) => {
   const { i18n } = useTranslation();
-  const [currentLanguage, setCurrentLanguage] = useState('en');
+  const [currentLanguage, setCurrentLanguage] = useState(i18n.language || 'en');
 
   const languages = useMemo(() => [
     { code: 'en', name: 'English', native: 'English' },
     { code: 'hi', name: 'Hindi', native: 'हिन्दी' },
-    { code: 'gu', name: 'Gujarati', native: 'ગુજરાતી' },
-    { code: 'es', name: 'Spanish', native: 'Español' },
-    { code: 'fr', name: 'French', native: 'Français' },
-    { code: 'de', name: 'German', native: 'Deutsch' },
-    { code: 'zh', name: 'Chinese', native: '中文' },
-    { code: 'ta', name: 'Tamil', native: 'தமிழ்' },
-    { code: 'te', name: 'Telugu', native: 'తెలుగు' },
-    { code: 'kn', name: 'Kannada', native: 'ಕನ್ನಡ' },
-    { code: 'ml', name: 'Malayalam', native: 'മലയാളം' },
-    { code: 'pa', name: 'Punjabi', native: 'ਪੰਜਾਬੀ' },
-    { code: 'bn', name: 'Bengali', native: 'বাংলা' },
-    { code: 'mr', name: 'Marathi', native: 'मराठी' },
-    { code: 'or', name: 'Odia', native: 'ଓଡ଼ିଆ' },
-    { code: 'as', name: 'Assamese', native: 'অসমীয়া' },
-    { code: 'ur', name: 'Urdu', native: 'اردو' },
-    { code: 'sa', name: 'Sanskrit', native: 'संस्कृतम्' },
-    { code: 'ne', name: 'Nepali', native: 'नेपाली' },
-    { code: 'si', name: 'Sinhala', native: 'සිංහල' }
+    { code: 'gu', name: 'Gujarati', native: 'ગુજરાતી' }
   ], []);
 
   useEffect(() => {
@@ -43,13 +26,31 @@ export const LanguageProvider = ({ children }) => {
     if (savedLanguage && languages.find(lang => lang.code === savedLanguage)) {
       setCurrentLanguage(savedLanguage);
       i18n.changeLanguage(savedLanguage);
+    } else {
+      // Set to current i18n language if no saved language
+      setCurrentLanguage(i18n.language);
     }
+
+    // Listen for language changes from i18next
+    const handleLanguageChange = (lng) => {
+      setCurrentLanguage(lng);
+    };
+
+    i18n.on('languageChanged', handleLanguageChange);
+
+    return () => {
+      i18n.off('languageChanged', handleLanguageChange);
+    };
   }, [i18n, languages]);
 
-  const changeLanguage = (languageCode) => {
-    setCurrentLanguage(languageCode);
-    i18n.changeLanguage(languageCode);
-    localStorage.setItem('cropsense-language', languageCode);
+  const changeLanguage = async (languageCode) => {
+    try {
+      setCurrentLanguage(languageCode);
+      await i18n.changeLanguage(languageCode);
+      localStorage.setItem('cropsense-language', languageCode);
+    } catch (error) {
+      console.error('Error changing language:', error);
+    }
   };
 
   const getCurrentLanguage = () => {

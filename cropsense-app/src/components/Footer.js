@@ -25,8 +25,7 @@ const Footer = () => {
             <ul>
               <li><Link to="/">{t('footer.home')}</Link></li>
               <li><Link to="/about">{t('footer.about')}</Link></li>
-              <li><a href="#generate">{t('navbar.generate')}</a></li>
-              <li><a href="#diseases">{t('navbar.diseases')}</a></li>
+              <li><Link to="/image-to-disease">{t('navbar.diseaseImage')}</Link></li>
             </ul>
           </div>
           <div className="footer-col">

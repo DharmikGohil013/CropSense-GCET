@@ -50,26 +50,11 @@ const Navbar = () => {
           <li className="nav-item">
             <Link to="/" className="nav-trigger overview-link">{t('navbar.overview')}</Link>
           </li>
-          <li className="nav-item dropdown">
-            <span className="nav-trigger">{t('navbar.diseases')}</span>
-            <div className="dropdown-panel">
-              <div className="dropdown-group">
-                <span className="dropdown-label">{t('navbar.diseases')}</span>
-                <Link to="/disease-info">{t('navbar.diseaseInfo')}</Link>
-                <Link to="/image-to-disease">{t('navbar.diseaseImage')}</Link>
-              </div>
-            </div>
+          <li className="nav-item">
+            <Link to="/info-to-disease" className="nav-trigger">{t('navbar.diseaseInfo')}</Link>
           </li>
-          <li className="nav-item dropdown">
-            <span className="nav-trigger">{t('navbar.financial')}</span>
-            <div className="dropdown-panel">
-              <div className="dropdown-group">
-                <span className="dropdown-label">{t('navbar.financial')}</span>
-                <a href="#yield">{t('navbar.yieldAnalytics')}</a>
-                <a href="#costs">{t('navbar.costInputs')}</a>
-                <a href="#market">{t('navbar.marketTrends')}</a>
-              </div>
-            </div>
+          <li className="nav-item">
+            <Link to="/image-to-disease" className="nav-trigger">{t('navbar.diseaseImage')}</Link>
           </li>
         </ul>
       </div>
@@ -79,6 +64,7 @@ const Navbar = () => {
           <img src={logo} alt="CropSense AI Logo" className="navbar-logo" />
           <span className="app-name">{t('navbar.brandName')}</span>
         </Link>
+
       </div>
     </nav>
   );
