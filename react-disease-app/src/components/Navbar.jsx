@@ -57,9 +57,6 @@ const Navbar = ({ currentPage, onNavigateToHome, onNavigateToPredict, onNavigate
                 About
               </button>
             </li>
-            <li className="nav-item">
-              <button className="nav-link" onClick={closeMenu}>Contact</button>
-            </li>
           </ul>
         </div>
         <div className={`navbar-toggle ${isMenuOpen ? 'active' : ''}`} onClick={toggleMenu}>
