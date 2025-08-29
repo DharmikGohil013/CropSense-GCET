@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Navbar.css';
 
-const Navbar = ({ currentPage, onNavigateToHome, onNavigateToPredict }) => {
+const Navbar = ({ currentPage, onNavigateToHome, onNavigateToPredict, onNavigateToAbout }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -50,7 +50,12 @@ const Navbar = ({ currentPage, onNavigateToHome, onNavigateToPredict }) => {
               </button>
             </li>
             <li className="nav-item">
-              <button className="nav-link" onClick={closeMenu}>About</button>
+              <button 
+                className={`nav-link ${currentPage === 'about' ? 'active' : ''}`}
+                onClick={() => handleNavigation('about', onNavigateToAbout)}
+              >
+                About
+              </button>
             </li>
             <li className="nav-item">
               <button className="nav-link" onClick={closeMenu}>Contact</button>
