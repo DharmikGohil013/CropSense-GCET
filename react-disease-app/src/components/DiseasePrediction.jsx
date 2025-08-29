@@ -36,6 +36,13 @@ const DiseasePrediction = () => {
     }, 2000);
   };
 
+  const resetForm = () => {
+    setSelectedFile(null);
+    setPreview(null);
+    setResult(null);
+    setLoading(false);
+  };
+
   return (
     <div className="predict-page">
       <div className="container">
@@ -82,6 +89,29 @@ const DiseasePrediction = () => {
             >
               {loading ? "Analyzing..." : "Predict Disease"}
             </button>
+            
+            {selectedFile && (
+              <button
+                type="button"
+                className="reset-button"
+                onClick={resetForm}
+                disabled={loading}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="reset-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                >
+                  <polyline points="1,4 1,10 7,10" />
+                  <path d="M3.51,15a9,9,0,0,0,2.13,3.09,9,9,0,0,0,13.4,0A9,9,0,0,0,21.49,9" />
+                  <polyline points="23,20 23,14 17,14" />
+                  <path d="M20.49,9A9,9,0,0,0,18.36,5.91,9,9,0,0,0,4.96,5.91,9,9,0,0,0,2.51,15" />
+                </svg>
+                Reset
+              </button>
+            )}
           </form>
         </div>
 
