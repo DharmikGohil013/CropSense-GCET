@@ -1,175 +1,103 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import './DiseasePrediction.css';
+import React, { useState } from "react"; 
+import "./DiseasePrediction.css";
 
 const DiseasePrediction = () => {
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
-  const [error, setError] = useState(null);
 
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
     if (file) {
-      setSelectedImage(file);
-      setError(null);
-      setResult(null);
-      
-      // Create preview
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setImagePreview(e.target.result);
-      };
-      reader.readAsDataURL(file);
+      setSelectedFile(file);
+      setPreview(URL.createObjectURL(file));
     }
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    
-    if (!selectedImage) {
-      setError('Please select an image first');
-      return;
-    }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!selectedFile) return;
 
     setLoading(true);
-    setError(null);
     setResult(null);
 
-    try {
-      const formData = new FormData();
-      formData.append('file', selectedImage);
-
-      // Make API call to your Python backend
-      const response = await axios.post('http://127.0.0.1:8000/predict', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
-      if (response.data) {
-        setResult(response.data);
-      } else {
-        setError('No prediction data received');
-      }
-    } catch (err) {
-      console.error('Prediction error:', err);
-      if (err.response) {
-        setError(`Error: ${err.response.data.detail || 'Server error'}`);
-      } else if (err.request) {
-        setError('Network error: Could not connect to the server. Make sure the Python API is running on port 8000.');
-      } else {
-        setError('An unexpected error occurred');
-      }
-    } finally {
+    // Mock API delay
+    setTimeout(() => {
       setLoading(false);
-    }
-  };
-
-  const handleReset = () => {
-    setSelectedImage(null);
-    setImagePreview(null);
-    setResult(null);
-    setError(null);
-    // Reset file input
-    const fileInput = document.getElementById('image-input');
-    if (fileInput) {
-      fileInput.value = '';
-    }
+      setResult({
+        crop: "Tomato",
+        disease: "Early Blight",
+        description:
+          "A common fungal disease causing brown spots on leaves. Can reduce yield significantly if untreated.",
+        recommendation:
+          "Use fungicide sprays, ensure proper crop rotation, and avoid overhead watering."
+      });
+    }, 2000);
   };
 
   return (
-    <div className="disease-prediction">
+    <div className="predict-page">
       <div className="container">
-        <h1 className="title">Disease Prediction</h1>
-        <p className="subtitle">Upload an image of a plant leaf to detect crop and disease information</p>
-        
-        <form onSubmit={handleSubmit} className="upload-form">
-          <div className="upload-section">
-            <div className="file-input-wrapper">
-              <input
-                type="file"
-                id="image-input"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="file-input"
-              />
-              <label htmlFor="image-input" className="file-input-label">
-                <svg className="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                  <polyline points="7,10 12,15 17,10" />
-                  <line x1="12" y1="15" x2="12" y2="3" />
-                </svg>
-                Choose Image
-              </label>
-            </div>
+        <h1 className="page-title">Crop Disease Predictor</h1>
 
-            {imagePreview && (
-              <div className="image-preview">
-                <img src={imagePreview} alt="Preview" className="preview-image" />
-              </div>
-            )}
-          </div>
+        {/* Subtitle text and upload box side by side */}
+        <div className="subtitle-upload">
+          <p className="page-subtitle">
+            Upload a clear image of your crop leaf to detect possible diseases.
+          </p>
 
-          <div className="action-buttons">
-            <button 
-              type="submit" 
-              disabled={!selectedImage || loading}
-              className="predict-button"
-            >
-              {loading ? (
-                <>
-                  <div className="spinner"></div>
-                  Analyzing...
-                </>
+          <form className="upload-box" onSubmit={handleSubmit}>
+            <label htmlFor="file-upload" className="upload-label">
+              {preview ? (
+                <img src={preview} alt="preview" className="preview-img" />
               ) : (
-                'Predict Disease'
+                <div className="placeholder">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="upload-icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                  >
+                    <path d="M12 16V4m0 0L8 8m4-4 4 4" />
+                    <rect x="3" y="16" width="18" height="4" rx="2" ry="2" />
+                  </svg>
+                  <p>Click to upload or drag & drop</p>
+                  <span className="hint">PNG, JPG up to 5MB</span>
+                </div>
               )}
+              <input
+                id="file-upload"
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                hidden
+              />
+            </label>
+            <button
+              type="submit"
+              className="predict-button"
+              disabled={!selectedFile || loading}
+            >
+              {loading ? "Analyzing..." : "Predict Disease"}
             </button>
-            
-            {(selectedImage || result || error) && (
-              <button 
-                type="button" 
-                onClick={handleReset}
-                className="reset-button"
-              >
-                Reset
-              </button>
-            )}
-          </div>
-        </form>
-
-        {error && (
-          <div className="error-message">
-            <svg className="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <circle cx="12" cy="12" r="10"/>
-              <line x1="15" y1="9" x2="9" y2="15"/>
-              <line x1="9" y1="9" x2="15" y2="15"/>
-            </svg>
-            {error}
-          </div>
-        )}
+          </form>
+        </div>
 
         {result && (
-          <div className="results-section">
-            <h2 className="results-title">Prediction Results</h2>
-            <div className="results-grid">
-              <div className="result-card crop-card">
-                <div className="result-label">Crop</div>
-                <div className="result-value">{result.crop || result[0] || 'Unknown'}</div>
-              </div>
-              <div className="result-card disease-card">
-                <div className="result-label">Disease</div>
-                <div className="result-value">{result.disease || result[1] || 'Unknown'}</div>
-              </div>
-            </div>
-            <div className="description-card">
-              <div className="result-label">Description</div>
-              <div className="result-description">
-                {result.description || result[2] || 'No description available'}
-              </div>
-            </div>
+          <div className="result-card">
+            <h2 className="result-title">Prediction Result</h2>
+            <p>
+              <strong>Crop:</strong> {result.crop}
+            </p>
+            <p>
+              <strong>Disease:</strong> {result.disease}
+            </p>
+            <p className="result-desc">{result.description}</p>
+            <p className="result-recommend">
+              <strong>Recommendation:</strong> {result.recommendation}
+            </p>
           </div>
         )}
       </div>
