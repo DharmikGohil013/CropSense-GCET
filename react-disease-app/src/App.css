@@ -29,6 +29,12 @@ body {
   position: relative;
 }
 
+.main-content {
+  flex: 1;
+  width: 100%;
+  overflow-x: hidden;
+}
+
 /* Ensure main content takes full remaining space */
 .App > *:not(nav) {
   flex: 1;

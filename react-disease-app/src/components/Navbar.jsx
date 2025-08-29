@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Navbar.css';
 
-const Navbar = () => {
+const Navbar = ({ currentPage, onNavigateToHome, onNavigateToPredict }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -12,10 +12,15 @@ const Navbar = () => {
     setIsMenuOpen(false);
   };
 
+  const handleNavigation = (page, handler) => {
+    handler();
+    closeMenu();
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        <div className="navbar-brand">
+        <div className="navbar-brand" onClick={() => handleNavigation('home', onNavigateToHome)}>
           <img 
             src="/logo.svg" 
             alt="CropSense AI Logo" 
@@ -29,16 +34,26 @@ const Navbar = () => {
         <div className={`navbar-menu ${isMenuOpen ? 'active' : ''}`}>
           <ul className="navbar-nav">
             <li className="nav-item">
-              <a href="#home" className="nav-link" onClick={closeMenu}>Home</a>
+              <button 
+                className={`nav-link ${currentPage === 'home' ? 'active' : ''}`}
+                onClick={() => handleNavigation('home', onNavigateToHome)}
+              >
+                Home
+              </button>
             </li>
             <li className="nav-item">
-              <a href="#predict" className="nav-link" onClick={closeMenu}>Disease Prediction</a>
+              <button 
+                className={`nav-link ${currentPage === 'predict' ? 'active' : ''}`}
+                onClick={() => handleNavigation('predict', onNavigateToPredict)}
+              >
+                Disease Prediction
+              </button>
             </li>
             <li className="nav-item">
-              <a href="#about" className="nav-link" onClick={closeMenu}>About</a>
+              <button className="nav-link" onClick={closeMenu}>About</button>
             </li>
             <li className="nav-item">
-              <a href="#contact" className="nav-link" onClick={closeMenu}>Contact</a>
+              <button className="nav-link" onClick={closeMenu}>Contact</button>
             </li>
           </ul>
         </div>

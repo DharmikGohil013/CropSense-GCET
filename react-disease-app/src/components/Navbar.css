@@ -5,28 +5,35 @@
   position: sticky;
   top: 0;
   z-index: 1000;
-  width: 100%;
+  width: 100vw;
 }
 
 .navbar-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 clamp(15px, 3vw, 20px);
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 70px;
+  width: 100%;
 }
 
 .navbar-brand {
   display: flex;
   align-items: center;
   gap: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.navbar-brand:hover {
+  transform: translateY(-1px);
 }
 
 .navbar-logo {
-  height: 40px;
-  width: 40px;
+  height: clamp(30px, 6vw, 40px);
+  width: clamp(30px, 6vw, 40px);
   object-fit: contain;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.1);
@@ -34,7 +41,7 @@
 }
 
 .navbar-title {
-  font-size: 24px;
+  font-size: clamp(18px, 4vw, 24px);
   font-weight: 700;
   color: white;
   text-decoration: none;
@@ -51,7 +58,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  gap: 30px;
+  gap: clamp(15px, 3vw, 30px);
 }
 
 .nav-item {
@@ -62,17 +69,27 @@
   color: white;
   text-decoration: none;
   font-weight: 500;
-  font-size: 16px;
-  padding: 8px 16px;
+  font-size: clamp(14px, 2.5vw, 16px);
+  padding: 8px clamp(12px, 2vw, 16px);
   border-radius: 6px;
   transition: all 0.3s ease;
   position: relative;
+  white-space: nowrap;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
 }
 
 .nav-link:hover {
   background-color: rgba(255, 255, 255, 0.1);
   color: #a8d5a8;
   transform: translateY(-2px);
+}
+
+.nav-link.active {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #a8d5a8;
 }
 
 .nav-link::after {
@@ -87,7 +104,8 @@
   transform: translateX(-50%);
 }
 
-.nav-link:hover::after {
+.nav-link:hover::after,
+.nav-link.active::after {
   width: 80%;
 }
 
