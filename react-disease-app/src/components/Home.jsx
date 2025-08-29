@@ -13,22 +13,18 @@ const Home = ({ onNavigateToPredict }) => {
     },
     {
       name: "Corn",
-      image: "/images/diseases/corn-smut.jpg",
+      image: "/images/diseases/c.jpg    ",
       diseases: "Smut Disease Detected"
     },
+
     {
-      name: "Corn",
-      image: "/images/diseases/corn-rust.jpg",
-      diseases: "Rust Disease Detected"
-    },
-    {
-      name: "Strawberry",
-      image: "/images/diseases/strawberry-leaf-scorch.jpg",
+      name: "Rice",
+      image: "/images/diseases/r.jpg",
       diseases: "Leaf Scorch Detected"
     },
     {
       name: "Potato",
-      image: "/images/diseases/potato-scab.jpg",
+      image: "/images/diseases/p.jpg",
       diseases: "Scab Disease Detected"
     }
   ];
