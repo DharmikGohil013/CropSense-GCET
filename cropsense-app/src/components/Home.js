@@ -1,7 +1,7 @@
 import React from 'react';
 import './Home.css';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Home = () => {
   const { t } = useTranslation();
@@ -138,7 +138,10 @@ const Home = () => {
             
             <div className="cta-section">
               <p className="cta-text">Upload crop images and get instant AI-powered disease detection with treatment recommendations</p>
-              <button className="cta-button" onClick={handleExploreFeatures}>Start Disease Detection</button>
+              <div className="cta-buttons">
+                <button className="cta-button" onClick={handleExploreFeatures}>Start Disease Detection</button>
+                <Link to="/rice-analysis" className="cta-button secondary">🌾 Rice Analysis</Link>
+              </div>
             </div>
           </div>
         </div>

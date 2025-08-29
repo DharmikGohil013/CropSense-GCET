@@ -97,6 +97,13 @@
   letter-spacing: 0.3px;
 }
 
+.cta-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
 .cta-button {
   background: linear-gradient(135deg, #00FF7F 0%, #064E3B 100%);
   color: #000000;
@@ -108,10 +115,22 @@
   font-size: 1.1rem;
   cursor: pointer;
   transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   letter-spacing: 0.5px;
   box-shadow: 
     0 8px 32px rgba(0, 0, 0, 0.8), 
     0 0 20px rgba(0, 255, 127, 0.3);
+}
+
+.cta-button.secondary {
+  background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
+  color: #ffffff;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.8), 
+    0 0 20px rgba(255, 107, 53, 0.3);
 }
 
 .cta-button:hover {

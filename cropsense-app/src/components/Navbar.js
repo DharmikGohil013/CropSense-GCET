@@ -56,6 +56,9 @@ const Navbar = () => {
           <li className="nav-item">
             <Link to="/image-to-disease" className="nav-trigger">{t('navbar.diseaseImage')}</Link>
           </li>
+          <li className="nav-item">
+            <Link to="/rice-analysis" className="nav-trigger">🌾 Rice Analysis</Link>
+          </li>
         </ul>
       </div>
 
