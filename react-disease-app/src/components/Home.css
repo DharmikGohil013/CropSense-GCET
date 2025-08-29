@@ -44,6 +44,8 @@
   color: #001f3d;
   margin-bottom: 1.5rem;
   line-height: 1.2;
+  font-family: 'Dancing Script', 'Brush Script MT', cursive;
+  text-shadow: 2px 2px 4px rgba(0, 31, 61, 0.1);
 }
 
 .brand-highlight {
@@ -129,26 +131,18 @@
 .crop-showcase {
   width: 100%;
   max-width: 450px;
-  background: rgba(255, 255, 255, 0.95);
+  background: transparent;
   border-radius: 25px;
   padding: 30px;
-  box-shadow: 0 20px 60px rgba(0, 31, 61, 0.15);
-  backdrop-filter: blur(10px);
-  border: 2px solid rgba(102, 209, 224, 0.3);
+  box-shadow: none;
+  backdrop-filter: none;
+  border: none;
   position: relative;
   overflow: hidden;
 }
 
 .crop-showcase::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(45deg, transparent, rgba(179, 226, 240, 0.1), transparent);
-  animation: shimmer 3s infinite;
-  pointer-events: none;
+  display: none;
 }
 
 @keyframes shimmer {
@@ -192,7 +186,7 @@
   border-radius: 12px;
   overflow: hidden;
   margin-bottom: 15px;
-  box-shadow: 0 8px 25px rgba(0, 31, 61, 0.1);
+  box-shadow: none;
 }
 
 .crop-image img {
@@ -208,22 +202,15 @@
 }
 
 .crop-image::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(to bottom, transparent 60%, rgba(0, 31, 61, 0.7));
-  border-radius: 12px;
+  display: none;
 }
 
 .crop-info {
-  background: linear-gradient(135deg, rgba(0, 99, 155, 0.05) 0%, rgba(0, 177, 210, 0.05) 100%);
+  background: transparent;
   padding: 20px;
   border-radius: 12px;
   text-align: center;
-  border: 1px solid rgba(102, 209, 224, 0.2);
+  border: none;
   position: relative;
   z-index: 2;
 }
@@ -291,9 +278,9 @@
   background: linear-gradient(135deg, #00639b 0%, #00b1d2 100%);
   color: white;
   border: none;
-  padding: 18px 30px;
-  font-size: 1.2rem;
-  font-weight: 700;
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: 600;
   border-radius: 50px;
   cursor: pointer;
   transition: all 0.4s ease;
@@ -301,7 +288,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 8px;
   position: relative;
   overflow: hidden;
   text-transform: uppercase;
@@ -463,14 +450,14 @@
 .features-section,
 .how-it-works-section,
 .about-section {
-  padding: 80px 0;
+  padding: 50px 0;
 }
 
 /* Features Section */
 .features-section {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
-  padding: 100px 0;
+  padding: 60px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
@@ -486,7 +473,8 @@
   font-size: clamp(2rem, 4vw, 2.5rem);
   font-weight: 700;
   color: #001f3d;
-  margin-bottom: clamp(3rem, 6vw, 4rem);
+  margin-bottom: clamp(2rem, 4vw, 2.5rem);
+  margin-top: 0;
   line-height: 1.2;
 }
 
@@ -641,51 +629,17 @@
   font-weight: 600;
   color: #001f3d;
   margin-bottom: 15px;
-  font-family: 'Courier New', 'Monaco', monospace;
-  overflow: hidden;
-  border-right: 2px solid #00639b;
-  white-space: nowrap;
-  animation: typewriter 2s steps(20) 0.5s both, blink 1s infinite 2.5s;
+  font-family: 'Arial', 'Helvetica', sans-serif;
 }
 
 .step-description {
   color: #001f3d;
   line-height: 1.6;
-  font-family: 'Courier New', 'Monaco', monospace;
-  opacity: 0;
-  animation: fadeInUp 1s ease-out 2.5s both;
+  font-family: 'Arial', 'Helvetica', sans-serif;
+  font-size: 1rem;
 }
 
-/* Handwriting/Typewriter Animations */
-@keyframes typewriter {
-  from {
-    width: 0;
-  }
-  to {
-    width: 100%;
-  }
-}
-
-@keyframes blink {
-  0%, 50% {
-    border-color: #00639b;
-  }
-  51%, 100% {
-    border-color: transparent;
-  }
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
+/* Step animations */
 @keyframes fadeInScale {
   from {
     opacity: 0;

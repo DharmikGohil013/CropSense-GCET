@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import Home from './components/Home';
 import DiseasePrediction from './components/DiseasePrediction';
 import About from './pages/About/About';
+import Footer from './components/Footer';
 import './App.css';
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
       <main className="main-content">
         {renderCurrentPage()}
       </main>
+      <Footer />
     </div>
   );
 }
