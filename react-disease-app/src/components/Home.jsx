@@ -1,50 +1,121 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './Home.css';
 
 const Home = ({ onNavigateToPredict }) => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  
+  // Crop data for carousel
+  const cropData = [
+    {
+      name: "Tomato",
+      image: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop",
+      diseases: "Blight, Leaf Spot, Mosaic Virus"
+    },
+    {
+      name: "Corn",
+      image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=300&fit=crop",
+      diseases: "Rust, Smut, Leaf Blight"
+    },
+    {
+      name: "Wheat",
+      image: "https://images.unsplash.com/photo-1518843875459-f738682238a6?w=400&h=300&fit=crop",
+      diseases: "Rust, Powdery Mildew, Fusarium"
+    },
+    {
+      name: "Rice",
+      image: "https://images.unsplash.com/photo-1586771107445-d3ca888129ff?w=400&h=300&fit=crop",
+      diseases: "Blast, Bacterial Blight, Sheath Rot"
+    },
+    {
+      name: "Potato",
+      image: "https://images.unsplash.com/photo-1592921870789-04563d55041c?w=400&h=300&fit=crop",
+      diseases: "Late Blight, Early Blight, Scab"
+    }
+  ];
+  
+  const totalSlides = cropData.length;
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prevSlide) => (prevSlide + 1) % totalSlides);
+    }, 3000); // Change slide every 3 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    // Update active classes for slides and indicators
+    const slides = document.querySelectorAll('.crop-slide');
+    const indicators = document.querySelectorAll('.indicator');
+    
+    slides.forEach((slide, index) => {
+      slide.classList.toggle('active', index === currentSlide);
+    });
+    
+    indicators.forEach((indicator, index) => {
+      indicator.classList.toggle('active', index === currentSlide);
+    });
+  }, [currentSlide]);
+
   return (
     <div className="home">
       <div className="hero-section">
         <div className="container">
-          <div className="hero-content">
-            <h1 className="hero-title">
-              Welcome to <span className="brand-highlight">CropSense AI</span>
-            </h1>
-            <p className="hero-subtitle">
-              Advanced AI-powered crop disease detection for modern agriculture
-            </p>
-            <p className="hero-description">
-              Upload an image of your crop leaves and get instant, accurate disease 
-              identification with detailed information and recommendations.
-            </p>
-            <button 
-              className="cta-button"
-              onClick={onNavigateToPredict}
-            >
-              Start Disease Detection
-            </button>
-          </div>
-          <div className="hero-image">
-            <div className="image-placeholder">
-              <svg viewBox="0 0 200 200" className="hero-svg">
-                <defs>
-                  <linearGradient id="leafGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#00b1d2" />
-                    <stop offset="100%" stopColor="#00639b" />
-                  </linearGradient>
-                </defs>
-                <circle cx="100" cy="100" r="95" fill="url(#leafGradient)" opacity="0.1" />
-                <path d="M60 120 Q70 70 100 80 Q130 70 140 120 Q130 150 100 140 Q70 150 60 120 Z" 
-                      fill="url(#leafGradient)" />
-                <path d="M100 80 L100 140" stroke="#001f3d" strokeWidth="2" />
-                <path d="M100 90 Q85 100 90 110" stroke="#001f3d" strokeWidth="1" fill="none" />
-                <path d="M100 90 Q115 100 110 110" stroke="#001f3d" strokeWidth="1" fill="none" />
-                <circle cx="70" cy="50" r="3" fill="#ffffff" />
-                <circle cx="85" cy="40" r="2" fill="#ffffff" />
-                <circle cx="115" cy="40" r="2" fill="#ffffff" />
-                <circle cx="130" cy="50" r="3" fill="#ffffff" />
-                <path d="M70 50 L85 40 M85 40 L115 40 M115 40 L130 50" stroke="#ffffff" strokeWidth="1" opacity="0.8" />
-              </svg>
+          <div className="hero-layout">
+            <div className="hero-left">
+              <div className="welcome-content">
+                <h1 className="hero-title">
+                  Welcome to <span className="brand-highlight">CropSense AI</span>
+                </h1>
+                <p className="hero-subtitle">
+                  Advanced AI-powered crop disease detection for modern agriculture
+                </p>
+                <p className="hero-description">
+                  Upload an image of your crop leaves and get instant, accurate disease 
+                  identification with detailed information and recommendations.
+                </p>
+              </div>
+            </div>
+            
+            <div className="hero-right">
+              <div className="crop-showcase">
+                <div className="crop-carousel">
+                  {cropData.map((crop, index) => (
+                    <div 
+                      key={crop.name}
+                      className={`crop-slide ${index === currentSlide ? 'active' : ''}`}
+                    >
+                      <div className="crop-image">
+                        <img src={crop.image} alt={`${crop.name} Plant`} />
+                      </div>
+                      <div className="crop-info">
+                        <h3 className="crop-name">{crop.name}</h3>
+                        <p className="disease-info">Common: {crop.diseases}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="carousel-indicators">
+                  {cropData.map((_, index) => (
+                    <span 
+                      key={index}
+                      className={`indicator ${index === currentSlide ? 'active' : ''}`}
+                    ></span>
+                  ))}
+                </div>
+                
+                <button 
+                  className="check-crop-button"
+                  onClick={onNavigateToPredict}
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="button-icon">
+                    <path d="M9 12l2 2 4-4" />
+                    <circle cx="12" cy="12" r="9" />
+                  </svg>
+                  Check Your Crop
+                </button>
+              </div>
             </div>
           </div>
         </div>
