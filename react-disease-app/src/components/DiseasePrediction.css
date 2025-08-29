@@ -1,26 +1,33 @@
 /* DiseasePrediction.css */
 .disease-prediction {
-  min-height: 100vh;
+  min-height: calc(100vh - 70px); /* Account for navbar height */
+  width: 100%;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 2rem 1rem;
+  padding: 1rem;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .container {
-  max-width: 800px;
+  width: 100%;
+  max-width: 1200px;
   margin: 0 auto;
   background: white;
   border-radius: 20px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .title {
-  font-size: 2.5rem;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
   font-weight: 700;
   text-align: center;
   margin: 0;
-  padding: 2rem 2rem 1rem 2rem;
+  padding: 2rem 1rem 1rem 1rem;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -30,13 +37,17 @@
   text-align: center;
   color: rgba(255, 255, 255, 0.9);
   margin: 0;
-  padding: 0 2rem 2rem 2rem;
+  padding: 0 1rem 2rem 1rem;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  font-size: 1.1rem;
+  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+  line-height: 1.4;
 }
 
 .upload-form {
-  padding: 2rem;
+  padding: 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .upload-section {
@@ -57,16 +68,17 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 1rem 2rem;
+  padding: clamp(0.8rem, 2vw, 1rem) clamp(1.5rem, 4vw, 2rem);
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border-radius: 12px;
   cursor: pointer;
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
   transition: all 0.3s ease;
   border: none;
   box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  text-align: center;
 }
 
 .file-input-label:hover {
@@ -87,8 +99,10 @@
 }
 
 .preview-image {
-  max-width: 300px;
-  max-height: 300px;
+  max-width: min(400px, 80vw);
+  max-height: min(400px, 50vh);
+  width: 100%;
+  height: auto;
   border-radius: 12px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   object-fit: cover;
@@ -106,14 +120,14 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 1rem 2rem;
+  padding: clamp(0.8rem, 2vw, 1rem) clamp(1.5rem, 4vw, 2rem);
   border: none;
   border-radius: 12px;
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
   cursor: pointer;
   transition: all 0.3s ease;
-  min-width: 150px;
+  min-width: clamp(120px, 30vw, 150px);
   justify-content: center;
 }
 
@@ -185,7 +199,7 @@
 }
 
 .results-title {
-  font-size: 1.8rem;
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
   font-weight: 600;
   text-align: center;
   margin-bottom: 1.5rem;
@@ -194,7 +208,7 @@
 
 .results-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
@@ -230,10 +244,11 @@
 }
 
 .result-value {
-  font-size: 1.4rem;
+  font-size: clamp(1.1rem, 3vw, 1.4rem);
   font-weight: 700;
   color: #333;
   word-break: break-word;
+  line-height: 1.2;
 }
 
 .description-card {
@@ -252,19 +267,33 @@
 }
 
 /* Responsive Design */
+@media (max-width: 1024px) {
+  .disease-prediction {
+    padding: 0.75rem;
+  }
+  
+  .container {
+    max-width: 95%;
+  }
+}
+
 @media (max-width: 768px) {
   .disease-prediction {
-    padding: 1rem 0.5rem;
+    padding: 0.5rem;
+    min-height: calc(100vh - 70px);
+  }
+
+  .container {
+    border-radius: 15px;
+    max-width: 98%;
   }
 
   .title {
-    font-size: 2rem;
-    padding: 1.5rem 1rem 0.5rem 1rem;
+    padding: 1.5rem 1rem 0.75rem 1rem;
   }
 
   .subtitle {
     padding: 0 1rem 1.5rem 1rem;
-    font-size: 1rem;
   }
 
   .upload-form {
@@ -272,13 +301,14 @@
   }
 
   .preview-image {
-    max-width: 250px;
-    max-height: 250px;
+    max-width: min(300px, 85vw);
+    max-height: min(300px, 40vh);
   }
 
   .action-buttons {
     flex-direction: column;
     align-items: center;
+    gap: 0.75rem;
   }
 
   .predict-button,
@@ -289,26 +319,98 @@
 
   .results-grid {
     grid-template-columns: 1fr;
-  }
-
-  .result-value {
-    font-size: 1.2rem;
+    gap: 0.75rem;
   }
 }
 
 @media (max-width: 480px) {
+  .disease-prediction {
+    padding: 0.25rem;
+  }
+  
+  .container {
+    border-radius: 10px;
+    max-width: 99%;
+  }
+
   .title {
-    font-size: 1.8rem;
+    padding: 1rem 0.75rem 0.5rem 0.75rem;
+  }
+
+  .subtitle {
+    padding: 0 0.75rem 1rem 0.75rem;
+  }
+  
+  .upload-form {
+    padding: 0.75rem;
   }
 
   .file-input-label {
-    padding: 0.8rem 1.5rem;
-    font-size: 1rem;
+    width: 100%;
+    max-width: 250px;
+  }
+
+  .preview-image {
+    max-width: min(250px, 90vw);
+    max-height: min(250px, 35vh);
   }
 
   .predict-button,
   .reset-button {
-    padding: 0.8rem 1.5rem;
-    font-size: 1rem;
+    max-width: 250px;
+  }
+  
+  .result-card {
+    padding: 1rem;
+  }
+  
+  .description-card {
+    padding: 1rem;
+  }
+  
+  .result-description {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .disease-prediction {
+    padding: 0.125rem;
+  }
+  
+  .container {
+    border-radius: 8px;
+  }
+  
+  .title {
+    padding: 0.75rem 0.5rem 0.5rem 0.5rem;
+  }
+
+  .subtitle {
+    padding: 0 0.5rem 0.75rem 0.5rem;
+  }
+  
+  .upload-form {
+    padding: 0.5rem;
+  }
+}
+
+/* Landscape orientation adjustments */
+@media (max-height: 600px) and (orientation: landscape) {
+  .disease-prediction {
+    min-height: calc(100vh - 70px);
+    padding: 0.5rem;
+  }
+  
+  .title {
+    padding: 1rem 1rem 0.5rem 1rem;
+  }
+  
+  .subtitle {
+    padding: 0 1rem 1rem 1rem;
+  }
+  
+  .preview-image {
+    max-height: 200px;
   }
 }
