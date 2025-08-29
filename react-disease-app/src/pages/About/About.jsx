@@ -229,10 +229,10 @@ const About = ({ onNavigateToPredict }) => {
             <h2 className="section-title">Accuracy & Reliability</h2>
             <div className="stats-container">
               <div className="stat-item">
-                <div className="stat-value">95%+</div>
+                <div className="stat-value">90%+</div>
                 <div className="stat-label">Detection Accuracy</div>
                 <p className="stat-description">
-                  Our AI model achieves over 95% accuracy in identifying common crop diseases
+                  Our AI model achieves over 90% accuracy in identifying common crop diseases
                 </p>
               </div>
               <div className="stat-item">
@@ -243,10 +243,10 @@ const About = ({ onNavigateToPredict }) => {
                 </p>
               </div>
               <div className="stat-item">
-                <div className="stat-value">100+</div>
+                <div className="stat-value">Multiple</div>
                 <div className="stat-label">Disease Types</div>
                 <p className="stat-description">
-                  Our system can detect over 100 different crop diseases and nutrient deficiencies
+                  Our system can detect over multiple different crop diseases and nutrient deficiencies
                 </p>
               </div>
             </div>
@@ -260,7 +260,7 @@ const About = ({ onNavigateToPredict }) => {
         </div>
       </section>
 
-      <section className="testimonials-section">
+      {/* <section className="testimonials-section">
         <div className="container">
           <h2 className="section-title">What Farmers Say</h2>
           <div className="testimonials-container">
@@ -328,7 +328,7 @@ const About = ({ onNavigateToPredict }) => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       <section className="faq-section">
         <div className="container">
