@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Agricultural AI Assistant
+Sitemap: http://127.0.0.1:7861/sitemap.xml
