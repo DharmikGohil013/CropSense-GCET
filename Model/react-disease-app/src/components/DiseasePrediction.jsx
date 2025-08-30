@@ -11,7 +11,6 @@ const DiseasePrediction = () => {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [showCamera, setShowCamera] = useState(false);
-  const [loadingStep, setLoadingStep] = useState(0);
   const [currentFact, setCurrentFact] = useState(0);
   const [selectedCrop, setSelectedCrop] = useState('');
 
@@ -33,14 +32,6 @@ const DiseasePrediction = () => {
     { key: 'tomato', emoji: '🍅' }
   ];
 
-  // Loading steps configuration
-  const loadingSteps = [
-    { key: 'uploading', duration: 1000 },
-    { key: 'processing', duration: 2000 },
-    { key: 'analyzing', duration: 2000 },
-    { key: 'predicting', duration: 1500 }
-  ];
-
   // Facts about plant diseases
   const plantFacts = [
     { key: 'fact1' },
@@ -51,38 +42,24 @@ const DiseasePrediction = () => {
     { key: 'fact6' }
   ];
 
-  // Effect to handle loading steps progression
+  // Effect to handle loading progression
   useEffect(() => {
     if (loading) {
-      setLoadingStep(0);
       setCurrentFact(0);
       
-      let currentStepIndex = 0;
       let factIndex = 0;
       
-      const progressSteps = () => {
-        if (currentStepIndex < loadingSteps.length) {
-          setLoadingStep(currentStepIndex);
-          
-          // Change fact every 2 seconds during loading
-          const factInterval = setInterval(() => {
-            factIndex = (factIndex + 1) % plantFacts.length;
-            setCurrentFact(factIndex);
-          }, 2000);
-          
-          setTimeout(() => {
-            clearInterval(factInterval);
-            currentStepIndex++;
-            if (currentStepIndex < loadingSteps.length && loading) {
-              progressSteps();
-            }
-          }, loadingSteps[currentStepIndex].duration);
-        }
-      };
+      // Change fact every 2 seconds during loading
+      const factInterval = setInterval(() => {
+        factIndex = (factIndex + 1) % plantFacts.length;
+        setCurrentFact(factIndex);
+      }, 2000);
       
-      progressSteps();
+      return () => {
+        clearInterval(factInterval);
+      };
     }
-  }, [loading]);
+  }, [loading, plantFacts.length]);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -95,75 +72,234 @@ const DiseasePrediction = () => {
 
   const handleCameraCapture = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ 
-        video: { 
-          facingMode: 'environment', // Use back camera on mobile
-          width: { ideal: 1280 },
-          height: { ideal: 720 }
-        } 
-      });
-      
+      // Check if getUserMedia is supported
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        throw new Error('CAMERA_NOT_SUPPORTED');
+      }
+
+      // Check if we're on HTTPS (required for Chrome)
+      if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+        throw new Error('HTTPS_REQUIRED');
+      }
+
+      // First check camera permissions
+      let permissionStatus;
+      try {
+        permissionStatus = await navigator.permissions.query({ name: 'camera' });
+      } catch {
+        // Permissions API not supported, continue with getUserMedia
+        console.log('Permissions API not supported, proceeding with getUserMedia');
+      }
+
+      // Handle permission denied case
+      if (permissionStatus && permissionStatus.state === 'denied') {
+        throw new Error('PERMISSION_DENIED');
+      }
+
+      // Show loading state while requesting camera access
       setShowCamera(true);
+      const cameraContainer = document.getElementById('camera-container');
+      if (cameraContainer) {
+        cameraContainer.innerHTML = `
+          <div class="camera-loading">
+            <div class="camera-spinner"></div>
+            <p>${t('diseasePrediction.requestingCamera')}</p>
+          </div>
+        `;
+      }
+
+      // Chrome-optimized camera constraints
+      const constraints = {
+        video: {
+          facingMode: { 
+            ideal: 'environment' // Prefer back camera on mobile
+          },
+          width: { 
+            min: 320, 
+            ideal: 1280, 
+            max: 1920 
+          },
+          height: { 
+            min: 240, 
+            ideal: 720, 
+            max: 1080 
+          },
+          aspectRatio: { ideal: 16/9 },
+          frameRate: { ideal: 30, max: 60 },
+          // Chrome-specific enhancements
+          resizeMode: 'crop-and-scale',
+          echoCancellation: false,
+          noiseSuppression: false,
+          autoGainControl: false
+        }
+      };
+
+      // Try with Chrome-specific fallback constraints
+      let stream;
+      try {
+        stream = await navigator.mediaDevices.getUserMedia(constraints);
+      } catch (constraintError) {
+        console.warn('Primary constraints failed, trying fallback:', constraintError);
+        // Fallback to basic constraints for Chrome compatibility
+        const fallbackConstraints = {
+          video: {
+            facingMode: 'environment',
+            width: { ideal: 1280 },
+            height: { ideal: 720 }
+          }
+        };
+        stream = await navigator.mediaDevices.getUserMedia(fallbackConstraints);
+      }
       
-      // Create video element
+      // Create video element with Chrome-specific attributes
       const video = document.createElement('video');
       video.srcObject = stream;
-      video.play();
+      video.setAttribute('playsinline', 'true'); // Important for iOS and Chrome mobile
+      video.setAttribute('autoplay', 'true');
+      video.setAttribute('muted', 'true'); // Required for autoplay in Chrome
+      video.setAttribute('controls', 'false');
+      video.style.width = '100%';
+      video.style.height = 'auto';
+      video.style.maxHeight = '300px';
+      video.style.objectFit = 'cover';
+      video.style.borderRadius = '12px';
+      video.style.backgroundColor = '#000';
       
-      // Wait for video to load
-      video.onloadedmetadata = () => {
-        // Create canvas for capture
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
+      // Wait for video to load with timeout
+      const videoLoadPromise = new Promise((resolve, reject) => {
+        const timeout = setTimeout(() => {
+          reject(new Error('VIDEO_LOAD_TIMEOUT'));
+        }, 10000); // 10 second timeout
+
+        video.onloadedmetadata = () => {
+          clearTimeout(timeout);
+          resolve();
+        };
+
+        video.onerror = () => {
+          clearTimeout(timeout);
+          reject(new Error('VIDEO_ERROR'));
+        };
+      });
+
+      await videoLoadPromise;
+      
+      // Create canvas for capture
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+      
+      // Set canvas size to match video
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      
+      // Clear loading and show camera interface
+      if (cameraContainer) {
+        cameraContainer.innerHTML = '';
+        cameraContainer.appendChild(video);
         
-        // Set canvas size
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
+        // Create control buttons container
+        const controlsDiv = document.createElement('div');
+        controlsDiv.className = 'camera-controls';
+        controlsDiv.style.display = 'flex';
+        controlsDiv.style.gap = '10px';
+        controlsDiv.style.justifyContent = 'center';
+        controlsDiv.style.marginTop = '15px';
         
-        // Show camera interface
-        const cameraContainer = document.getElementById('camera-container');
-        if (cameraContainer) {
-          cameraContainer.appendChild(video);
+        // Add capture button
+        const captureBtn = document.createElement('button');
+        captureBtn.textContent = t('diseasePrediction.capturePhoto');
+        captureBtn.className = 'capture-btn';
+        captureBtn.onclick = () => {
+          // Draw video frame to canvas
+          context.drawImage(video, 0, 0);
           
-          // Add capture button
-          const captureBtn = document.createElement('button');
-          captureBtn.textContent = t('diseasePrediction.capturePhoto');
-          captureBtn.className = 'capture-btn';
-          captureBtn.onclick = () => {
-            // Draw video frame to canvas
-            context.drawImage(video, 0, 0);
-            
-            // Convert to blob
-            canvas.toBlob((blob) => {
+          // Convert to blob with high quality for Chrome
+          canvas.toBlob((blob) => {
+            if (blob) {
               const file = new File([blob], 'camera-capture.jpg', { type: 'image/jpeg' });
               setSelectedFile(file);
               setPreview(URL.createObjectURL(file));
               
               // Stop camera and cleanup
-              stream.getTracks().forEach(track => track.stop());
+              stream.getTracks().forEach(track => {
+                track.stop();
+                track.enabled = false;
+              });
               setShowCamera(false);
               cameraContainer.innerHTML = '';
-            }, 'image/jpeg', 0.8);
-          };
-          
-          cameraContainer.appendChild(captureBtn);
-          
-          // Add cancel button
-          const cancelBtn = document.createElement('button');
-          cancelBtn.textContent = t('diseasePrediction.cancel');
-          cancelBtn.className = 'cancel-btn';
-          cancelBtn.onclick = () => {
-            stream.getTracks().forEach(track => track.stop());
-            setShowCamera(false);
-            cameraContainer.innerHTML = '';
-          };
-          
-          cameraContainer.appendChild(cancelBtn);
-        }
-      };
+            }
+          }, 'image/jpeg', 0.9); // Higher quality for better analysis
+        };
+        
+        // Add cancel button
+        const cancelBtn = document.createElement('button');
+        cancelBtn.textContent = t('diseasePrediction.cancel');
+        cancelBtn.className = 'cancel-btn';
+        cancelBtn.onclick = () => {
+          stream.getTracks().forEach(track => {
+            track.stop();
+            track.enabled = false;
+          });
+          setShowCamera(false);
+          cameraContainer.innerHTML = '';
+        };
+        
+        controlsDiv.appendChild(captureBtn);
+        controlsDiv.appendChild(cancelBtn);
+        cameraContainer.appendChild(controlsDiv);
+      }
+
     } catch (error) {
       console.error('Error accessing camera:', error);
-      alert('Unable to access camera. Please check permissions or use file upload instead.');
+      setShowCamera(false);
+      
+      // Clear camera container
+      const cameraContainer = document.getElementById('camera-container');
+      if (cameraContainer) {
+        cameraContainer.innerHTML = '';
+      }
+
+      // Provide specific error messages based on error type
+      let errorMessage = t('diseasePrediction.cameraErrorGeneric');
+      let errorTitle = t('diseasePrediction.cameraError');
+      
+      if (error.name === 'NotAllowedError' || error.message === 'PERMISSION_DENIED') {
+        errorMessage = t('diseasePrediction.cameraPermissionDenied');
+        errorTitle = t('diseasePrediction.permissionRequired');
+      } else if (error.name === 'NotFoundError') {
+        errorMessage = t('diseasePrediction.cameraNotFound');
+        errorTitle = t('diseasePrediction.cameraNotAvailable');
+      } else if (error.name === 'NotSupportedError' || error.message === 'CAMERA_NOT_SUPPORTED') {
+        errorMessage = t('diseasePrediction.cameraNotSupported');
+        errorTitle = t('diseasePrediction.featureNotSupported');
+      } else if (error.name === 'NotReadableError') {
+        errorMessage = t('diseasePrediction.cameraInUse');
+        errorTitle = t('diseasePrediction.cameraUnavailable');
+      } else if (error.name === 'OverconstrainedError') {
+        errorMessage = t('diseasePrediction.cameraConstraintError');
+        errorTitle = t('diseasePrediction.cameraConfiguration');
+      } else if (error.message === 'HTTPS_REQUIRED') {
+        errorMessage = t('diseasePrediction.httpsRequired');
+        errorTitle = t('diseasePrediction.secureConnectionRequired');
+      } else if (error.message === 'VIDEO_LOAD_TIMEOUT') {
+        errorMessage = t('diseasePrediction.videoLoadTimeout');
+        errorTitle = t('diseasePrediction.cameraLoadError');
+      }
+
+      // Show user-friendly error dialog with Chrome-specific instructions
+      const chromeInstructions = navigator.userAgent.includes('Chrome') ? 
+        `\n\n${t('diseasePrediction.chromeSpecificInstructions')}` : '';
+      
+      if (window.confirm(`${errorTitle}\n\n${errorMessage}${chromeInstructions}\n\n${t('diseasePrediction.cameraErrorSolution')}`)) {
+        // User clicked OK, maybe show camera settings help
+        if (error.name === 'NotAllowedError' || error.message === 'PERMISSION_DENIED') {
+          // Provide instructions for enabling camera permissions
+          alert(t('diseasePrediction.enableCameraInstructions'));
+        } else if (error.message === 'HTTPS_REQUIRED') {
+          // Provide HTTPS instructions
+          alert(t('diseasePrediction.httpsInstructions'));
+        }
+      }
     }
   };
 
@@ -175,20 +311,49 @@ const DiseasePrediction = () => {
     setResult(null);
 
     try {
+      // File validation
+      const maxSize = 5 * 1024 * 1024; // 5MB
+      if (selectedFile.size > maxSize) {
+        throw new Error('FILE_TOO_LARGE');
+      }
+
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+      if (!allowedTypes.includes(selectedFile.type)) {
+        throw new Error('INVALID_FILE_TYPE');
+      }
+
       const formData = new FormData();
       formData.append('file', selectedFile);
+<<<<<<< Updated upstream
       formData.append('language', i18n.language); // Pass the selected language
       if (selectedCrop) {
         formData.append('expected_crop', selectedCrop); // Pass the selected crop for better accuracy
       }
+=======
+      formData.append('language', i18n.language);
+
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+>>>>>>> Stashed changes
 
       const response = await fetch('http://192.168.137.1:8001/predict-disease', {
         method: 'POST',
         body: formData,
+        signal: controller.signal,
       });
 
+      clearTimeout(timeoutId);
+
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        if (response.status === 404) {
+          throw new Error('API_NOT_FOUND');
+        } else if (response.status >= 500) {
+          throw new Error('SERVER_ERROR');
+        } else if (response.status === 403 || response.status === 401) {
+          throw new Error('ACCESS_DENIED');
+        } else {
+          throw new Error(`HTTP_ERROR_${response.status}`);
+        }
       }
 
       const data = await response.json();
@@ -201,23 +366,58 @@ const DiseasePrediction = () => {
           description: data.description,
           solution: data.solution,
           severity: data.severity,
-          recommendation: data.solution // Use solution as recommendation for compatibility
+          recommendation: data.solution
         });
       } else {
-        throw new Error(data.message || 'Prediction failed');
+        throw new Error(data.message || 'PREDICTION_FAILED');
       }
-    } catch (error) {
-      console.error('Error predicting disease:', error);
-      
-      // Show error message in result format - no connection error overlay
+    } catch (err) {
+      console.error('Error predicting disease:', err);
+
+      let errorType = 'We are looking for this disease we will update soon';
+      let errorInfo = {};
+
+      // Categorize the error
+      if (err.name === 'AbortError') {
+        errorType = 'timeout';
+      } else if (err.message === 'FILE_TOO_LARGE') {
+        errorType = 'fileSize';
+      } else if (err.message === 'INVALID_FILE_TYPE') {
+        errorType = 'invalidFile';
+      } else if (err.message === 'API_NOT_FOUND') {
+        errorType = 'server';
+      } else if (err.message === 'SERVER_ERROR') {
+        errorType = 'server';
+      } else if (err.message === 'ACCESS_DENIED') {
+        errorType = 'cors';
+      } else if (err.message.includes('Failed to fetch') || 
+                 err.message.includes('NetworkError') ||
+                 err.message.includes('ERR_NETWORK')) {
+        errorType = 'network';
+      } else if (err.message.includes('timeout') || 
+                 err.message.includes('TIMEOUT')) {
+        errorType = 'timeout';
+      }
+
+      // Get localized error information
+      errorInfo = {
+        title: t(`diseasePrediction.errorTypes.${errorType}.title`),
+        description: t(`diseasePrediction.errorTypes.${errorType}.description`),
+        suggestions: t(`diseasePrediction.errorTypes.${errorType}.suggestions`, { returnObjects: true }) || []
+      };
+
+      // Show enhanced error in result format
       setResult({
-        crop: t('diseasePrediction.errorConnection'),
-        disease: t('diseasePrediction.errorApi'),
-        description: `${t('diseasePrediction.errorMessage')}: ${error.message}`,
-        recommendation: t('diseasePrediction.errorRecommendation'),
-        solution: t('diseasePrediction.errorSolution'),
+        crop: errorInfo.title,
+        disease: t('diseasePrediction.errorConnection'),
+        description: errorInfo.description,
+        recommendation: errorInfo.suggestions.join('\n• '),
+        solution: `${t('diseasePrediction.supportInfo.helpText')}\n\n${t('diseasePrediction.supportInfo.contactSupport')}`,
         confidence: 0,
-        severity: "Unknown"
+        severity: "Error",
+        isError: true,
+        errorType: errorType,
+        suggestions: errorInfo.suggestions
       });
     } finally {
       setLoading(false);
@@ -264,7 +464,7 @@ const DiseasePrediction = () => {
           ))}
         </div>
       );
-    } catch (error) {
+    } catch {
       // If it's not JSON, return as regular text
       return <p className="solution-text">{solutionText}</p>;
     }
@@ -438,8 +638,55 @@ const DiseasePrediction = () => {
 
         {result && !loading && (
           <div className="result-card">
+<<<<<<< Updated upstream
             {result.crop.toLowerCase() === 'invalid' || result.crop.toLowerCase().includes('invalid') || result.crop.toLowerCase() === 'unknown' || result.disease.toLowerCase().includes('unknown') ? (
               // Invalid/Unknown image result
+=======
+            {result.isError ? (
+              // Error result with enhanced display
+              <div className="error-result">
+                <div className="error-header">
+                  <div className="error-icon">
+                    ⚠️
+                  </div>
+                  <h2 className="error-title">{result.crop}</h2>
+                </div>
+                
+                <div className="error-content">
+                  <p className="error-description">{result.description}</p>
+                  
+                  {result.suggestions && result.suggestions.length > 0 && (
+                    <div className="error-suggestions">
+                      <h4>{t('diseasePrediction.whatCanYouDo')}</h4>
+                      <ul className="suggestions-list">
+                        {result.suggestions.map((suggestion, index) => (
+                          <li key={index} className="suggestion-item">
+                            <span className="suggestion-icon">•</span>
+                            <span>{suggestion}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  
+                  <div className="support-section">
+                    <h4>{t('diseasePrediction.needHelp')}</h4>
+                    <p className="support-text">{result.solution}</p>
+                  </div>
+                  
+                  <div className="error-actions">
+                    <button 
+                      className="retry-btn primary"
+                      onClick={resetForm}
+                    >
+                      {t('diseasePrediction.tryAgain')}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : result.crop.toLowerCase() === 'invalid' || result.crop.toLowerCase().includes('invalid') ? (
+              // Invalid image result
+>>>>>>> Stashed changes
               <div className="invalid-result">
                 <div className="invalid-header">
                   <h2 className="invalid-title">

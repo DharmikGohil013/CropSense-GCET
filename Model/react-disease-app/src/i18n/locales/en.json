@@ -9,6 +9,27 @@
     "cameraCapture": "Camera Capture",
     "capturePhoto": "Capture Photo",
     "cancel": "Cancel",
+    "requestingCamera": "Requesting camera access...",
+    "cameraError": "Camera Error",
+    "cameraErrorGeneric": "Unable to access camera. Please check permissions or try using file upload instead.",
+    "cameraPermissionDenied": "Camera access was denied. Please allow camera permissions to use this feature.",
+    "permissionRequired": "Permission Required",
+    "cameraNotFound": "No camera device found on your device.",
+    "cameraNotAvailable": "Camera Not Available",
+    "cameraNotSupported": "Camera access is not supported in your browser.",
+    "featureNotSupported": "Feature Not Supported",
+    "cameraInUse": "Camera is currently being used by another application.",
+    "cameraUnavailable": "Camera Unavailable",
+    "cameraConstraintError": "Camera configuration not supported by your device.",
+    "cameraConfiguration": "Camera Configuration Issue",
+    "cameraErrorSolution": "Would you like help with camera setup?",
+    "enableCameraInstructions": "To enable camera:\n\n1. Look for camera icon in your browser's address bar\n2. Click 'Allow' when prompted for camera access\n3. On mobile: Go to browser settings > Site permissions > Camera > Allow\n4. Refresh the page and try again",
+    "httpsRequired": "Camera access requires a secure connection (HTTPS). Please access this site using HTTPS.",
+    "secureConnectionRequired": "Secure Connection Required",
+    "videoLoadTimeout": "Camera is taking too long to initialize. Please try again.",
+    "cameraLoadError": "Camera Loading Error",
+    "chromeSpecificInstructions": "Chrome users: Make sure you're using HTTPS and camera permissions are enabled in site settings.",
+    "httpsInstructions": "For Chrome camera access:\n\n1. Use HTTPS instead of HTTP\n2. Click the lock/shield icon in address bar\n3. Set Camera to 'Allow'\n4. Refresh the page\n\nFor local development, use: https://localhost:5173",
     "predictDisease": "Predict Disease",
     "analyzingImage": "Analyzing Image...",
     "analyzing": "Analyzing Your Image",
@@ -104,11 +125,92 @@
     },
     "reuploadImage": "Re-upload Image",
     "tryAnother": "Try Another Image",
-    "errorConnection": "Connection Error",
-    "errorApi": "API Unavailable",
-    "errorMessage": "Failed to connect to the prediction service",
-    "errorRecommendation": "Please ensure the API server is running on port 8001 and try again.",
-    "errorSolution": "Check your internet connection and verify the backend server is running."
+    "errorConnection": "Connection Problem",
+    "errorApi": "Service Temporarily Unavailable",
+    "errorMessage": "We're having trouble connecting to our disease detection service",
+    "errorRecommendation": "Don't worry! Try these solutions:",
+    "errorSolution": "• Check your internet connection\n• Wait a moment and try again\n• Contact support if the problem persists",
+    "errorTypes": {
+      "network": {
+        "title": "Network Connection Issue",
+        "description": "Unable to reach our servers. Please check your internet connection and try again.",
+        "suggestions": [
+          "Check your internet connection",
+          "Try switching to a different network",
+          "Disable VPN if you're using one",
+          "Try again in a few moments"
+        ]
+      },
+      "server": {
+        "title": "Server Temporarily Down",
+        "description": "Our disease detection service is temporarily unavailable. We're working to fix this quickly.",
+        "suggestions": [
+          "Please try again in a few minutes",
+          "Save your image and retry later",
+          "Check our status page for updates",
+          "Contact support if this persists"
+        ]
+      },
+      "timeout": {
+        "title": "Request Timed Out",
+        "description": "The analysis is taking longer than expected. This might be due to high server load.",
+        "suggestions": [
+          "Try uploading a smaller image",
+          "Check your internet speed",
+          "Wait a moment and try again",
+          "Try during off-peak hours"
+        ]
+      },
+      "fileSize": {
+        "title": "File Too Large",
+        "description": "The image you uploaded is too large for processing.",
+        "suggestions": [
+          "Compress your image to under 5MB",
+          "Use JPEG format for smaller files",
+          "Try taking a new photo",
+          "Use an image editing app to resize"
+        ]
+      },
+      "invalidFile": {
+        "title": "Invalid File Format",
+        "description": "The file you uploaded is not a supported image format.",
+        "suggestions": [
+          "Use JPG, JPEG, or PNG format",
+          "Make sure the file isn't corrupted",
+          "Try taking a new photo",
+          "Convert your file to a supported format"
+        ]
+      },
+      "cors": {
+        "title": "Access Blocked",
+        "description": "Browser security settings are preventing the connection.",
+        "suggestions": [
+          "Try using a different browser",
+          "Disable browser extensions temporarily",
+          "Clear your browser cache",
+          "Contact your IT administrator"
+        ]
+      },
+      "unknown": {
+        "title": "Unexpected Error",
+        "description": "Something unexpected happened during the analysis.",
+        "suggestions": [
+          "Try uploading a different image",
+          "Refresh the page and try again",
+          "Clear your browser cache",
+          "Contact our support team"
+        ]
+      }
+    },
+    "tryAgain": "Try Again",
+    "whatCanYouDo": "What can you do?",
+    "needHelp": "Need Help?",
+    "supportInfo": {
+      "helpText": "Still having trouble?",
+      "contactSupport": "Contact Support",
+      "reportIssue": "Report This Issue",
+      "tryAgain": "Try Again"
+    }
   },
   "fertilizerPrediction": {
     "title": "Nutrition Prediction",

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Permission Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .test-button {
+            background: linear-gradient(135deg, #6f42c1, #8e44ad);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(111, 66, 193, 0.3);
+        }
+        .test-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .video-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        video {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .control-buttons {
+            margin-top: 10px;
+        }
+        .capture-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .stop-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .permission-status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+            background: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📷 Camera Permission Test</h1>
+        <p>This page tests camera functionality and permission handling for mobile devices.</p>
+        
+        <div class="permission-status" id="permissionStatus">
+            <strong>Permission Status:</strong> <span id="statusText">Checking...</span>
+        </div>
+
+        <button class="test-button" onclick="checkCameraSupport()">Check Camera Support</button>
+        <button class="test-button" onclick="checkPermissions()">Check Permissions</button>
+        <button class="test-button" onclick="requestCamera()" id="cameraBtn">Request Camera Access</button>
+        <button class="test-button" onclick="stopCamera()" id="stopBtn" disabled>Stop Camera</button>
+
+        <div id="result"></div>
+        <div id="videoContainer" class="video-container"></div>
+    </div>
+
+    <script>
+        let currentStream = null;
+
+        // Check camera support
+        async function checkCameraSupport() {
+            const result = document.getElementById('result');
+            
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                result.innerHTML = '<div class="result error">❌ Camera API not supported in this browser</div>';
+                return false;
+            }
+            
+            try {
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                const videoDevices = devices.filter(device => device.kind === 'videoinput');
+                
+                if (videoDevices.length === 0) {
+                    result.innerHTML = '<div class="result error">❌ No camera devices found</div>';
+                    return false;
+                }
+                
+                result.innerHTML = `<div class="result success">✅ Camera API supported. Found ${videoDevices.length} camera(s)</div>`;
+                return true;
+            } catch (error) {
+                result.innerHTML = `<div class="result error">❌ Error checking devices: ${error.message}</div>`;
+                return false;
+            }
+        }
+
+        // Check permissions
+        async function checkPermissions() {
+            const statusText = document.getElementById('statusText');
+            const result = document.getElementById('result');
+            
+            try {
+                // Check if Permissions API is supported
+                if (!navigator.permissions) {
+                    statusText.textContent = 'Permissions API not supported';
+                    result.innerHTML = '<div class="result info">ℹ️ Permissions API not supported in this browser</div>';
+                    return;
+                }
+
+                const permission = await navigator.permissions.query({ name: 'camera' });
+                statusText.textContent = permission.state;
+                
+                switch (permission.state) {
+                    case 'granted':
+                        result.innerHTML = '<div class="result success">✅ Camera permission already granted</div>';
+                        break;
+                    case 'denied':
+                        result.innerHTML = '<div class="result error">❌ Camera permission denied</div>';
+                        break;
+                    case 'prompt':
+                        result.innerHTML = '<div class="result info">ℹ️ Camera permission will be requested when needed</div>';
+                        break;
+                }
+                
+                // Listen for permission changes
+                permission.onchange = () => {
+                    statusText.textContent = permission.state;
+                };
+                
+            } catch (error) {
+                statusText.textContent = 'Error checking permissions';
+                result.innerHTML = `<div class="result error">❌ Error checking permissions: ${error.message}</div>`;
+            }
+        }
+
+        // Request camera access
+        async function requestCamera() {
+            const result = document.getElementById('result');
+            const videoContainer = document.getElementById('videoContainer');
+            const cameraBtn = document.getElementById('cameraBtn');
+            const stopBtn = document.getElementById('stopBtn');
+            
+            cameraBtn.disabled = true;
+            result.innerHTML = '<div class="result info">📷 Requesting camera access...</div>';
+            
+            try {
+                // Mobile-optimized constraints
+                const constraints = {
+                    video: {
+                        facingMode: { ideal: 'environment' }, // Prefer back camera
+                        width: { min: 640, ideal: 1280, max: 1920 },
+                        height: { min: 480, ideal: 720, max: 1080 },
+                        aspectRatio: { ideal: 16/9 },
+                        frameRate: { ideal: 30, max: 60 }
+                    }
+                };
+
+                currentStream = await navigator.mediaDevices.getUserMedia(constraints);
+                
+                // Create video element
+                const video = document.createElement('video');
+                video.srcObject = currentStream;
+                video.setAttribute('playsinline', 'true'); // Important for iOS
+                video.setAttribute('autoplay', 'true');
+                video.setAttribute('muted', 'true');
+                video.style.width = '100%';
+                video.style.maxHeight = '400px';
+                
+                // Create controls
+                const controls = document.createElement('div');
+                controls.className = 'control-buttons';
+                
+                const captureBtn = document.createElement('button');
+                captureBtn.className = 'capture-btn';
+                captureBtn.textContent = '📸 Capture Photo';
+                captureBtn.onclick = capturePhoto;
+                
+                controls.appendChild(captureBtn);
+                
+                // Clear container and add video
+                videoContainer.innerHTML = '';
+                videoContainer.appendChild(video);
+                videoContainer.appendChild(controls);
+                
+                result.innerHTML = '<div class="result success">✅ Camera access granted successfully!</div>';
+                stopBtn.disabled = false;
+                
+                // Update permission status
+                document.getElementById('statusText').textContent = 'granted';
+                
+            } catch (error) {
+                let errorMessage = '❌ ';
+                let errorType = '';
+                
+                switch (error.name) {
+                    case 'NotAllowedError':
+                        errorType = 'Permission denied';
+                        errorMessage += 'Camera permission denied. Please allow camera access and try again.';
+                        break;
+                    case 'NotFoundError':
+                        errorType = 'No camera found';
+                        errorMessage += 'No camera device found on your device.';
+                        break;
+                    case 'NotSupportedError':
+                        errorType = 'Not supported';
+                        errorMessage += 'Camera access not supported in this browser.';
+                        break;
+                    case 'NotReadableError':
+                        errorType = 'Camera in use';
+                        errorMessage += 'Camera is currently being used by another application.';
+                        break;
+                    case 'OverconstrainedError':
+                        errorType = 'Configuration error';
+                        errorMessage += 'Camera configuration not supported by your device.';
+                        break;
+                    default:
+                        errorType = 'Unknown error';
+                        errorMessage += `Unexpected error: ${error.message}`;
+                }
+                
+                result.innerHTML = `<div class="result error">${errorMessage}</div>`;
+                console.error('Camera error:', error);
+                
+                // Update permission status if permission was denied
+                if (error.name === 'NotAllowedError') {
+                    document.getElementById('statusText').textContent = 'denied';
+                }
+            } finally {
+                cameraBtn.disabled = false;
+            }
+        }
+
+        // Capture photo
+        function capturePhoto() {
+            const video = document.querySelector('video');
+            if (!video) return;
+            
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0);
+            
+            // Convert to blob and create download link
+            canvas.toBlob((blob) => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `camera-capture-${Date.now()}.jpg`;
+                a.textContent = '📥 Download Captured Photo';
+                a.style.display = 'block';
+                a.style.marginTop = '10px';
+                a.style.color = '#007bff';
+                a.style.textDecoration = 'none';
+                
+                document.getElementById('result').appendChild(a);
+            }, 'image/jpeg', 0.9);
+        }
+
+        // Stop camera
+        function stopCamera() {
+            if (currentStream) {
+                currentStream.getTracks().forEach(track => track.stop());
+                currentStream = null;
+                document.getElementById('videoContainer').innerHTML = '';
+                document.getElementById('stopBtn').disabled = true;
+                document.getElementById('result').innerHTML = '<div class="result info">📷 Camera stopped</div>';
+            }
+        }
+
+        // Check initial status
+        window.onload = function() {
+            checkCameraSupport();
+            checkPermissions();
+        };
+
+        // Handle page unload
+        window.onbeforeunload = function() {
+            if (currentStream) {
+                currentStream.getTracks().forEach(track => track.stop());
+            }
+        };
+    </script>
+</body>
+</html>

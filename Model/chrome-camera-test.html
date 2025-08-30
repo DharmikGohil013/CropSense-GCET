@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chrome Camera Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .status-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid #4CAF50;
+        }
+        .status-card.error {
+            border-left-color: #f44336;
+        }
+        .status-card.warning {
+            border-left-color: #ff9800;
+        }
+        .status-card.info {
+            border-left-color: #2196F3;
+        }
+        .test-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+        }
+        .test-button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .chrome-info {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        .video-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        video {
+            max-width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        .capture-btn {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+        }
+        .stop-btn {
+            background: linear-gradient(135deg, #f44336, #da190b);
+        }
+        .instructions {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+        .instructions ol {
+            padding-left: 20px;
+        }
+        .instructions li {
+            margin-bottom: 8px;
+        }
+        .protocol-info {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin: 0 5px;
+        }
+        .https {
+            background: #4CAF50;
+            color: white;
+        }
+        .http {
+            background: #f44336;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Chrome Camera Debug Tool</h1>
+        
+        <!-- Protocol Check -->
+        <div class="status-card" id="protocolStatus">
+            <h3>🔒 Protocol Check</h3>
+            <p>Current Protocol: <span class="protocol-info" id="protocolInfo"></span></p>
+            <p id="protocolMessage"></p>
+        </div>
+
+        <!-- Browser Detection -->
+        <div class="status-card info" id="browserInfo">
+            <h3>🌐 Browser Information</h3>
+            <p id="browserDetails"></p>
+        </div>
+
+        <!-- Permission Status -->
+        <div class="status-card" id="permissionStatus">
+            <h3>🎥 Camera Permission Status</h3>
+            <p><strong>Current Status:</strong> <span id="permissionState">Checking...</span></p>
+        </div>
+
+        <!-- Test Buttons -->
+        <div style="text-align: center; margin: 30px 0;">
+            <button class="test-button" onclick="checkCameraSupport()">📹 Check Camera Support</button>
+            <button class="test-button" onclick="checkPermissions()">🔐 Check Permissions</button>
+            <button class="test-button" onclick="testCamera()" id="testBtn">🚀 Test Camera</button>
+            <button class="test-button stop-btn" onclick="stopCamera()" id="stopBtn" disabled>⏹️ Stop Camera</button>
+        </div>
+
+        <!-- Results -->
+        <div id="results"></div>
+
+        <!-- Video Container -->
+        <div id="videoContainer" class="video-container"></div>
+
+        <!-- Chrome Instructions -->
+        <div class="instructions">
+            <h3>🔧 Chrome Camera Setup Instructions</h3>
+            <ol>
+                <li><strong>Ensure HTTPS:</strong> Camera access requires secure connection (except localhost)</li>
+                <li><strong>Check Address Bar:</strong> Look for camera icon 📹 when prompted</li>
+                <li><strong>Allow Permission:</strong> Click "Allow" when browser asks for camera access</li>
+                <li><strong>Site Settings:</strong> Click lock icon → Site settings → Camera → Allow</li>
+                <li><strong>If Blocked:</strong> Go to chrome://settings/content/camera and remove blocks</li>
+            </ol>
+        </div>
+
+        <!-- Chrome Specific Info -->
+        <div class="chrome-info" id="chromeSpecific" style="display: none;">
+            <h4>⚠️ Chrome-Specific Issues:</h4>
+            <ul>
+                <li>Chrome requires HTTPS for camera access (current: <span id="currentProtocol"></span>)</li>
+                <li>Check if camera is blocked in site settings</li>
+                <li>Try incognito mode to test without extensions</li>
+                <li>Update Chrome to latest version</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        let currentStream = null;
+
+        // Initialize page
+        window.onload = function() {
+            checkProtocol();
+            detectBrowser();
+            checkCameraSupport();
+            checkPermissions();
+        };
+
+        // Check protocol (HTTP vs HTTPS)
+        function checkProtocol() {
+            const protocol = window.location.protocol;
+            const hostname = window.location.hostname;
+            const protocolInfo = document.getElementById('protocolInfo');
+            const protocolMessage = document.getElementById('protocolMessage');
+            const protocolStatus = document.getElementById('protocolStatus');
+            
+            protocolInfo.textContent = protocol;
+            protocolInfo.className = protocol === 'https:' ? 'protocol-info https' : 'protocol-info http';
+            
+            if (protocol === 'https:') {
+                protocolMessage.textContent = '✅ HTTPS detected - Camera access should work';
+                protocolStatus.className = 'status-card';
+            } else if (hostname === 'localhost' || hostname === '127.0.0.1') {
+                protocolMessage.textContent = '⚠️ HTTP on localhost - May work in Chrome';
+                protocolStatus.className = 'status-card warning';
+            } else {
+                protocolMessage.textContent = '❌ HTTP detected - Chrome will block camera access';
+                protocolStatus.className = 'status-card error';
+            }
+        }
+
+        // Detect browser
+        function detectBrowser() {
+            const userAgent = navigator.userAgent;
+            const browserDetails = document.getElementById('browserDetails');
+            const chromeSpecific = document.getElementById('chromeSpecific');
+            
+            let browser = 'Unknown';
+            if (userAgent.includes('Chrome') && !userAgent.includes('Edg')) {
+                browser = 'Chrome';
+                chromeSpecific.style.display = 'block';
+            } else if (userAgent.includes('Firefox')) {
+                browser = 'Firefox';
+            } else if (userAgent.includes('Safari') && !userAgent.includes('Chrome')) {
+                browser = 'Safari';
+            } else if (userAgent.includes('Edg')) {
+                browser = 'Edge';
+            }
+            
+            browserDetails.innerHTML = `
+                <strong>Browser:</strong> ${browser}<br>
+                <strong>User Agent:</strong> ${userAgent.substring(0, 100)}...
+            `;
+        }
+
+        // Check camera support
+        async function checkCameraSupport() {
+            const results = document.getElementById('results');
+            
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                results.innerHTML = '<div class="status-card error">❌ <strong>Camera API not supported</strong><br>Your browser doesn\'t support camera access.</div>';
+                return false;
+            }
+            
+            try {
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                const videoDevices = devices.filter(device => device.kind === 'videoinput');
+                
+                if (videoDevices.length === 0) {
+                    results.innerHTML = '<div class="status-card error">❌ <strong>No cameras found</strong><br>No camera devices detected.</div>';
+                    return false;
+                }
+                
+                results.innerHTML = `<div class="status-card">✅ <strong>Camera API supported</strong><br>Found ${videoDevices.length} camera device(s)</div>`;
+                return true;
+            } catch (error) {
+                results.innerHTML = `<div class="status-card error">❌ <strong>Error checking devices:</strong><br>${error.message}</div>`;
+                return false;
+            }
+        }
+
+        // Check permissions
+        async function checkPermissions() {
+            const permissionState = document.getElementById('permissionState');
+            const permissionStatus = document.getElementById('permissionStatus');
+            
+            try {
+                if (!navigator.permissions) {
+                    permissionState.textContent = 'Permissions API not supported';
+                    return;
+                }
+
+                const permission = await navigator.permissions.query({ name: 'camera' });
+                permissionState.textContent = permission.state;
+                
+                switch (permission.state) {
+                    case 'granted':
+                        permissionStatus.className = 'status-card';
+                        break;
+                    case 'denied':
+                        permissionStatus.className = 'status-card error';
+                        break;
+                    case 'prompt':
+                        permissionStatus.className = 'status-card warning';
+                        break;
+                }
+                
+                permission.onchange = () => {
+                    permissionState.textContent = permission.state;
+                };
+                
+            } catch (error) {
+                permissionState.textContent = `Error: ${error.message}`;
+                permissionStatus.className = 'status-card error';
+            }
+        }
+
+        // Test camera
+        async function testCamera() {
+            const results = document.getElementById('results');
+            const videoContainer = document.getElementById('videoContainer');
+            const testBtn = document.getElementById('testBtn');
+            const stopBtn = document.getElementById('stopBtn');
+            
+            testBtn.disabled = true;
+            results.innerHTML = '<div class="status-card info">📹 <strong>Requesting camera access...</strong><br>Please allow camera permission when prompted.</div>';
+            
+            try {
+                // Chrome-optimized constraints
+                const constraints = {
+                    video: {
+                        facingMode: { ideal: 'environment' },
+                        width: { min: 320, ideal: 1280, max: 1920 },
+                        height: { min: 240, ideal: 720, max: 1080 },
+                        aspectRatio: { ideal: 16/9 },
+                        frameRate: { ideal: 30, max: 60 }
+                    }
+                };
+
+                currentStream = await navigator.mediaDevices.getUserMedia(constraints);
+                
+                // Create video element
+                const video = document.createElement('video');
+                video.srcObject = currentStream;
+                video.setAttribute('playsinline', 'true');
+                video.setAttribute('autoplay', 'true');
+                video.setAttribute('muted', 'true');
+                video.style.width = '100%';
+                video.style.maxHeight = '400px';
+                video.style.objectFit = 'cover';
+                
+                // Controls
+                const controls = document.createElement('div');
+                controls.className = 'controls';
+                
+                const captureBtn = document.createElement('button');
+                captureBtn.className = 'test-button capture-btn';
+                captureBtn.textContent = '📸 Capture Photo';
+                captureBtn.onclick = capturePhoto;
+                
+                const switchBtn = document.createElement('button');
+                switchBtn.className = 'test-button';
+                switchBtn.textContent = '🔄 Switch Camera';
+                switchBtn.onclick = switchCamera;
+                
+                controls.appendChild(captureBtn);
+                controls.appendChild(switchBtn);
+                
+                videoContainer.innerHTML = '';
+                videoContainer.appendChild(video);
+                videoContainer.appendChild(controls);
+                
+                results.innerHTML = '<div class="status-card">✅ <strong>Camera access granted!</strong><br>Camera is working correctly.</div>';
+                stopBtn.disabled = false;
+                
+                // Update permission status
+                document.getElementById('permissionState').textContent = 'granted';
+                
+            } catch (error) {
+                let errorHtml = '<div class="status-card error">❌ <strong>Camera Error:</strong><br>';
+                
+                switch (error.name) {
+                    case 'NotAllowedError':
+                        errorHtml += 'Permission denied. Please allow camera access and try again.';
+                        document.getElementById('permissionState').textContent = 'denied';
+                        break;
+                    case 'NotFoundError':
+                        errorHtml += 'No camera device found.';
+                        break;
+                    case 'NotSupportedError':
+                        errorHtml += 'Camera not supported in this browser.';
+                        break;
+                    case 'NotReadableError':
+                        errorHtml += 'Camera is being used by another application.';
+                        break;
+                    default:
+                        errorHtml += `${error.message}`;
+                }
+                
+                errorHtml += '</div>';
+                results.innerHTML = errorHtml;
+                
+            } finally {
+                testBtn.disabled = false;
+            }
+        }
+
+        // Switch camera (front/back)
+        async function switchCamera() {
+            if (!currentStream) return;
+            
+            try {
+                // Stop current stream
+                currentStream.getTracks().forEach(track => track.stop());
+                
+                // Get current facingMode
+                const currentTrack = currentStream.getVideoTracks()[0];
+                const currentSettings = currentTrack.getSettings();
+                const newFacingMode = currentSettings.facingMode === 'environment' ? 'user' : 'environment';
+                
+                // Request new stream with different camera
+                const constraints = {
+                    video: {
+                        facingMode: { exact: newFacingMode },
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    }
+                };
+                
+                currentStream = await navigator.mediaDevices.getUserMedia(constraints);
+                
+                // Update video source
+                const video = document.querySelector('video');
+                if (video) {
+                    video.srcObject = currentStream;
+                }
+                
+            } catch (error) {
+                console.error('Error switching camera:', error);
+                // Fallback to original camera test
+                testCamera();
+            }
+        }
+
+        // Capture photo
+        function capturePhoto() {
+            const video = document.querySelector('video');
+            if (!video) return;
+            
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0);
+            
+            canvas.toBlob((blob) => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `chrome-camera-test-${Date.now()}.jpg`;
+                a.textContent = '📥 Download Photo';
+                a.style.display = 'block';
+                a.style.color = 'white';
+                a.style.marginTop = '10px';
+                a.style.textAlign = 'center';
+                
+                const results = document.getElementById('results');
+                results.appendChild(a);
+            }, 'image/jpeg', 0.9);
+        }
+
+        // Stop camera
+        function stopCamera() {
+            if (currentStream) {
+                currentStream.getTracks().forEach(track => track.stop());
+                currentStream = null;
+                document.getElementById('videoContainer').innerHTML = '';
+                document.getElementById('stopBtn').disabled = true;
+                document.getElementById('results').innerHTML = '<div class="status-card info">📷 <strong>Camera stopped</strong></div>';
+            }
+        }
+
+        // Cleanup on page unload
+        window.onbeforeunload = function() {
+            if (currentStream) {
+                currentStream.getTracks().forEach(track => track.stop());
+            }
+        };
+    </script>
+</body>
+</html>

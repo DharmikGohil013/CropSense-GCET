@@ -6,16 +6,29 @@
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#2E7D32",
+    "orientation": "portrait-primary",
+    "scope": "/",
+    "lang": "en-US",
+    "categories": ["productivity", "utilities", "education"],
+    "prefer_related_applications": false,
     "icons": [
         {
             "src": "/static/icon-192x192.png",
             "sizes": "192x192",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "any maskable"
         },
         {
             "src": "/static/icon-512x512.png",
             "sizes": "512x512",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "any maskable"
         }
+    ],
+    "permissions": [
+        "camera"
+    ],
+    "features": [
+        "camera"
     ]
 }
