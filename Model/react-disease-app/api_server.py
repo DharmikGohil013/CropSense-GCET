@@ -24,7 +24,7 @@ import torch
 from dotenv import load_dotenv
 from PIL import Image
 from torchvision import transforms
-from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi import FastAPI, File, UploadFile, HTTPException, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
@@ -49,7 +49,7 @@ except ImportError as e:
 load_dotenv()
 
 # Set API keys
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyBQqOMAiwBjcLq0Kpf_CR8vdib8f7lOmZg")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyDnrmfVIAvH9ZvQEQDdcExf995pbuQDvxc")
 
 # Configure Gemini
 genai.configure(api_key=GEMINI_API_KEY)
@@ -71,7 +71,13 @@ app = FastAPI(title="Disease Prediction API", version="1.0.0")
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "*",  # Allow all origins for development
+        "http://localhost:5173",  # Vite dev server
+        "http://127.0.0.1:5173",  # Local Vite
+        "http://10.10.5.33:5173",  # Your frontend URL
+        "http://192.168.137.1:5173",  # Your PC IP with frontend port
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -122,11 +128,37 @@ def predict_image(img, model=None):
     prediction = disease_classes[preds[0].item()]
     return prediction
 
-def generate_detailed_solution(crop_name: str, disease_name: str, description: str) -> str:
-    """Generate detailed solution using Gemini AI"""
+def generate_detailed_solution(crop_name: str, disease_name: str, description: str, language: str = 'en') -> str:
+    """Generate detailed solution using Gemini AI in the specified language"""
     try:
+        # Language mapping for better prompts
+        language_prompts = {
+            'en': 'Respond in English',
+            'hi': 'Respond in Hindi (हिंदी में जवाब दें)',
+            'gu': 'Respond in Gujarati (ગુજરાતીમાં જવાબ આપો)',
+            'es': 'Respond in Spanish (Responde en español)',
+            'fr': 'Respond in French (Répondez en français)',
+            'de': 'Respond in German (Antworten Sie auf Deutsch)',
+            'pt': 'Respond in Portuguese (Responda em português)',
+            'zh': 'Respond in Chinese (用中文回答)',
+            'ja': 'Respond in Japanese (日本語で答えてください)',
+            'ko': 'Respond in Korean (한국어로 답변해주세요)',
+            'ru': 'Respond in Russian (Отвечайте по-русски)',
+            'ar': 'Respond in Arabic (أجب بالعربية)',
+            'bn': 'Respond in Bengali (বাংলায় উত্তর দিন)',
+            'ta': 'Respond in Tamil (தமிழில் பதில் அளிக்கவும்)',
+            'te': 'Respond in Telugu (తెలుగులో సమాధానం ఇవ్వండి)',
+            'ml': 'Respond in Malayalam (മലയാളത്തിൽ ഉത്തരം നൽകുക)',
+            'kn': 'Respond in Kannada (ಕನ್ನಡದಲ್ಲಿ ಉತ್ತರಿಸಿ)',
+            'pa': 'Respond in Punjabi (ਪੰਜਾਬੀ ਵਿੱਚ ਜਵਾਬ ਦਿਓ)',
+            'ur': 'Respond in Urdu (اردو میں جواب دیں)',
+            'mr': 'Respond in Marathi (मराठीत उत्तर द्या)',
+        }
+        
+        lang_instruction = language_prompts.get(language, 'Respond in English')
+        
         solution_prompt = f"""
-        Based on the following crop disease information, provide a comprehensive solution in 2-3 sentences:
+        {lang_instruction}. Based on the following crop disease information, provide a comprehensive solution in 2-3 sentences:
         
         Crop: {crop_name}
         Disease: {disease_name}
@@ -145,21 +177,43 @@ def generate_detailed_solution(crop_name: str, disease_name: str, description: s
         return response.text.strip()
     except Exception as e:
         print(f"Error generating solution: {e}")
-        # Fallback solutions based on common diseases
+        # Fallback solutions based on common diseases in the requested language
         fallback_solutions = {
-            "early blight": "Apply copper-based fungicides every 7-14 days. Remove infected leaves immediately and ensure proper air circulation. Practice crop rotation with non-solanaceous crops for 2-3 years.",
-            "late blight": "Use protective fungicides like chlorothalonil or copper sulfate. Avoid overhead watering and ensure good drainage. Remove and destroy infected plants immediately to prevent spread.",
-            "bacterial spot": "Apply copper-based bactericides during dry weather. Avoid working in wet fields and use drip irrigation instead of overhead watering. Use disease-resistant varieties when available.",
-            "leaf spot": "Apply appropriate fungicides based on the pathogen. Improve air circulation by proper spacing and pruning. Remove fallen leaves and practice good field sanitation.",
-            "powdery mildew": "Apply sulfur-based fungicides or systemic fungicides like triazoles. Ensure good air circulation and avoid overhead watering. Remove infected plant parts immediately.",
+            'en': {
+                "early blight": "Apply copper-based fungicides every 7-14 days. Remove infected leaves immediately and ensure proper air circulation. Practice crop rotation with non-solanaceous crops for 2-3 years.",
+                "late blight": "Use protective fungicides like chlorothalonil or copper sulfate. Avoid overhead watering and ensure good drainage. Remove and destroy infected plants immediately to prevent spread.",
+                "bacterial spot": "Apply copper-based bactericides during dry weather. Avoid working in wet fields and use drip irrigation instead of overhead watering. Use disease-resistant varieties when available.",
+                "leaf spot": "Apply appropriate fungicides based on the pathogen. Improve air circulation by proper spacing and pruning. Remove fallen leaves and practice good field sanitation.",
+                "powdery mildew": "Apply sulfur-based fungicides or systemic fungicides like triazoles. Ensure good air circulation and avoid overhead watering. Remove infected plant parts immediately.",
+                "default": f"For {disease_name} in {crop_name}, consult with local agricultural extension services for specific treatment recommendations. Practice good field hygiene, proper spacing, and consider using disease-resistant varieties."
+            },
+            'hi': {
+                "early blight": "हर 7-14 दिन में तांबा आधारित कवकनाशी का छिड़काव करें। संक्रमित पत्तियों को तुरंत हटाएं और उचित हवा का संचार सुनिश्चित करें। 2-3 साल तक गैर-सोलानेसियस फसलों के साथ फसल चक्र का अभ्यास करें।",
+                "late blight": "क्लोरोथालोनिल या कॉपर सल्फेट जैसे सुरक्षात्मक कवकनाशी का उपयोग करें। ऊपरी सिंचाई से बचें और अच्छी जल निकासी सुनिश्चित करें। फैलने से रोकने के लिए संक्रमित पौधों को तुरंत हटाएं और नष्ट करें।",
+                "bacterial spot": "शुष्क मौसम में तांबा आधारित जीवाणुनाशी का प्रयोग करें। गीले खेतों में काम करने से बचें और ऊपरी सिंचाई के बजाय ड्रिप सिंचाई का उपयोग करें। उपलब्ध होने पर रोग प्रतिरोधी किस्मों का उपयोग करें।",
+                "leaf spot": "रोगजनक के आधार पर उपयुक्त कवकनाशी का प्रयोग करें। उचित दूरी और छंटाई द्वारा हवा का संचार सुधारें। गिरी हुई पत्तियों को हटाएं और अच्छी खेत स्वच्छता का अभ्यास करें।",
+                "powdery mildew": "सल्फर आधारित कवकनाशी या ट्राइएज़ोल जैसे सिस्टमिक कवकनाशी का प्रयोग करें। अच्छी हवा का संचार सुनिश्चित करें और ऊपरी सिंचाई से बचें। संक्रमित पौधे के हिस्सों को तुरंत हटाएं।",
+                "default": f"{crop_name} में {disease_name} के लिए, विशिष्ट उपचार सिफारिशों के लिए स्थानीय कृषि विस्तार सेवाओं से सलाह लें। अच्छी खेत स्वच्छता, उचित दूरी, और रोग प्रतिरोधी किस्मों का उपयोग करने पर विचार करें।"
+            },
+            'gu': {
+                "early blight": "દર 7-14 દિવસે તાંબા આધારિત ફૂગનાશકનો છંટકાવ કરો. ચેપગ્રસ્ત પાંદડાઓને તરત જ હટાવો અને યોગ્ય હવાનું પરિભ્રમણ સુનિશ્ચિત કરો. 2-3 વર્ષ માટે બિન-સોલેનેસિયસ પાકો સાથે પાક પરિભ્રમણ કરો.",
+                "late blight": "ક્લોરોથાલોનિલ અથવા કોપર સલ્ફેટ જેવા સુરક્ષાત્મક ફૂગનાશકનો ઉપયોગ કરો. ઉપરથી પાણી આપવાનું ટાળો અને સારી ડ્રેનેજ સુનિશ્ચિત કરો. ફેલાવાને રોકવા માટે ચેપગ્રસ્ત છોડને તરત જ હટાવો અને નાશ કરો.",
+                "bacterial spot": "શુષ્ક હવામાનમાં તાંબા આધારિત બેક્ટેરિયાનાશકનો ઉપયોગ કરો. ભીના ખેતરોમાં કામ કરવાનું ટાળો અને ઉપરથી પાણી આપવાને બદલે ડ્રિપ સિંચાઈનો ઉપયોગ કરો. ઉપલબ્ધ હોય ત્યારે રોગ પ્રતિરોધી જાતોનો ઉપયોગ કરો.",
+                "leaf spot": "રોગકારક પર આધારિત યોગ્ય ફૂગનાશકનો ઉપયોગ કરો. યોગ્ય અંતર અને કાપણી દ્વારા હવાનું પરિભ્રમણ સુધારો. પડેલા પાંદડાઓને હટાવો અને સારી ખેત સ્વચ્છતાનો અભ્યાસ કરો.",
+                "powdery mildew": "સલ્ફર આધારિત ફૂગનાશક અથવા ટ્રાયઝોલ જેવા સિસ્ટમિક ફૂગનાશકનો ઉપયોગ કરો. સારું હવાનું પરિભ્રમણ સુનિશ્ચિત કરો અને ઉપરથી પાણી આપવાનું ટાળો. ચેપગ્રસ્ત છોડના ભાગોને તરત જ હટાવો.",
+                "default": f"{crop_name} માં {disease_name} માટે, ચોક્કસ સારવાર ભલામણો માટે સ્થાનિક કૃષિ વિસ્તરણ સેવાઓ સાથે સલાહ લો. સારી ખેત સ્વચ્છતા, યોગ્ય અંતર, અને રોગ પ્રતિરોધી જાતો વાપરવાનું વિચારો."
+            }
         }
         
+        # Get fallback solution based on language
+        lang_solutions = fallback_solutions.get(language, fallback_solutions['en'])
         disease_lower = disease_name.lower()
-        for key, solution in fallback_solutions.items():
-            if key in disease_lower:
+        
+        for key, solution in lang_solutions.items():
+            if key != 'default' and key in disease_lower:
                 return solution
         
-        return f"For {disease_name} in {crop_name}, consult with local agricultural extension services for specific treatment recommendations. Practice good field hygiene, proper spacing, and consider using disease-resistant varieties."
+        return lang_solutions.get('default', lang_solutions[list(lang_solutions.keys())[0]])
 
 @app.get("/")
 async def root():
@@ -188,10 +242,20 @@ async def predict_fertilizer(request: Dict[str, Any]):
         soil_type = request.get('soilType', '')
         crop = request.get('crop', '')
         city = request.get('city', '')
+        language = request.get('language', 'en')  # Get language preference
         
         # Validate required fields
         if not all([soil_type, crop]):
             raise HTTPException(status_code=400, detail="Missing required fields: soilType or crop")
+        
+        # Language-specific instruction for response
+        language_instructions = {
+            'en': "Please provide your response in English.",
+            'hi': "कृपया अपना उत्तर हिंदी में दें।",
+            'gu': "કૃપા કરીને તમારો જવાબ ગુજરાતીમાં આપો।"
+        }
+        
+        lang_instruction = language_instructions.get(language, language_instructions['en'])
         
         # Create detailed prompt for Gemini to generate structured JSON response
         prompt = f"""As an agricultural expert, analyze the following soil and crop conditions and provide a fertilizer recommendation:
@@ -203,6 +267,8 @@ Current Nitrogen Level: {nitrogen} kg/ha
 Current Phosphorous Level: {phosphorous} kg/ha
 Current Potassium Level: {potassium} kg/ha
 Soil Moisture: {moisture}%
+
+{lang_instruction}
 
 Please provide a response in the following JSON format:
 {{
@@ -237,7 +303,7 @@ Consider the soil type characteristics, crop nutrient requirements, current nutr
                 
             except json.JSONDecodeError:
                 # If JSON parsing fails, create structured response from text
-                structured_response = parse_fertilizer_text_response(prediction_text, soil_type, crop)
+                structured_response = parse_fertilizer_text_response(prediction_text, soil_type, crop, language)
                 
                 fertilizer_recommendation = {
                     "fertilizerName": structured_response.get("fertilizerName", "NPK 10-10-10"),
@@ -255,7 +321,7 @@ Consider the soil type characteristics, crop nutrient requirements, current nutr
             print(f"Gemini API error: {e}")
             # Fallback recommendation based on soil type and crop
             fallback_recommendation = generate_structured_fertilizer_recommendation(
-                soil_type, crop, nitrogen, phosphorous, potassium, moisture
+                soil_type, crop, nitrogen, phosphorous, potassium, moisture, language
             )
             
             fertilizer_recommendation = {
@@ -284,7 +350,7 @@ Consider the soil type characteristics, crop nutrient requirements, current nutr
             }
         )
 
-def parse_fertilizer_text_response(text: str, soil_type: str, crop: str) -> Dict[str, str]:
+def parse_fertilizer_text_response(text: str, soil_type: str, crop: str, language: str = 'en') -> Dict[str, str]:
     """Parse unstructured text response into structured format"""
     lines = text.split('\n')
     
@@ -311,7 +377,7 @@ def parse_fertilizer_text_response(text: str, soil_type: str, crop: str) -> Dict
         "applicationRate": application_rate
     }
 
-def generate_structured_fertilizer_recommendation(soil_type: str, crop: str, n: float, p: float, k: float, moisture: float) -> Dict[str, str]:
+def generate_structured_fertilizer_recommendation(soil_type: str, crop: str, n: float, p: float, k: float, moisture: float, language: str = 'en') -> Dict[str, str]:
     """Generate structured fertilizer recommendation based on expert rules"""
     
     # Basic NPK recommendations for common crops
@@ -461,7 +527,7 @@ def generate_structured_fertilizer_recommendation(soil_type: str, crop: str, n: 
 
 
 @app.post("/predict-disease")
-async def predict_disease(file: UploadFile = File(...)):
+async def predict_disease(file: UploadFile = File(...), language: str = Form('en')):
     """Predict disease from uploaded image"""
     try:
         # Validate file type
@@ -478,7 +544,7 @@ async def predict_disease(file: UploadFile = File(...)):
             temp_path = temp_file.name
         
         try:
-            print("Starting disease prediction...")
+            print(f"Starting disease prediction with language: {language}")
             
             # Get prediction from ResNet9 model
             if disease_model is not None:
@@ -496,9 +562,9 @@ async def predict_disease(file: UploadFile = File(...)):
                 rice_prediction = {"disease": "Unknown", "disease_confidence": 0}
                 print("Rice model not available")
             
-            # Get AI analysis using Gemini
+            # Get AI analysis using Gemini with language support
             try:
-                ai_result = from_ai(gemini_model, temp_path, resnet_prediction, rice_prediction)
+                ai_result = from_ai(gemini_model, temp_path, resnet_prediction, rice_prediction, language)
                 print(f"AI analysis result: {ai_result}")
             except Exception as e:
                 print(f"Gemini AI error: {e}")
@@ -511,8 +577,8 @@ async def predict_disease(file: UploadFile = File(...)):
                 disease_name = resnet_prediction if resnet_prediction else "Unknown Disease"
                 description = "Disease detected but detailed analysis unavailable."
             
-            # Generate solution using Gemini
-            solution = generate_detailed_solution(crop_name, disease_name, description)
+            # Generate solution using Gemini with language support
+            solution = generate_detailed_solution(crop_name, disease_name, description, language)
             
             # Calculate confidence (mock for now, can be improved)
             confidence = 85 if disease_name != "Unknown Disease" else 60
@@ -557,4 +623,4 @@ async def predict_disease(file: UploadFile = File(...)):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8001)

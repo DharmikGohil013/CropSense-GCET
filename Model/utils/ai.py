@@ -3,11 +3,37 @@ import json
 import google.generativeai as genai
 
 
-def from_ai(model, img, predict1, predict2):
+def from_ai(model, img, predict1, predict2, language='en'):
     try:
-        print("Starting AI analysis...")
+        print(f"Starting AI analysis with language: {language}")
         image_file = genai.upload_file(path=img)
         print("Image uploaded to Gemini successfully")
+        
+        # Language mapping for better prompts
+        language_prompts = {
+            'en': 'Respond in English',
+            'hi': 'Respond in Hindi (हिंदी में जवाब दें)',
+            'gu': 'Respond in Gujarati (ગુજરાતીમાં જવાબ આપો)',
+            'es': 'Respond in Spanish (Responde en español)',
+            'fr': 'Respond in French (Répondez en français)',
+            'de': 'Respond in German (Antworten Sie auf Deutsch)',
+            'pt': 'Respond in Portuguese (Responda em português)',
+            'zh': 'Respond in Chinese (用中文回答)',
+            'ja': 'Respond in Japanese (日本語で答えてください)',
+            'ko': 'Respond in Korean (한국어로 답변해주세요)',
+            'ru': 'Respond in Russian (Отвечайте по-русски)',
+            'ar': 'Respond in Arabic (أجب بالعربية)',
+            'bn': 'Respond in Bengali (বাংলায় উত্তর দিন)',
+            'ta': 'Respond in Tamil (தமிழில் பதில் அளிக்கவும்)',
+            'te': 'Respond in Telugu (తెలుగులో సమాధానం ఇవ్వండి)',
+            'ml': 'Respond in Malayalam (മലയാളത്തിൽ ഉത്തരം നൽകുക)',
+            'kn': 'Respond in Kannada (ಕನ್ನಡದಲ್ಲಿ ಉತ್ತರಿಸಿ)',
+            'pa': 'Respond in Punjabi (ਪੰਜਾਬੀ ਵਿੱਚ ਜਵਾਬ ਦਿਓ)',
+            'ur': 'Respond in Urdu (اردو میں جواب دیں)',
+            'mr': 'Respond in Marathi (मराठीत उत्तर द्या)',
+        }
+        
+        lang_instruction = language_prompts.get(language, 'Respond in English')
         
         # Safely extract prediction data
         if predict2 and isinstance(predict2, dict):
@@ -23,7 +49,7 @@ def from_ai(model, img, predict1, predict2):
             convnext_variety_confidence = "N/A"
         
         prompt = f"""
-        You are an advanced AI model designed to evaluate plant diseases through image analysis. Follow these steps to provide a response:
+        {lang_instruction}. You are an advanced AI model designed to evaluate plant diseases through image analysis. Follow these steps to provide a response:
 
         1. **Image Validation**: 
            - First, assess whether the provided image contains a plant or any agricultural content. 
@@ -50,6 +76,8 @@ def from_ai(model, img, predict1, predict2):
              - `"crop_name"`: Name of the crop if detected, otherwise return `"unknown"`.
              - `"disease_name"`: Name of the disease if detected, otherwise return `"No disease detected"`.
              - `"prevention"`: Suggestions for treatment or prevention methods if a disease is found or general tips for crop management if no disease is detected.
+
+        Important: Respond strictly in the language specified: {lang_instruction}. All field values should be in that language.
         """
 
         print("Sending request to Gemini...")
