@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rice Disease Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Welcome to Rice Disease Detection</h1>
+    </header>
+    <main>
+        <section>
+            <h2>Upload an Image</h2>
+            <form action="/predict" method="post" enctype="multipart/form-data">
+                <input type="file" name="image" accept="image/*" required>
+                <button type="submit">Submit</button>
+            </form>
+        </section>
+        <section>
+            <h2>Weather Information</h2>
+            <form action="/weather" method="get">
+                <input type="text" name="location" placeholder="Enter location" required>
+                <button type="submit">Get Weather</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2023 Rice Disease Detection. All rights reserved.</p>
+    </footer>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
