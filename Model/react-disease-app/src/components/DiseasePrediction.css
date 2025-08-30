@@ -624,7 +624,7 @@
   background: #00b1d2;
   border-color: #00b1d2;
   animation: pulse 1.5s infinite;
-  transform: scale(1.2);
+  transform: scale(0.5);
 }
 
 .step-item.completed .step-circle::after {
@@ -1600,4 +1600,5 @@
     height: 30px;
     border-width: 2px;
   }
+}
 }
