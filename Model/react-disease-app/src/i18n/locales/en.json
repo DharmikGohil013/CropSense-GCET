@@ -13,6 +13,7 @@
     "analyzingImage": "Analyzing Image...",
     "analyzing": "Analyzing Your Image",
     "analyzingDesc": "Our model is examining the crop image to detect diseases...",
+    "didYouKnow": "Did You Know?",
     "reset": "Reset",
     "predictionResult": "Prediction Result",
     "confidence": "Confidence",
@@ -26,6 +27,32 @@
     "invalidImage": "Invalid Image Detected",
     "invalidMessage": "Please Upload a Proper Plant Image",
     "invalidDescription": "The uploaded image doesn't appear to contain a clear view of a plant or crop leaf. For accurate disease detection, please ensure your image includes:",
+    "steps": {
+      "uploading": {
+        "title": "Uploading Image",
+        "description": "Securely transferring your image to our AI system"
+      },
+      "processing": {
+        "title": "Processing Image",
+        "description": "Enhancing image quality and extracting features"
+      },
+      "analyzing": {
+        "title": "AI Analysis",
+        "description": "Deep learning model examining plant characteristics"
+      },
+      "predicting": {
+        "title": "Disease Detection",
+        "description": "Identifying diseases and generating recommendations"
+      }
+    },
+    "facts": {
+      "fact1": "Plant diseases cost farmers billions annually worldwide, making early detection crucial for food security.",
+      "fact2": "AI can detect plant diseases up to 98% accurately, often better than human experts in controlled conditions.",
+      "fact3": "Over 80% of plant diseases are caused by fungi, making moisture and humidity key factors.",
+      "fact4": "Early disease detection can reduce crop losses by up to 40% and minimize pesticide usage.",
+      "fact5": "Some plant diseases can spread through wind, water, insects, or contaminated tools within hours.",
+      "fact6": "Healthy soil with good microorganisms can naturally suppress many plant diseases."
+    },
     "requirements": {
       "clearView": "Clear view of plant leaves or crops",
       "goodLighting": "Good lighting conditions", 

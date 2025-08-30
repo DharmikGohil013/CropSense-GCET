@@ -296,20 +296,20 @@
   stroke-width: 2.5;
 }
 
-/* Loading Overlay Styles */
+/* Enhanced Loading Overlay Styles */
 .loading-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 31, 61, 0.9);
-  backdrop-filter: blur(8px);
+  background: rgba(0, 31, 61, 0.95);
+  backdrop-filter: blur(12px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  animation: fadeIn 0.3s ease-out;
+  animation: fadeIn 0.4s ease-out;
 }
 
 @keyframes fadeIn {
@@ -323,25 +323,224 @@
 
 .loading-container {
   background: white;
-  border-radius: 25px;
-  padding: 40px 50px;
+  border-radius: 20px;
+  padding: 25px 20px;
   text-align: center;
-  box-shadow: 0 20px 60px rgba(0, 31, 61, 0.3);
-  border: 3px solid rgba(102, 209, 224, 0.3);
-  max-width: 450px;
+  box-shadow: 0 15px 40px rgba(0, 31, 61, 0.25);
+  border: 2px solid rgba(102, 209, 224, 0.2);
+  max-width: 400px;
   width: 90%;
   animation: slideInScale 0.4s ease-out;
+  position: relative;
+  overflow: hidden;
 }
 
 @keyframes slideInScale {
   from {
     opacity: 0;
-    transform: scale(0.8) translateY(20px);
+    transform: scale(0.8) translateY(30px);
   }
   to {
     opacity: 1;
     transform: scale(1) translateY(0);
   }
+}
+
+/* Facts Section - Simplified */
+.facts-section {
+  background: rgba(179, 226, 240, 0.08);
+  padding: 12px 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.fact-icon {
+  display: none; /* Hide icon for compact design */
+}
+
+.fact-content {
+  width: 100%;
+}
+
+.fact-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #001f3d;
+  margin: 0 0 5px 0;
+}
+
+.fact-text {
+  font-size: 0.8rem;
+  color: #001f3d;
+  opacity: 0.75;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Progress Steps - Simplified */
+.progress-steps {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 5px;
+}
+
+.progress-step {
+  flex: 1;
+  text-align: center;
+  opacity: 0.4;
+  transition: all 0.3s ease;
+}
+
+.progress-step.active {
+  opacity: 1;
+}
+
+.progress-step.current {
+  opacity: 1;
+}
+
+.step-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 10px;
+  transition: all 0.3s ease;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.progress-step.active .step-icon {
+  background: linear-gradient(135deg, #00639b, #00b1d2);
+  color: white;
+}
+
+.progress-step.current .step-icon {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.step-icon svg {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2;
+}
+
+.step-details {
+  text-align: center;
+}
+
+.step-title {
+  font-size: 0.1rem;
+  font-weight: 600;
+  color: #001f3d;
+  margin: 0 0 4px 0;
+}
+
+.step-description {
+  font-size: 0.8rem;
+  color: #001f3d;
+  opacity: 0.6;
+  margin: 0;
+  line-height: 1.3;
+  display: block; /* Show descriptions but smaller */
+}
+
+.step-connector {
+  display: none; /* Hide connectors for simpler design */
+}
+
+/* Main Progress Bar - Simplified */
+.main-progress {
+  margin-bottom: 20px;
+}
+
+.progress-bar-container {
+  width: 100%;
+  height: 6px;
+  background: #e0e0e0;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #00639b, #00b1d2);
+  border-radius: 3px;
+  transition: width 0.8s ease-in-out;
+  position: relative;
+}
+
+.progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.progress-text {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #001f3d;
+  margin: 0;
+}
+
+/* Enhanced Spinner - Simplified */
+.loading-spinner-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #e0e0e0;
+  border-top: 3px solid #00639b;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.pulse-rings {
+  display: none; /* Hide pulse rings for simpler design */
 }
 
 .loading-spinner {
@@ -380,6 +579,150 @@
   font-size: 1.1rem;
   margin-bottom: 25px;
   line-height: 1.5;
+}
+
+.steps-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #001f3d;
+  margin-bottom: 18px;
+  text-align: center;
+}
+
+.steps-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  margin: 16px 0;
+}
+
+/* Progress Bar Background */
+.steps-container::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  right: 20px;
+  height: 3px;
+  background: rgba(0, 99, 155, 0.15);
+  border-radius: 2px;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+/* Progress Bar Fill */
+.steps-container::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  height: 3px;
+  background: linear-gradient(90deg, #00639b, #00b1d2);
+  border-radius: 2px;
+  transform: translateY(-50%);
+  z-index: 2;
+  transition: width 0.8s ease;
+  width: calc(var(--progress) * (100% - 40px) / 3);
+}
+
+.step-item {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  max-width: 90px;
+}
+
+.step-circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: white;
+  border: 3px solid rgba(0, 99, 155, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 31, 61, 0.1);
+}
+
+.step-item.completed .step-circle {
+  background: #28a745;
+  border-color: #28a745;
+  transform: scale(1.1);
+}
+
+.step-item.active .step-circle {
+  background: #00b1d2;
+  border-color: #00b1d2;
+  animation: pulse 1.5s infinite;
+  transform: scale(1.2);
+}
+
+.step-item.completed .step-circle::after {
+  content: '✓';
+  color: white;
+  font-size: 9px;
+  font-weight: bold;
+}
+
+.step-item.active .step-circle::after {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: white;
+  border-radius: 50%;
+  animation: dot-pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 177, 210, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(0, 177, 210, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 177, 210, 0);
+  }
+}
+   
+@keyframes dot-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(0.8);
+    opacity: 0.7;
+  }
+}
+
+.step-title {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #001f3d;
+  text-align: center;
+  line-height: 1.2;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+  max-width: 80px;
+}
+
+.step-item.active .step-title {
+  opacity: 1;
+  font-weight: 600;
+  color: #00b1d2;
+}
+
+.step-item.completed .step-title {
+  opacity: 0.8;
 }
 
 .loading-progress {
@@ -1043,5 +1386,95 @@
     margin: 20px;
     padding: 30px 20px;
     max-width: calc(100% - 40px);
+  }
+  
+/* Enhanced Loading Mobile Styles */
+@media (max-width: 768px) {
+  .loading-container {
+    padding: 20px 15px;
+    max-width: calc(100% - 30px);
+    border-radius: 15px;
+  }
+  
+  .facts-section {
+    padding: 10px 12px;
+    margin-bottom: 15px;
+  }
+  
+  .fact-title {
+    font-size: 0.85rem;
+  }
+  
+  .fact-text {
+    font-size: 0.75rem;
+  }
+  
+  .progress-steps {
+    gap: 3px;
+    margin-bottom: 15px;
+  }
+  
+  .step-icon {
+    width: 35px;
+    height: 35px;
+    font-size: 14px;
+  }
+  
+  .step-title {
+    font-size: 1rem;
+  }
+  
+  .loading-spinner {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .progress-text {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .loading-container {
+    padding: 15px 12px;
+  }
+  
+  .facts-section {
+    padding: 8px 10px;
+    margin-bottom: 12px;
+  }
+  
+  .fact-title {
+    font-size: 0.8rem;
+    margin-bottom: 3px;
+  }
+  
+  .fact-text {
+    font-size: 0.7rem;
+  }
+  
+  .progress-steps {
+    gap: 2px;
+    margin-bottom: 12px;
+  }
+  
+  .step-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 13px;
+  }
+  
+  .step-title {
+    font-size: 0.95rem;
+  }
+  
+  .progress-text {
+    font-size: 1rem;
+  }
+  
+  .loading-spinner {
+    width: 30px;
+    height: 30px;
+    border-width: 2px;
   }
 }

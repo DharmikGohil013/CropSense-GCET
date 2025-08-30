@@ -1,4 +1,4 @@
-import React, { useState } from "react"; 
+import React, { useState, useEffect } from "react"; 
 import "./DiseasePrediction.css";
 import { useTranslation } from 'react-i18next';
 import LanguageSelector from './LanguageSelector';
@@ -11,6 +11,59 @@ const DiseasePrediction = () => {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [showCamera, setShowCamera] = useState(false);
+  const [loadingStep, setLoadingStep] = useState(0);
+  const [currentFact, setCurrentFact] = useState(0);
+
+  // Loading steps configuration
+  const loadingSteps = [
+    { key: 'uploading', duration: 1000 },
+    { key: 'processing', duration: 2000 },
+    { key: 'analyzing', duration: 2000 },
+    { key: 'predicting', duration: 1500 }
+  ];
+
+  // Facts about plant diseases
+  const plantFacts = [
+    { key: 'fact1' },
+    { key: 'fact2' },
+    { key: 'fact3' },
+    { key: 'fact4' },
+    { key: 'fact5' },
+    { key: 'fact6' }
+  ];
+
+  // Effect to handle loading steps progression
+  useEffect(() => {
+    if (loading) {
+      setLoadingStep(0);
+      setCurrentFact(0);
+      
+      let currentStepIndex = 0;
+      let factIndex = 0;
+      
+      const progressSteps = () => {
+        if (currentStepIndex < loadingSteps.length) {
+          setLoadingStep(currentStepIndex);
+          
+          // Change fact every 2 seconds during loading
+          const factInterval = setInterval(() => {
+            factIndex = (factIndex + 1) % plantFacts.length;
+            setCurrentFact(factIndex);
+          }, 2000);
+          
+          setTimeout(() => {
+            clearInterval(factInterval);
+            currentStepIndex++;
+            if (currentStepIndex < loadingSteps.length && loading) {
+              progressSteps();
+            }
+          }, loadingSteps[currentStepIndex].duration);
+        }
+      };
+      
+      progressSteps();
+    }
+  }, [loading]);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -310,17 +363,51 @@ const DiseasePrediction = () => {
           </form>
         </div>
 
-        {/* Loading Overlay */}
+        {/* Enhanced Loading Overlay */}
         {loading && (
           <div className="loading-overlay">
             <div className="loading-container">
-              <div className="loading-spinner"></div>
-              <h3 className="loading-title">{t('diseasePrediction.analyzing')}</h3>
-              <p className="loading-text">
-                {t('diseasePrediction.analyzingDesc')}
-              </p>
-              <div className="loading-progress">
-                <div className="progress-bar"></div>
+              {/* Facts Section */}
+              <div className="facts-section">
+                <div className="fact-content">
+                  <h4 className="fact-title">{t('diseasePrediction.didYouKnow')}</h4>
+                  <p className="fact-text">{t(`diseasePrediction.facts.${plantFacts[currentFact].key}`)}</p>
+                </div>
+              </div>
+
+              {/* Progress Steps */}
+              <div className="progress-steps">
+                {loadingSteps.map((step, index) => (
+                  <div 
+                    key={step.key}
+                    className={`progress-step ${index <= loadingStep ? 'active' : ''} ${index === loadingStep ? 'current' : ''}`}
+                  >
+                    <div className="step-icon">
+                      {index + 1}
+                    </div>
+                    <div className="step-details">
+                      <h5 className="step-title">{t(`diseasePrediction.steps.${step.key}.title`)}</h5>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Animated Progress Bar */}
+              <div className="main-progress">
+                <div className="progress-bar-container">
+                  <div 
+                    className="progress-bar"
+                    style={{ width: `${((loadingStep + 1) / loadingSteps.length) * 100}%` }}
+                  ></div>
+                </div>
+                <p className="progress-text">
+                  {t(`diseasePrediction.steps.${loadingSteps[loadingStep].key}.title`)}...
+                </p>
+              </div>
+
+              {/* Spinning Animation */}
+              <div className="loading-spinner-container">
+                <div className="loading-spinner"></div>
               </div>
             </div>
           </div>
