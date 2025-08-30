@@ -521,7 +521,7 @@
     box-shadow: 0 0 0 0 rgba(0, 177, 210, 0);
   }
 }
-
+   
 @keyframes dot-pulse {
   0%, 100% {
     transform: scale(1);
