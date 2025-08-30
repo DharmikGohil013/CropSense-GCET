@@ -363,11 +363,11 @@ const DiseasePrediction = () => {
           </form>
         </div>
 
-        {/* Enhanced Loading Overlay */}
+        {/* Simplified Loading Overlay - Only Facts */}
         {loading && (
           <div className="loading-overlay">
             <div className="loading-container">
-              {/* Facts Section */}
+              {/* Facts Section Only */}
               <div className="facts-section">
                 <div className="fact-content">
                   <h4 className="fact-title">{t('diseasePrediction.didYouKnow')}</h4>
@@ -375,33 +375,13 @@ const DiseasePrediction = () => {
                 </div>
               </div>
 
-              {/* Progress Steps */}
-              <div className="progress-steps">
-                {loadingSteps.map((step, index) => (
-                  <div 
-                    key={step.key}
-                    className={`progress-step ${index <= loadingStep ? 'active' : ''} ${index === loadingStep ? 'current' : ''}`}
-                  >
-                    <div className="step-icon">
-                      {index + 1}
-                    </div>
-                    <div className="step-details">
-                      <h5 className="step-title">{t(`diseasePrediction.steps.${step.key}.title`)}</h5>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Animated Progress Bar */}
+              {/* Simple Progress Bar */}
               <div className="main-progress">
                 <div className="progress-bar-container">
-                  <div 
-                    className="progress-bar"
-                    style={{ width: `${((loadingStep + 1) / loadingSteps.length) * 100}%` }}
-                  ></div>
+                  <div className="progress-bar"></div>
                 </div>
                 <p className="progress-text">
-                  {t(`diseasePrediction.steps.${loadingSteps[loadingStep].key}.title`)}...
+                  {t('diseasePrediction.analyzingImage')}
                 </p>
               </div>
 
