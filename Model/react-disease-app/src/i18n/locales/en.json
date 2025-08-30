@@ -1,0 +1,42 @@
+{
+  "diseasePrediction": {
+    "title": "Crop Disease Predictor",
+    "subtitle": "Upload a clear image of your crop leaf to detect possible diseases.",
+    "uploadPlaceholder": "Click to upload or drag & drop",
+    "uploadHint": "PNG, JPG up to 5MB",
+    "or": "OR",
+    "useCamera": "Use Camera",
+    "cameraCapture": "Camera Capture",
+    "capturePhoto": "Capture Photo",
+    "cancel": "Cancel",
+    "predictDisease": "Predict Disease",
+    "analyzingImage": "Analyzing Image...",
+    "analyzing": "Analyzing Your Image",
+    "analyzingDesc": "Our model is examining the crop image to detect diseases...",
+    "reset": "Reset",
+    "predictionResult": "Prediction Result",
+    "confidence": "Confidence",
+    "crop": "Crop",
+    "disease": "Disease",
+    "severity": "Severity",
+    "description": "Description",
+    "aiSolution": "AI-Powered Solution",
+    "recommendations": "Recommendations",
+    "analyzeAnother": "Analyze Another Image",
+    "invalidImage": "Invalid Image Detected",
+    "invalidMessage": "Please Upload a Proper Plant Image",
+    "invalidDescription": "The uploaded image doesn't appear to contain a clear view of a plant or crop leaf. For accurate disease detection, please ensure your image includes:",
+    "requirements": {
+      "clearView": "Clear view of plant leaves or crops",
+      "goodLighting": "Good lighting conditions", 
+      "sharpImage": "Sharp, high-quality image",
+      "focusPlant": "Focus on diseased or healthy plant parts"
+    },
+    "tryAnother": "Try Another Image",
+    "errorConnection": "Connection Error",
+    "errorApi": "API Unavailable",
+    "errorMessage": "Failed to connect to the prediction service",
+    "errorRecommendation": "Please ensure the API server is running on port 8001 and try again.",
+    "errorSolution": "Check your internet connection and verify the backend server is running."
+  }
+}

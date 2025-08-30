@@ -1,0 +1,98 @@
+.language-selector {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.translate-icon {
+  display: flex;
+  align-items: center;
+  color: #4a5568;
+}
+
+.language-dropdown {
+  position: relative;
+}
+
+.current-language {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #f7fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #4a5568;
+  transition: all 0.2s ease;
+}
+
+.current-language:hover {
+  background: #edf2f7;
+  border-color: #cbd5e0;
+}
+
+.language-dropdown:hover .language-panel {
+  display: block;
+}
+
+.language-panel {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  min-width: 200px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  margin-top: 0.25rem;
+}
+
+.language-option {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.language-option:hover {
+  background: #f7fafc;
+}
+
+.language-option.active {
+  background: #e6fffa;
+  color: #00a86b;
+}
+
+.language-option:first-child {
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.language-option:last-child {
+  border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.language-name {
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.language-native {
+  font-size: 0.75rem;
+  color: #718096;
+}
+
+.language-option.active .language-native {
+  color: #00a86b;
+}

@@ -28,7 +28,7 @@ const RiceAnalysis = () => {
 
   const handleAnalyze = async () => {
     if (!selectedImage) {
-      setError('Please select an image first');
+      setError(t('riceAnalysis.noImageSelected'));
       return;
     }
 
@@ -47,7 +47,7 @@ const RiceAnalysis = () => {
       });
 
       if (!uploadResponse.ok) {
-        throw new Error(`Upload failed: ${uploadResponse.status}`);
+        throw new Error(`${t('riceAnalysis.uploadFailed')}: ${uploadResponse.status}`);
       }
 
       const uploadData = await uploadResponse.json();

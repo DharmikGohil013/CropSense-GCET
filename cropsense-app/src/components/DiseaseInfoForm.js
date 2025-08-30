@@ -35,7 +35,7 @@ const DiseaseInfoForm = () => {
     
     // Validate required fields
     if (!formData.cropType || !formData.symptoms) {
-      setError('Please fill in at least crop type and symptoms');
+      setError(t('diseaseInfoForm.fillRequired'));
       return;
     }
 

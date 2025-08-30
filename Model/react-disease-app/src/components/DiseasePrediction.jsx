@@ -1,7 +1,11 @@
 import React, { useState } from "react"; 
 import "./DiseasePrediction.css";
+import { useTranslation } from 'react-i18next';
+import LanguageSelector from './LanguageSelector';
+import { getTranslatedDiseaseName, getTranslatedSeverity } from '../utils/translation';
 
 const DiseasePrediction = () => {
+  const { t, i18n } = useTranslation();
   const [selectedFile, setSelectedFile] = useState(null);
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -51,7 +55,7 @@ const DiseasePrediction = () => {
           
           // Add capture button
           const captureBtn = document.createElement('button');
-          captureBtn.textContent = 'Capture Photo';
+          captureBtn.textContent = t('diseasePrediction.capturePhoto');
           captureBtn.className = 'capture-btn';
           captureBtn.onclick = () => {
             // Draw video frame to canvas
@@ -74,7 +78,7 @@ const DiseasePrediction = () => {
           
           // Add cancel button
           const cancelBtn = document.createElement('button');
-          cancelBtn.textContent = 'Cancel';
+          cancelBtn.textContent = t('diseasePrediction.cancel');
           cancelBtn.className = 'cancel-btn';
           cancelBtn.onclick = () => {
             stream.getTracks().forEach(track => track.stop());
@@ -131,11 +135,11 @@ const DiseasePrediction = () => {
       
       // Show error message to user
       setResult({
-        crop: "Connection Error",
-        disease: "API Unavailable",
-        description: `Failed to connect to the prediction service: ${error.message}`,
-        recommendation: "Please ensure the API server is running on port 8001 and try again.",
-        solution: "Check your internet connection and verify the backend server is running.",
+        crop: t('diseasePrediction.errorConnection'),
+        disease: t('diseasePrediction.errorApi'),
+        description: `${t('diseasePrediction.errorMessage')}: ${error.message}`,
+        recommendation: t('diseasePrediction.errorRecommendation'),
+        solution: t('diseasePrediction.errorSolution'),
         confidence: 0,
         severity: "Unknown"
       });
@@ -192,12 +196,15 @@ const DiseasePrediction = () => {
   return (
     <div className="predict-page">
       <div className="container">
-        <h1 className="page-title">Crop Disease Predictor</h1>
+        <div className="header-with-language">
+          <h1 className="page-title">{t('diseasePrediction.title')}</h1>
+          <LanguageSelector />
+        </div>
 
         {/* Subtitle text and upload box side by side */}
         <div className="subtitle-upload">
           <p className="page-subtitle">
-            Upload a clear image of your crop leaf to detect possible diseases.
+            {t('diseasePrediction.subtitle')}
           </p>
 
           <form className="upload-box" onSubmit={handleSubmit}>
@@ -218,8 +225,8 @@ const DiseasePrediction = () => {
                         <path d="M12 16V4m0 0L8 8m4-4 4 4" />
                         <rect x="3" y="16" width="18" height="4" rx="2" ry="2" />
                       </svg>
-                      <p>Click to upload or drag & drop</p>
-                      <span className="hint">PNG, JPG up to 5MB</span>
+                      <p>{t('diseasePrediction.uploadPlaceholder')}</p>
+                      <span className="hint">{t('diseasePrediction.uploadHint')}</span>
                     </div>
                   )}
                   <input
@@ -233,7 +240,7 @@ const DiseasePrediction = () => {
                 
                 <div className="upload-options">
                   <div className="option-divider">
-                    <span>OR</span>
+                    <span>{t('diseasePrediction.or')}</span>
                   </div>
                   <button
                     type="button"
@@ -250,7 +257,7 @@ const DiseasePrediction = () => {
                       <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
                       <circle cx="12" cy="13" r="4" />
                     </svg>
-                    Use Camera
+                    {t('diseasePrediction.useCamera')}
                   </button>
                 </div>
               </>
@@ -258,7 +265,7 @@ const DiseasePrediction = () => {
             
             {showCamera && (
               <div className="camera-section">
-                <h4>Camera Capture</h4>
+                <h4>{t('diseasePrediction.cameraCapture')}</h4>
                 <div id="camera-container" className="camera-container"></div>
               </div>
             )}
@@ -270,10 +277,10 @@ const DiseasePrediction = () => {
               {loading ? (
                 <span className="button-loading">
                   <span className="button-spinner"></span>
-                  Analyzing Image...
+                  {t('diseasePrediction.analyzingImage')}
                 </span>
               ) : (
-                "Predict Disease"
+                t('diseasePrediction.predictDisease')
               )}
             </button>
             
@@ -296,7 +303,7 @@ const DiseasePrediction = () => {
                   <polyline points="23,20 23,14 17,14" />
                   <path d="M20.49,9A9,9,0,0,0,18.36,5.91,9,9,0,0,0,4.96,5.91,9,9,0,0,0,2.51,15" />
                 </svg>
-                Reset
+                {t('diseasePrediction.reset')}
               </button>
             )}
           </form>
@@ -307,9 +314,9 @@ const DiseasePrediction = () => {
           <div className="loading-overlay">
             <div className="loading-container">
               <div className="loading-spinner"></div>
-              <h3 className="loading-title">Analyzing Your Image</h3>
+              <h3 className="loading-title">{t('diseasePrediction.analyzing')}</h3>
               <p className="loading-text">
-                Our model is examining the crop image to detect diseases...
+                {t('diseasePrediction.analyzingDesc')}
               </p>
               <div className="loading-progress">
                 <div className="progress-bar"></div>
@@ -325,7 +332,7 @@ const DiseasePrediction = () => {
               <div className="invalid-result">
                 <div className="invalid-header">
                   <h2 className="invalid-title">
-                    Invalid Image Detected
+                    {t('diseasePrediction.invalidImage')}
                   </h2>
                 </div>
                 
@@ -333,28 +340,27 @@ const DiseasePrediction = () => {
                   <div className="invalid-icon">
                     !
                   </div>
-                  <h3 className="invalid-message">Please Upload a Proper Plant Image</h3>
+                  <h3 className="invalid-message">{t('diseasePrediction.invalidMessage')}</h3>
                   <p className="invalid-description">
-                    The uploaded image doesn't appear to contain a clear view of a plant or crop leaf. 
-                    For accurate disease detection, please ensure your image includes:
+                    {t('diseasePrediction.invalidDescription')}
                   </p>
                   
                   <div className="image-requirements">
                     <div className="requirement-item">
                       <span className="req-icon">•</span>
-                      <span>Clear view of plant leaves or crops</span>
+                      <span>{t('diseasePrediction.requirements.clearView')}</span>
                     </div>
                     <div className="requirement-item">
                       <span className="req-icon">•</span>
-                      <span>Good lighting conditions</span>
+                      <span>{t('diseasePrediction.requirements.goodLighting')}</span>
                     </div>
                     <div className="requirement-item">
                       <span className="req-icon">•</span>
-                      <span>Sharp, high-quality image</span>
+                      <span>{t('diseasePrediction.requirements.sharpImage')}</span>
                     </div>
                     <div className="requirement-item">
                       <span className="req-icon">•</span>
-                      <span>Focus on diseased or healthy plant parts</span>
+                      <span>{t('diseasePrediction.requirements.focusPlant')}</span>
                     </div>
                   </div>
                   
@@ -363,7 +369,7 @@ const DiseasePrediction = () => {
                       className="retry-btn"
                       onClick={resetForm}
                     >
-                      Try Another Image
+                      {t('diseasePrediction.tryAnother')}
                     </button>
                   </div>
                 </div>
@@ -372,37 +378,38 @@ const DiseasePrediction = () => {
               // Valid result
               <>
                 <h2 className="result-title">
-                  Prediction Result
+                  {t('diseasePrediction.predictionResult')}
                   {result.confidence && (
-                    <span className="confidence-badge">{result.confidence}% Confidence</span>
+                    <span className="confidence-badge">{result.confidence}% {t('diseasePrediction.confidence')}</span>
                   )}
                 </h2>
                 
                 <div className="result-info">
                   <div className="info-row">
-                    <strong>Crop:</strong> <span className="crop-name">{result.crop}</span>
+                    <strong>{t('diseasePrediction.crop')}:</strong> <span className="crop-name">{result.crop}</span>
                   </div>
                   <div className="info-row">
-                    <strong>Disease:</strong> <span className="disease-name">{result.disease}</span>
+                    <strong>{t('diseasePrediction.disease')}:</strong> 
+                    <span className="disease-name">{getTranslatedDiseaseName(result.disease, i18n.language)}</span>
                   </div>
                   {result.severity && (
                     <div className="info-row">
-                      <strong>Severity:</strong> 
+                      <strong>{t('diseasePrediction.severity')}:</strong> 
                       <span className={`severity-badge severity-${result.severity.toLowerCase()}`}>
-                        {result.severity}
+                        {getTranslatedSeverity(result.severity, i18n.language)}
                       </span>
                     </div>
                   )}
                 </div>
 
                 <div className="result-description">
-                  <h4>Description</h4>
+                  <h4>{t('diseasePrediction.description')}</h4>
                   <p className="result-desc">{result.description}</p>
                 </div>
 
                 {result.solution && (
                   <div className="solution-section">
-                    <h4>AI-Powered Solution</h4>
+                    <h4>{t('diseasePrediction.aiSolution')}</h4>
                     <div className="solution-content">
                       {formatSolution(result.solution)}
                     </div>
@@ -410,7 +417,7 @@ const DiseasePrediction = () => {
                 )}
 
                 <div className="recommendation-section">
-                  <h4>Recommendations</h4>
+                  <h4>{t('diseasePrediction.recommendations')}</h4>
                   <div className="recommendation-content">
                     {formatSolution(result.recommendation)}
                   </div>
@@ -421,7 +428,7 @@ const DiseasePrediction = () => {
                     className="new-prediction-btn"
                     onClick={resetForm}
                   >
-                    Analyze Another Image
+                    {t('diseasePrediction.analyzeAnother')}
                   </button>
                 </div>
               </>

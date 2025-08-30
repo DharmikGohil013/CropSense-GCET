@@ -140,7 +140,7 @@ const Home = () => {
               <p className="cta-text">Upload crop images and get instant AI-powered disease detection with treatment recommendations</p>
               <div className="cta-buttons">
                 <button className="cta-button" onClick={handleExploreFeatures}>Start Disease Detection</button>
-                <Link to="/rice-analysis" className="cta-button secondary">🌾 Rice Analysis</Link>
+                                <Link to="/rice-analysis" className="cta-button secondary">🌾 {t('riceAnalysis.title')}</Link>
               </div>
             </div>
           </div>
