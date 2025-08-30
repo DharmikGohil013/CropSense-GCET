@@ -1,0 +1,723 @@
+/* Disease Prediction Page Styles */
+.disease-prediction-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.1) 0%, 
+    rgba(102, 209, 224, 0.05) 50%, 
+    rgba(0, 177, 210, 0.1) 100%);
+  backdrop-filter: blur(10px);
+  padding: clamp(20px, 4vh, 60px) 0;
+  position: relative;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 clamp(15px, 4vw, 40px);
+}
+
+/* Page Header */
+.page-header {
+  text-align: center;
+  margin-bottom: clamp(40px, 6vh, 80px);
+}
+
+.page-title {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 800;
+  color: #001f3d;
+  margin-bottom: clamp(15px, 2vh, 25px);
+  background: linear-gradient(135deg, #001f3d, #00639b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2;
+}
+
+.page-subtitle {
+  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  color: #001f3d;
+  opacity: 0.8;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Main Container */
+.prediction-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(30px, 5vh, 60px);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Upload Section */
+.upload-section {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: clamp(20px, 4vw, 30px);
+  padding: clamp(30px, 5vw, 50px);
+  box-shadow: 0 20px 60px rgba(0, 31, 61, 0.12);
+  border: 2px solid rgba(102, 209, 224, 0.3);
+  backdrop-filter: blur(20px);
+  position: relative;
+  overflow: hidden;
+}
+
+.upload-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(135deg, #00639b, #00b1d2, #66d1e0);
+  border-radius: clamp(20px, 4vw, 30px) clamp(20px, 4vw, 30px) 0 0;
+}
+
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 3vh, 30px);
+}
+
+/* Upload Area */
+.upload-area {
+  border: 3px dashed rgba(0, 99, 155, 0.4);
+  border-radius: clamp(15px, 3vw, 25px);
+  padding: clamp(40px, 6vw, 80px) clamp(30px, 5vw, 60px);
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  background: rgba(0, 99, 155, 0.02);
+  position: relative;
+  min-height: clamp(250px, 30vh, 350px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-style: dashed;
+  animation: subtle-pulse 3s ease-in-out infinite;
+}
+
+@keyframes subtle-pulse {
+  0%, 100% { 
+    border-color: rgba(0, 99, 155, 0.4);
+    background: rgba(0, 99, 155, 0.02);
+  }
+  50% { 
+    border-color: rgba(0, 99, 155, 0.6);
+    background: rgba(0, 99, 155, 0.05);
+  }
+}
+
+.upload-area:hover,
+.upload-area.drag-over {
+  border-color: #00b1d2;
+  background: rgba(0, 177, 210, 0.08);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0, 177, 210, 0.15);
+  animation: none;
+}
+
+.upload-area.has-image {
+  padding: 0;
+  border-style: solid;
+  border-color: #00b1d2;
+  animation: none;
+}
+
+/* Upload Placeholder */
+.upload-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(20px, 3vh, 30px);
+  color: #001f3d;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.upload-icon {
+  width: clamp(80px, 12vw, 120px);
+  height: clamp(80px, 12vw, 120px);
+  color: #00639b;
+  margin-bottom: clamp(15px, 3vh, 25px);
+  filter: drop-shadow(0 4px 8px rgba(0, 99, 155, 0.2));
+  transition: all 0.3s ease;
+}
+
+.upload-area:hover .upload-icon {
+  transform: translateY(-5px);
+  color: #00b1d2;
+}
+
+.upload-placeholder h3 {
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 700;
+  margin: 0;
+  color: #001f3d;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.upload-placeholder p {
+  font-size: clamp(1.1rem, 2.8vw, 1.4rem);
+  margin: 0;
+  color: #001f3d;
+  opacity: 0.8;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.browse-text {
+  color: #00639b;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
+  transition: all 0.3s ease;
+}
+
+.browse-text:hover {
+  color: #00b1d2;
+  text-decoration-color: #00b1d2;
+}
+
+.file-types {
+  background: linear-gradient(135deg, rgba(0, 99, 155, 0.1), rgba(0, 177, 210, 0.1));
+  padding: clamp(12px, 2vh, 18px) clamp(20px, 4vw, 30px);
+  border-radius: 30px;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  color: #00639b;
+  font-weight: 600;
+  border: 2px solid rgba(0, 99, 155, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 99, 155, 0.1);
+  margin-top: clamp(10px, 2vh, 15px);
+  letter-spacing: 0.5px;
+}
+
+/* Image Preview */
+.image-preview {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: clamp(200px, 25vh, 300px);
+  border-radius: clamp(15px, 3vw, 25px);
+  overflow: hidden;
+}
+
+.preview-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: clamp(15px, 3vw, 25px);
+}
+
+.image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(2px);
+}
+
+.image-preview:hover .image-overlay {
+  opacity: 1;
+}
+
+.overlay-buttons {
+  display: flex;
+  gap: clamp(10px, 2vw, 15px);
+  flex-direction: column;
+  align-items: center;
+}
+
+.change-image-btn,
+.remove-image-btn {
+  display: flex;
+  align-items: center;
+  gap: clamp(6px, 1.5vw, 10px);
+  background: rgba(255, 255, 255, 0.95);
+  color: #001f3d;
+  border: none;
+  padding: clamp(8px, 2vh, 12px) clamp(15px, 3vw, 20px);
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: clamp(0.85rem, 2vw, 1rem);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  min-width: clamp(120px, 20vw, 150px);
+  justify-content: center;
+}
+
+.change-image-btn:hover {
+  background: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 99, 155, 0.3);
+  border-color: #00b1d2;
+  color: #00639b;
+}
+
+.remove-image-btn {
+  background: rgba(220, 53, 69, 0.9);
+  color: white;
+  border-color: rgba(220, 53, 69, 0.3);
+}
+
+.remove-image-btn:hover {
+  background: #dc3545;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(220, 53, 69, 0.4);
+  border-color: rgba(220, 53, 69, 0.5);
+}
+
+.change-image-btn svg,
+.remove-image-btn svg {
+  width: clamp(14px, 2vw, 18px);
+  height: clamp(14px, 2vw, 18px);
+  stroke-width: 2.5;
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  gap: clamp(15px, 3vw, 20px);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.predict-btn,
+.reset-btn,
+.new-prediction-btn {
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 1.5vw, 12px);
+  padding: clamp(12px, 2.5vh, 18px) clamp(25px, 5vw, 40px);
+  border-radius: 50px;
+  font-size: clamp(1rem, 2.2vw, 1.2rem);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  min-width: clamp(140px, 20vw, 180px);
+  justify-content: center;
+}
+
+.predict-btn {
+  background: linear-gradient(135deg, #00639b, #00b1d2);
+  color: white;
+  box-shadow: 0 8px 25px rgba(0, 99, 155, 0.3);
+}
+
+.predict-btn:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(0, 99, 155, 0.4);
+}
+
+.predict-btn:disabled {
+  background: rgba(0, 99, 155, 0.4);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.reset-btn {
+  background: linear-gradient(135deg, #dc3545, #e74c3c);
+  color: white;
+  border: 2px solid rgba(220, 53, 69, 0.3);
+  box-shadow: 0 6px 20px rgba(220, 53, 69, 0.25);
+  transition: all 0.3s ease;
+  animation: slideInFromRight 0.4s ease-out;
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.reset-btn:hover {
+  background: linear-gradient(135deg, #c82333, #dc3545);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(220, 53, 69, 0.35);
+  border-color: rgba(220, 53, 69, 0.5);
+}
+
+.reset-btn svg {
+  width: clamp(16px, 2.5vw, 20px);
+  height: clamp(16px, 2.5vw, 20px);
+  stroke-width: 2.5;
+}
+
+.new-prediction-btn {
+  background: linear-gradient(135deg, #28a745, #20c997);
+  color: white;
+  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+}
+
+.new-prediction-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(40, 167, 69, 0.4);
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Results Section */
+.results-section {
+  animation: slideInUp 0.6s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.result-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: clamp(20px, 4vw, 30px);
+  padding: clamp(30px, 5vw, 50px);
+  box-shadow: 0 20px 60px rgba(0, 31, 61, 0.15);
+  border: 2px solid rgba(102, 209, 224, 0.3);
+  backdrop-filter: blur(20px);
+}
+
+.result-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: clamp(25px, 4vh, 35px);
+  flex-wrap: wrap;
+  gap: clamp(15px, 3vw, 20px);
+}
+
+.result-title {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 2vw, 15px);
+  font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+  font-weight: 700;
+  color: #001f3d;
+  margin: 0;
+}
+
+.result-title svg {
+  width: clamp(24px, 4vw, 32px);
+  height: clamp(24px, 4vw, 32px);
+  color: #28a745;
+}
+
+.confidence-badge {
+  background: linear-gradient(135deg, #28a745, #20c997);
+  color: white;
+  padding: clamp(8px, 1.5vh, 12px) clamp(15px, 3vw, 20px);
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+}
+
+/* Disease Info */
+.disease-info {
+  display: grid;
+  gap: clamp(12px, 2vh, 18px);
+  margin-bottom: clamp(25px, 4vh, 35px);
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: clamp(15px, 3vw, 20px);
+  padding: clamp(12px, 2vh, 16px);
+  background: rgba(0, 99, 155, 0.05);
+  border-radius: clamp(10px, 2vw, 15px);
+  border-left: 4px solid #00639b;
+}
+
+.label {
+  font-weight: 600;
+  color: #001f3d;
+  font-size: clamp(1rem, 2.2vw, 1.2rem);
+  min-width: clamp(80px, 15vw, 120px);
+}
+
+.value {
+  font-size: clamp(1rem, 2.2vw, 1.2rem);
+  color: #001f3d;
+}
+
+.disease-name {
+  font-weight: 600;
+  color: #00639b;
+}
+
+.severity-badge {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Content Sections */
+.disease-description,
+.symptoms-section,
+.treatment-section,
+.solution-section,
+.prevention-section {
+  margin-bottom: clamp(25px, 4vh, 35px);
+}
+
+.disease-description h4,
+.symptoms-section h4,
+.treatment-section h4,
+.solution-section h4,
+.prevention-section h4 {
+  font-size: clamp(1.2rem, 2.8vw, 1.5rem);
+  font-weight: 700;
+  color: #001f3d;
+  margin-bottom: clamp(12px, 2vh, 18px);
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 1.5vw, 12px);
+}
+
+.disease-description h4::before {
+  content: "📝";
+  font-size: clamp(16px, 3vw, 20px);
+}
+
+.symptoms-section h4::before {
+  content: "🔍";
+  font-size: clamp(16px, 3vw, 20px);
+}
+
+.treatment-section h4::before {
+  content: "💊";
+  font-size: clamp(16px, 3vw, 20px);
+}
+
+.solution-section h4::before {
+  content: "🤖";
+  font-size: clamp(16px, 3vw, 20px);
+}
+
+.prevention-section h4::before {
+  content: "🛡️";
+  font-size: clamp(16px, 3vw, 20px);
+}
+
+.disease-description p,
+.treatment-text,
+.solution-text,
+.prevention-text {
+  font-size: clamp(1rem, 2.2vw, 1.1rem);
+  line-height: 1.6;
+  color: #001f3d;
+  opacity: 0.9;
+  background: rgba(0, 99, 155, 0.05);
+  padding: clamp(15px, 3vw, 20px);
+  border-radius: clamp(10px, 2vw, 15px);
+  border-left: 4px solid #00b1d2;
+}
+
+.solution-text {
+  background: linear-gradient(135deg, rgba(102, 209, 224, 0.1), rgba(0, 177, 210, 0.1));
+  border-left: 4px solid #66d1e0;
+  border: 2px solid rgba(102, 209, 224, 0.3);
+  position: relative;
+}
+
+.solution-text::before {
+  content: "🤖 AI-Generated";
+  position: absolute;
+  top: -8px;
+  right: 15px;
+  background: linear-gradient(135deg, #66d1e0, #00b1d2);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.symptoms-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: clamp(8px, 1.5vh, 12px);
+}
+
+.symptoms-list li {
+  background: rgba(255, 193, 7, 0.1);
+  padding: clamp(10px, 2vh, 15px);
+  border-radius: clamp(8px, 1.5vw, 12px);
+  border-left: 4px solid #ffc107;
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  color: #001f3d;
+  position: relative;
+  padding-left: clamp(35px, 6vw, 45px);
+}
+
+.symptoms-list li::before {
+  content: "•";
+  color: #ffc107;
+  font-weight: bold;
+  position: absolute;
+  left: clamp(15px, 3vw, 20px);
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+}
+
+.result-actions {
+  margin-top: clamp(30px, 5vh, 40px);
+  text-align: center;
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+  .prediction-container {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+
+  .form-actions {
+    flex-direction: row;
+    justify-content: center;
+  }
+  
+  .result-header {
+    flex-wrap: nowrap;
+  }
+}
+
+@media (min-width: 1024px) {
+  .disease-info {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+  
+  .symptoms-list {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  .prediction-container {
+    gap: clamp(20px, 4vh, 30px);
+  }
+  
+  .upload-section {
+    padding: clamp(20px, 4vw, 30px);
+  }
+  
+  .result-card {
+    padding: clamp(20px, 4vw, 30px);
+  }
+  
+  .form-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .predict-btn,
+  .reset-btn,
+  .new-prediction-btn {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .result-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .info-row {
+    flex-direction: column;
+    text-align: center;
+    gap: clamp(8px, 1.5vh, 10px);
+  }
+  
+  .label {
+    min-width: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-header {
+    margin-bottom: clamp(30px, 5vh, 40px);
+  }
+  
+  .upload-area {
+    min-height: clamp(200px, 25vh, 250px);
+    padding: clamp(30px, 5vw, 40px) clamp(20px, 4vw, 30px);
+    border-width: 2px;
+  }
+  
+  .upload-icon {
+    width: clamp(70px, 10vw, 90px);
+    height: clamp(70px, 10vw, 90px);
+  }
+  
+  .upload-placeholder h3 {
+    font-size: clamp(1.4rem, 3.5vw, 1.8rem);
+  }
+  
+  .upload-placeholder p {
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+  }
+  
+  .file-types {
+    padding: clamp(10px, 2vh, 15px) clamp(18px, 4vw, 25px);
+    font-size: clamp(0.85rem, 2vw, 1rem);
+  }
+  
+  .overlay-buttons {
+    flex-direction: column;
+    gap: clamp(8px, 1.5vw, 12px);
+  }
+  
+  .change-image-btn,
+  .remove-image-btn {
+    min-width: clamp(100px, 25vw, 130px);
+    padding: clamp(8px, 1.5vh, 10px) clamp(12px, 3vw, 18px);
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
+  }
+  
+  .symptoms-list {
+    grid-template-columns: 1fr;
+  }
+}
