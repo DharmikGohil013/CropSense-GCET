@@ -1,0 +1,8 @@
+torch
+fastai
+pandas
+Pillow
+requests
+flask
+gunicorn
+python-dotenv
