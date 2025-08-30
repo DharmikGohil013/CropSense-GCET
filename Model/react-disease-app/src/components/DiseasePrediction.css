@@ -1306,6 +1306,8 @@
     font-size: 0.8rem;
     margin-bottom: 6px;
 =======
+=======
+>>>>>>> Stashed changes
 
   /* Camera responsive styles */
   .camera-section {
@@ -1388,6 +1390,9 @@
 
   .camera-loading p {
     font-size: 0.85rem;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   }
 }

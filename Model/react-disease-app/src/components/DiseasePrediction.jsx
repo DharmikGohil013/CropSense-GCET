@@ -14,6 +14,7 @@ const DiseasePrediction = () => {
   const [currentFact, setCurrentFact] = useState(0);
   const [selectedCrop, setSelectedCrop] = useState('');
 
+<<<<<<< Updated upstream
   // Supported crops array
   const supportedCrops = [
     { key: 'apple', emoji: '🍎' },
@@ -32,6 +33,8 @@ const DiseasePrediction = () => {
     { key: 'tomato', emoji: '🍅' }
   ];
 
+=======
+>>>>>>> Stashed changes
   // Facts about plant diseases
   const plantFacts = [
     { key: 'fact1' },
@@ -325,15 +328,21 @@ const DiseasePrediction = () => {
       const formData = new FormData();
       formData.append('file', selectedFile);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       formData.append('language', i18n.language); // Pass the selected language
       if (selectedCrop) {
         formData.append('expected_crop', selectedCrop); // Pass the selected crop for better accuracy
       }
 =======
+=======
+>>>>>>> Stashed changes
       formData.append('language', i18n.language);
 
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
       const response = await fetch('http://192.168.137.1:8001/predict-disease', {
@@ -639,9 +648,12 @@ const DiseasePrediction = () => {
         {result && !loading && (
           <div className="result-card">
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             {result.crop.toLowerCase() === 'invalid' || result.crop.toLowerCase().includes('invalid') || result.crop.toLowerCase() === 'unknown' || result.disease.toLowerCase().includes('unknown') ? (
               // Invalid/Unknown image result
 =======
+=======
+>>>>>>> Stashed changes
             {result.isError ? (
               // Error result with enhanced display
               <div className="error-result">
