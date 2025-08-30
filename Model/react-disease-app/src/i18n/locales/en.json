@@ -37,6 +37,52 @@
     "errorApi": "API Unavailable",
     "errorMessage": "Failed to connect to the prediction service",
     "errorRecommendation": "Please ensure the API server is running on port 8001 and try again.",
-    "errorSolution": "Check your internet connection and verify the backend server is running."
+    "errorSolution": "Check your internet connection and verify the backend server is running.",
+    "analysisSteps": {
+      "title": "Analysis Progress",
+      "imageProcessing": {
+        "title": "Processing Image",
+        "description": "Enhancing and preparing image for analysis"
+      },
+      "featureExtraction": {
+        "title": "Extracting Features",
+        "description": "Identifying key visual patterns and characteristics"
+      },
+      "diseaseAnalysis": {
+        "title": "Disease Detection",
+        "description": "Comparing patterns with disease database"
+      },
+      "generateSolution": {
+        "title": "Generating Solution",
+        "description": "Creating personalized treatment recommendations"
+      }
+    },
+    "farmingTips": {
+      "title": "Farming Tips",
+      "tip1": {
+        "title": "Healthy Soil Management",
+        "description": "Maintain proper soil pH and nutrient levels for stronger plant immunity"
+      },
+      "tip2": {
+        "title": "Proper Watering",
+        "description": "Water early morning to reduce disease-causing humidity"
+      },
+      "tip3": {
+        "title": "Sunlight Exposure",
+        "description": "Ensure adequate sunlight for natural disease resistance"
+      },
+      "tip4": {
+        "title": "Air Circulation",
+        "description": "Proper plant spacing allows good airflow and reduces fungal growth"
+      },
+      "tip5": {
+        "title": "Crop Rotation",
+        "description": "Rotate crops annually to break disease cycles in soil"
+      },
+      "tip6": {
+        "title": "Regular Monitoring",
+        "description": "Inspect plants weekly for early disease detection and treatment"
+      }
+    }
   }
 }

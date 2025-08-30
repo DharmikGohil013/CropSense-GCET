@@ -1,4 +1,4 @@
-import React, { useState } from "react"; 
+import React, { useState, useEffect } from "react"; 
 import "./DiseasePrediction.css";
 import { useTranslation } from 'react-i18next';
 import LanguageSelector from './LanguageSelector';
@@ -11,6 +11,50 @@ const DiseasePrediction = () => {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [showCamera, setShowCamera] = useState(false);
+  
+  // Loading states
+  const [currentStep, setCurrentStep] = useState(0);
+  const [currentTip, setCurrentTip] = useState(0);
+  
+  // Analysis steps
+  const analysisSteps = [
+    { key: 'imageProcessing', icon: '🔍' },
+    { key: 'featureExtraction', icon: '🧬' },
+    { key: 'diseaseAnalysis', icon: '🦠' },
+    { key: 'generateSolution', icon: '💡' }
+  ];
+  
+  // Farming tips carousel
+  const farmingTips = [
+    { key: 'tip1', icon: '🌱' },
+    { key: 'tip2', icon: '💧' },
+    { key: 'tip3', icon: '☀️' },
+    { key: 'tip4', icon: '🍃' },
+    { key: 'tip5', icon: '🌾' },
+    { key: 'tip6', icon: '🚜' }
+  ];
+  
+  // Auto-cycle through steps and tips during loading
+  useEffect(() => {
+    let stepInterval, tipInterval;
+    
+    if (loading) {
+      // Cycle through analysis steps
+      stepInterval = setInterval(() => {
+        setCurrentStep((prev) => (prev + 1) % analysisSteps.length);
+      }, 2000);
+      
+      // Cycle through farming tips
+      tipInterval = setInterval(() => {
+        setCurrentTip((prev) => (prev + 1) % farmingTips.length);
+      }, 3000);
+    }
+    
+    return () => {
+      if (stepInterval) clearInterval(stepInterval);
+      if (tipInterval) clearInterval(tipInterval);
+    };
+  }, [loading, analysisSteps.length, farmingTips.length]);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -101,6 +145,8 @@ const DiseasePrediction = () => {
 
     setLoading(true);
     setResult(null);
+    setCurrentStep(0);
+    setCurrentTip(0);
 
     try {
       const formData = new FormData();
@@ -187,7 +233,7 @@ const DiseasePrediction = () => {
           ))}
         </div>
       );
-    } catch (error) {
+    } catch {
       // If it's not JSON, return as regular text
       return <p className="solution-text">{solutionText}</p>;
     }
@@ -309,15 +355,56 @@ const DiseasePrediction = () => {
           </form>
         </div>
 
-        {/* Loading Overlay */}
+        {/* Enhanced Loading Overlay with Steps and Tips */}
         {loading && (
           <div className="loading-overlay">
             <div className="loading-container">
-              <div className="loading-spinner"></div>
-              <h3 className="loading-title">{t('diseasePrediction.analyzing')}</h3>
-              <p className="loading-text">
-                {t('diseasePrediction.analyzingDesc')}
-              </p>
+              <div className="loading-header">
+                <div className="loading-spinner"></div>
+                <h3 className="loading-title">{t('diseasePrediction.analyzing')}</h3>
+                <p className="loading-text">
+                  {t('diseasePrediction.analyzingDesc')}
+                </p>
+              </div>
+              
+              {/* Analysis Steps */}
+              <div className="analysis-steps">
+                <h4 className="steps-title">{t('diseasePrediction.analysisSteps.title')}</h4>
+                <div className="steps-container" style={{ '--progress': currentStep }}>
+                  {analysisSteps.map((step, index) => (
+                    <div 
+                      key={step.key} 
+                      className={`step-item ${index === currentStep ? 'active' : ''} ${index < currentStep ? 'completed' : ''}`}
+                    >
+                      <div className="step-circle"></div>
+                      <div className="step-title">{t(`diseasePrediction.analysisSteps.${step.key}.title`)}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Farming Tips Carousel */}
+              <div className="farming-tips">
+                <h4 className="tips-title">{t('diseasePrediction.farmingTips.title')}</h4>
+                <div className="tips-carousel">
+                  <div className="tip-item active">
+                    <div className="tip-icon">{farmingTips[currentTip].icon}</div>
+                    <div className="tip-content">
+                      <div className="tip-title">{t(`diseasePrediction.farmingTips.${farmingTips[currentTip].key}.title`)}</div>
+                      <div className="tip-description">{t(`diseasePrediction.farmingTips.${farmingTips[currentTip].key}.description`)}</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="tip-indicators">
+                  {farmingTips.map((_, index) => (
+                    <div 
+                      key={index} 
+                      className={`indicator ${index === currentTip ? 'active' : ''}`}
+                    ></div>
+                  ))}
+                </div>
+              </div>
+              
               <div className="loading-progress">
                 <div className="progress-bar"></div>
               </div>

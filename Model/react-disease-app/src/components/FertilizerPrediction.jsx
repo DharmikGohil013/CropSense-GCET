@@ -293,8 +293,8 @@ const FertilizerPrediction = () => {
     <div className="fertilizer-prediction">
       <div className="prediction-container">
         <div className="prediction-header">
-          <h1>🌱 Fertilizer Prediction</h1>
-          <p>Get AI-powered fertilizer recommendations for your crops</p>
+          <h1>🌱 Nutrition Prediction</h1>
+          <p>Get AI-powered nutrition recommendations for your crops</p>
         </div>
 
         <div className="prediction-content">
