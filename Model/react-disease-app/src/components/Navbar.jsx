@@ -38,7 +38,7 @@ const Navbar = ({ currentPage, onNavigateToHome, onNavigateToPredict, onNavigate
             className={`nav-item ${currentPage === 'fertilizer' ? 'active' : ''}`}
             onClick={() => handleNavClick(onNavigateToFertilizer)}
           >
-            Fertilizer
+            Nutrition
           </div>
           <div 
             className={`nav-item ${currentPage === 'about' ? 'active' : ''}`}

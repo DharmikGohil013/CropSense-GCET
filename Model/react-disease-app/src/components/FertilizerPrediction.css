@@ -1,4 +1,4 @@
-.fertilizer-prediction {
+.nutrition-prediction {
   min-height: 100vh;
   background: linear-gradient(135deg, #b3e2f0 0%, #00b1d2 100%);
   padding: 2rem 1rem;
@@ -201,7 +201,7 @@
   font-size: 1rem;
 }
 
-.fertilizer-name {
+.nutrition-name {
   color: #001f3d;
   font-size: 1.4rem;
   font-weight: 700;
@@ -235,7 +235,7 @@
   gap: 0.5rem;
 }
 
-.fertilizer-name {
+.nutrition-name {
   color: #001f3d;
   font-size: 1.3rem;
   font-weight: 700;
@@ -326,7 +326,7 @@
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
-  .fertilizer-prediction {
+  .nutrition-prediction {
     padding: 1rem;
     min-height: 100vh;
   }
@@ -384,7 +384,7 @@
 }
 
 @media (max-width: 480px) {
-  .fertilizer-prediction {
+  .nutrition-prediction {
     padding: 0.8rem;
     min-height: 100vh;
   }

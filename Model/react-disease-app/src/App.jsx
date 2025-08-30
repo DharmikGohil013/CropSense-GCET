@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import DiseasePrediction from './components/DiseasePrediction';
-import FertilizerPrediction from './components/FertilizerPrediction';
+import NutritionPrediction from './components/FertilizerPrediction';
 import About from './pages/About/About';
 import Footer from './components/Footer';
 import './App.css';
@@ -31,7 +31,7 @@ function App() {
       case 'predict':
         return <DiseasePrediction />;
       case 'fertilizer':
-        return <FertilizerPrediction />;
+        return <NutritionPrediction />;
       case 'about':
         return <About onNavigateToPredict={navigateToPredict} />;
       case 'home':
