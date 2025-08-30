@@ -1,0 +1,18 @@
+/* Override font loading to prevent 404 errors */
+@font-face {
+  font-family: 'IBMPlexMono';
+  src: local('Courier New'), local('monospace');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Hide browser extension elements */
+[data-extension-id] {
+  display: none !important;
+}
+
+/* Suppress content script errors */
+body {
+  --translate-page-opacity: 0;
+  --save-page-opacity: 0;
+}
