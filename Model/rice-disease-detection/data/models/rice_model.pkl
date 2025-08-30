@@ -1,0 +1,5 @@
+The file data/models/rice_model.pkl is a binary file that contains the saved model for the rice disease detection model. Since this file is not meant to be manually edited or generated as text, it will remain empty in terms of code content. 
+
+To create this file, you would typically save your trained model using a library like FastAI or PyTorch. However, as per your request, I will indicate that this file is intentionally left blank for manual creation or saving of the model.
+
+# This file is intentionally left blank.
