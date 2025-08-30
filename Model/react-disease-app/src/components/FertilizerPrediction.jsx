@@ -4,7 +4,7 @@ import './FertilizerPrediction.css';
 import { useTranslation } from 'react-i18next';
 import LanguageSelector from './LanguageSelector';
 
-const FertilizerPrediction = () => {
+const NutritionPrediction = () => {
   const { t, i18n } = useTranslation();
   const [formData, setFormData] = useState({
     nitrogen: 0,
@@ -275,12 +275,12 @@ const FertilizerPrediction = () => {
       console.log('Server response:', data); // Debug logging
       
       if (data.success) {
-        if (data.fertilizerRecommendation) {
-          // Set the prediction to the fertilizerRecommendation object directly
-          setPrediction(data.fertilizerRecommendation);
+        if (data.nutritionRecommendation) {
+          // Set the prediction to the nutritionRecommendation object directly
+          setPrediction(data.nutritionRecommendation);
         } else {
           console.error('Unexpected response format:', data);
-          throw new Error('Server returned success but no fertilizerRecommendation data found');
+          throw new Error('Server returned success but no nutritionRecommendation data found');
         }
       } else {
         console.error('Server returned error:', data);
@@ -304,7 +304,7 @@ const FertilizerPrediction = () => {
   };
 
   return (
-    <div className="fertilizer-prediction">
+    <div className="nutrition-prediction">
       <div className="prediction-container">
         <div className="prediction-header">
           <div className="header-with-language">
@@ -511,13 +511,13 @@ const FertilizerPrediction = () => {
               <div className="prediction-result">
                 <div className="result-card">
                   <h4>{t('fertilizerPrediction.expertRecommendation')}</h4>
-                  <div className="fertilizer-recommendation">
-                    {prediction && typeof prediction === 'object' && prediction.fertilizerName ? (
+                  <div className="nutrition-recommendation">
+                    {prediction && typeof prediction === 'object' && prediction.nutritionName ? (
                       // Display structured format
                       <div className="structured-recommendation">
                         <div className="recommendation-item">
-                          <h5>🌱 {t('fertilizerPrediction.recommendedFertilizer')}</h5>
-                          <p className="fertilizer-name">{prediction.fertilizerName}</p>
+                          <h5>🌱 {t('fertilizerPrediction.recommendedNutrition')}</h5>
+                          <p className="nutrition-name">{prediction.nutritionName}</p>
                         </div>
                         
                         <div className="recommendation-item">
@@ -557,4 +557,4 @@ const FertilizerPrediction = () => {
   );
 };
 
-export default FertilizerPrediction;
+export default NutritionPrediction;
