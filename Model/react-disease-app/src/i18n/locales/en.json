@@ -24,6 +24,9 @@
     "aiSolution": "AI-Powered Solution",
     "recommendations": "Recommendations",
     "analyzeAnother": "Analyze Another Image",
+    "selectCrop": "Select Crop Type:",
+    "optional": "(Optional)",
+    "allCrops": "All Supported Crops",
     "invalidImage": "Invalid Image Detected",
     "invalidMessage": "Please Upload a Proper Plant Image",
     "invalidDescription": "The uploaded image doesn't appear to contain a clear view of a plant or crop leaf. For accurate disease detection, please ensure your image includes:",
@@ -59,6 +62,47 @@
       "sharpImage": "Sharp, high-quality image",
       "focusPlant": "Focus on diseased or healthy plant parts"
     },
+    "supportedCrops": {
+      "title": "Supported Crops",
+      "subtitle": "Our AI model is trained to detect diseases in the following crops:",
+      "note": "Note: For accurate disease detection, please upload images only from these supported crop types."
+    },
+    "crops": {
+      "apple": "Apple",
+      "blueberry": "Blueberry", 
+      "cherry": "Cherry",
+      "corn": "Corn (Maize)",
+      "grape": "Grape",
+      "orange": "Orange",
+      "peach": "Peach",
+      "bellPepper": "Bell Pepper",
+      "potato": "Potato", 
+      "raspberry": "Raspberry",
+      "soybean": "Soybean",
+      "squash": "Squash",
+      "strawberry": "Strawberry",
+      "tomato": "Tomato"
+    },
+    "howItWorks": {
+      "title": "How It Works",
+      "step1": {
+        "title": "Upload Image",
+        "description": "Take a clear photo of the affected leaf from supported crops and upload it"
+      },
+      "step2": {
+        "title": "AI Analysis", 
+        "description": "Our advanced AI model analyzes the image to detect disease patterns"
+      },
+      "step3": {
+        "title": "Get Results",
+        "description": "Receive detailed diagnosis with treatment recommendations"
+      }
+    },
+    "dataNotice": {
+      "title": "Improving Our Model",
+      "description": "We store uploaded images to continuously improve our AI model. Your data helps us provide better disease detection for farmers worldwide."
+    },
+    "reuploadImage": "Re-upload Image",
     "tryAnother": "Try Another Image",
     "errorConnection": "Connection Error",
     "errorApi": "API Unavailable",

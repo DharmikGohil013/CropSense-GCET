@@ -13,6 +13,25 @@ const DiseasePrediction = () => {
   const [showCamera, setShowCamera] = useState(false);
   const [loadingStep, setLoadingStep] = useState(0);
   const [currentFact, setCurrentFact] = useState(0);
+  const [selectedCrop, setSelectedCrop] = useState('');
+
+  // Supported crops array
+  const supportedCrops = [
+    { key: 'apple', emoji: '🍎' },
+    { key: 'blueberry', emoji: '🫐' },
+    { key: 'cherry', emoji: '🍒' },
+    { key: 'corn', emoji: '🌽' },
+    { key: 'grape', emoji: '🍇' },
+    { key: 'orange', emoji: '🍊' },
+    { key: 'peach', emoji: '🍑' },
+    { key: 'bellPepper', emoji: '🫑' },
+    { key: 'potato', emoji: '🥔' },
+    { key: 'raspberry', emoji: '🍇' },
+    { key: 'soybean', emoji: '🌱' },
+    { key: 'squash', emoji: '🎃' },
+    { key: 'strawberry', emoji: '🍓' },
+    { key: 'tomato', emoji: '🍅' }
+  ];
 
   // Loading steps configuration
   const loadingSteps = [
@@ -159,6 +178,9 @@ const DiseasePrediction = () => {
       const formData = new FormData();
       formData.append('file', selectedFile);
       formData.append('language', i18n.language); // Pass the selected language
+      if (selectedCrop) {
+        formData.append('expected_crop', selectedCrop); // Pass the selected crop for better accuracy
+      }
 
       const response = await fetch('http://192.168.137.1:8001/predict-disease', {
         method: 'POST',
@@ -208,6 +230,7 @@ const DiseasePrediction = () => {
     setResult(null);
     setLoading(false);
     setShowCamera(false);
+    setSelectedCrop('');
     
     // Clear camera container if it exists
     const cameraContainer = document.getElementById('camera-container');
@@ -291,6 +314,26 @@ const DiseasePrediction = () => {
                     hidden
                   />
                 </label>
+                
+                {/* Crop Selection Dropdown */}
+                <div className="crop-selection">
+                  <label htmlFor="crop-select" className="crop-label">
+                    {t('diseasePrediction.selectCrop')} {t('diseasePrediction.optional')}
+                  </label>
+                  <select
+                    id="crop-select"
+                    value={selectedCrop}
+                    onChange={(e) => setSelectedCrop(e.target.value)}
+                    className="crop-dropdown"
+                  >
+                    <option value="">{t('diseasePrediction.allCrops')}</option>
+                    {supportedCrops.map(crop => (
+                      <option key={crop.key} value={crop.key}>
+                        {crop.emoji} {t(`diseasePrediction.crops.${crop.key}`)}
+                      </option>
+                    ))}
+                  </select>
+                </div>
                 
                 <div className="upload-options">
                   <div className="option-divider">
@@ -395,8 +438,8 @@ const DiseasePrediction = () => {
 
         {result && !loading && (
           <div className="result-card">
-            {result.crop.toLowerCase() === 'invalid' || result.crop.toLowerCase().includes('invalid') ? (
-              // Invalid image result
+            {result.crop.toLowerCase() === 'invalid' || result.crop.toLowerCase().includes('invalid') || result.crop.toLowerCase() === 'unknown' || result.disease.toLowerCase().includes('unknown') ? (
+              // Invalid/Unknown image result
               <div className="invalid-result">
                 <div className="invalid-header">
                   <h2 className="invalid-title">
@@ -412,6 +455,68 @@ const DiseasePrediction = () => {
                   <p className="invalid-description">
                     {t('diseasePrediction.invalidDescription')}
                   </p>
+
+                  {/* Supported Crops Section */}
+                  <div className="supported-crops-section">
+                    <h4 className="crops-title">{t('diseasePrediction.supportedCrops.title')}</h4>
+                    <p className="crops-subtitle">{t('diseasePrediction.supportedCrops.subtitle')}</p>
+                    
+                    <div className="crops-grid">
+                      <div className="crop-item">🍎 {t('diseasePrediction.crops.apple')}</div>
+                      <div className="crop-item">🫐 {t('diseasePrediction.crops.blueberry')}</div>
+                      <div className="crop-item">🍒 {t('diseasePrediction.crops.cherry')}</div>
+                      <div className="crop-item">🌽 {t('diseasePrediction.crops.corn')}</div>
+                      <div className="crop-item">🍇 {t('diseasePrediction.crops.grape')}</div>
+                      <div className="crop-item">🍊 {t('diseasePrediction.crops.orange')}</div>
+                      <div className="crop-item">🍑 {t('diseasePrediction.crops.peach')}</div>
+                      <div className="crop-item">🫑 {t('diseasePrediction.crops.bellPepper')}</div>
+                      <div className="crop-item">🥔 {t('diseasePrediction.crops.potato')}</div>
+                      <div className="crop-item">🍇 {t('diseasePrediction.crops.raspberry')}</div>
+                      <div className="crop-item">🌱 {t('diseasePrediction.crops.soybean')}</div>
+                      <div className="crop-item">🎃 {t('diseasePrediction.crops.squash')}</div>
+                      <div className="crop-item">🍓 {t('diseasePrediction.crops.strawberry')}</div>
+                      <div className="crop-item">🍅 {t('diseasePrediction.crops.tomato')}</div>
+                    </div>
+                    
+                    <p className="crops-note">{t('diseasePrediction.supportedCrops.note')}</p>
+                  </div>
+
+                  {/* How It Works Section */}
+                  <div className="how-it-works-section">
+                    <h4 className="how-title">{t('diseasePrediction.howItWorks.title')}</h4>
+                    <div className="steps-container">
+                      <div className="step-item">
+                        <div className="step-number">1</div>
+                        <div className="step-content">
+                          <h5>{t('diseasePrediction.howItWorks.step1.title')}</h5>
+                          <p>{t('diseasePrediction.howItWorks.step1.description')}</p>
+                        </div>
+                      </div>
+                      <div className="step-item">
+                        <div className="step-number">2</div>
+                        <div className="step-content">
+                          <h5>{t('diseasePrediction.howItWorks.step2.title')}</h5>
+                          <p>{t('diseasePrediction.howItWorks.step2.description')}</p>
+                        </div>
+                      </div>
+                      <div className="step-item">
+                        <div className="step-number">3</div>
+                        <div className="step-content">
+                          <h5>{t('diseasePrediction.howItWorks.step3.title')}</h5>
+                          <p>{t('diseasePrediction.howItWorks.step3.description')}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Data Collection Notice */}
+                  <div className="data-notice">
+                    <div className="notice-icon">📊</div>
+                    <div className="notice-content">
+                      <h5>{t('diseasePrediction.dataNotice.title')}</h5>
+                      <p>{t('diseasePrediction.dataNotice.description')}</p>
+                    </div>
+                  </div>
                   
                   <div className="image-requirements">
                     <div className="requirement-item">
@@ -437,7 +542,7 @@ const DiseasePrediction = () => {
                       className="retry-btn"
                       onClick={resetForm}
                     >
-                      {t('diseasePrediction.tryAnother')}
+                      {t('diseasePrediction.reuploadImage')}
                     </button>
                   </div>
                 </div>
