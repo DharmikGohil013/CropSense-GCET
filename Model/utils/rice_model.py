@@ -82,12 +82,25 @@ def load_rice_model(model_path):
         
         learn = load_learner(model_path, cpu=torch.cuda.is_available() == False)
         return learn
+    except RuntimeError as e:
+        if "fastcore.dispatch" in str(e) or "fastcore.transform" in str(e):
+            print(f"Warning: Rice model loading failed due to fastai version incompatibility: {str(e)}")
+            print("Rice disease prediction will be disabled. Only general disease prediction will work.")
+            return None
+        else:
+            raise RuntimeError(f"Error loading model: {str(e)}")
     except Exception as e:
-        raise RuntimeError(f"Error loading model: {str(e)}")
+        print(f"Warning: Rice model loading failed: {str(e)}")
+        print("Rice disease prediction will be disabled. Only general disease prediction will work.")
+        return None
 
 
 # Function to predict on a single image
 def predict_rice(learn, img_path, resize=True):
+    if learn is None:
+        print("Rice model is not available due to compatibility issues")
+        return None
+        
     if not os.path.exists(img_path):
         raise FileNotFoundError(f"Image file not found: {img_path}")
 
@@ -143,3 +156,4 @@ def predict_rice(learn, img_path, resize=True):
     except Exception as e:
         print(f"Error during prediction: {str(e)}")
         raise RuntimeError(f"Error during prediction: {str(e)}")
+    

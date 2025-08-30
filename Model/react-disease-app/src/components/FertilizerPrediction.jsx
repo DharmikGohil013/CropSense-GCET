@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './FertilizerPrediction.css';
+import { useTranslation } from 'react-i18next';
+import LanguageSelector from './LanguageSelector';
 
 const FertilizerPrediction = () => {
+  const { t, i18n } = useTranslation();
   const [formData, setFormData] = useState({
     nitrogen: 0,
     phosphorous: 0,
@@ -23,19 +26,27 @@ const FertilizerPrediction = () => {
   const WEATHER_API_KEY = '1e3e8f230b6064d27976e41163a82b77';
   const GEMINI_API_KEY = 'AIzaSyBQqOMAiwBjcLq0Kpf_CR8vdib8f7lOmZg';
 
-  const soilTypes = [
-    'Loamy', 'Sandy', 'Clay', 'Silty', 'Peaty', 'Chalky'
-  ];
+  // Define soil types and crops arrays that will use translation keys
+  const soilTypeKeys = ['loamy', 'sandy', 'clay', 'silty', 'peaty', 'chalky'];
+  const cropKeys = ['rice', 'wheat', 'corn', 'soybean', 'cotton', 'sugarcane', 'tomato', 'potato', 'onion', 'cabbage', 'lettuce', 'carrot'];
 
-  const crops = [
-    'Rice', 'Wheat', 'Corn', 'Soybean', 'Cotton', 'Sugarcane', 
-    'Tomato', 'Potato', 'Onion', 'Cabbage', 'Lettuce', 'Carrot'
-  ];
+  // Get translated options
+  const soilTypes = soilTypeKeys.map(key => ({
+    key,
+    value: key.charAt(0).toUpperCase() + key.slice(1), // For API
+    label: t(`fertilizerPrediction.soilTypes.${key}`)
+  }));
+
+  const crops = cropKeys.map(key => ({
+    key,
+    value: key.charAt(0).toUpperCase() + key.slice(1), // For API  
+    label: t(`fertilizerPrediction.crops.${key}`)
+  }));
 
   // Function to get weather data including humidity/moisture
   const getWeatherData = async (cityName) => {
     if (!cityName || cityName.trim() === '') {
-      setWeatherError('District name is required to fetch weather data');
+      setWeatherError(t('fertilizerPrediction.weatherError'));
       return;
     }
 
@@ -49,11 +60,11 @@ const FertilizerPrediction = () => {
 
       if (!response.ok) {
         if (response.status === 404) {
-          throw new Error('District not found. Please check the district name.');
+          throw new Error(t('fertilizerPrediction.districtNotFound'));
         } else if (response.status === 401) {
           throw new Error('Invalid API key');
         } else {
-          throw new Error('Failed to fetch weather data');
+          throw new Error(t('fertilizerPrediction.weatherDataFailed'));
         }
       }
 
@@ -69,7 +80,7 @@ const FertilizerPrediction = () => {
         }));
         setWeatherError('');
       } else {
-        setWeatherError('Humidity data not available for this district');
+        setWeatherError(t('fertilizerPrediction.humidityNotAvailable'));
       }
     } catch (error) {
       setWeatherError(error.message);
@@ -85,7 +96,7 @@ const FertilizerPrediction = () => {
     setLocationError('');
 
     if (!navigator.geolocation) {
-      setLocationError('Geolocation is not supported by this browser');
+      setLocationError(t('fertilizerPrediction.geolocationNotSupported'));
       setLocationLoading(false);
       return;
     }
@@ -96,26 +107,26 @@ const FertilizerPrediction = () => {
           const { latitude, longitude } = position.coords;
           await getCityFromCoordinates(latitude, longitude);
         } catch (error) {
-          setLocationError('Failed to get location details');
+          setLocationError(t('fertilizerPrediction.locationFailed'));
           console.error('Location error:', error);
         } finally {
           setLocationLoading(false);
         }
       },
       (error) => {
-        let errorMessage = 'Failed to get your location. ';
+        let errorMessage = t('fertilizerPrediction.locationFailed') + ' ';
         switch (error.code) {
           case error.PERMISSION_DENIED:
-            errorMessage += 'Please allow location access.';
+            errorMessage += t('fertilizerPrediction.locationPermissionDenied');
             break;
           case error.POSITION_UNAVAILABLE:
-            errorMessage += 'Location information is unavailable.';
+            errorMessage += t('fertilizerPrediction.locationUnavailable');
             break;
           case error.TIMEOUT:
-            errorMessage += 'Location request timed out.';
+            errorMessage += t('fertilizerPrediction.locationTimeout');
             break;
           default:
-            errorMessage += 'An unknown error occurred.';
+            errorMessage += t('fertilizerPrediction.locationUnknownError');
             break;
         }
         setLocationError(errorMessage);
@@ -177,10 +188,10 @@ const FertilizerPrediction = () => {
         // Automatically fetch weather data for the detected district
         await getWeatherData(district);
       } else {
-        setLocationError('Could not determine district from your location');
+        setLocationError(t('fertilizerPrediction.districtNotDetermined'));
       }
     } catch (error) {
-      setLocationError('Failed to get city information');
+      setLocationError(t('fertilizerPrediction.cityInfoFailed'));
       console.error('Reverse geocoding error:', error);
     }
   };
@@ -235,7 +246,7 @@ const FertilizerPrediction = () => {
     e.preventDefault();
     
     if (!formData.soilType || !formData.crop || !formData.city) {
-      setError('Please fill in all required fields (including district)');
+      setError(t('fertilizerPrediction.fillAllFields'));
       return;
     }
 
@@ -244,12 +255,15 @@ const FertilizerPrediction = () => {
     
     try {
       // Call the backend API instead of Gemini directly
-      const response = await fetch('http://localhost:8000/predict-fertilizer', {
+      const response = await fetch('http://192.168.137.1:8001/predict-fertilizer', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+          ...formData,
+          language: i18n.language // Send current language to backend
+        })
       });
 
       if (!response.ok) {
@@ -278,11 +292,11 @@ const FertilizerPrediction = () => {
       
       // Provide specific error messages
       if (err.message.includes('Failed to fetch')) {
-        setError('Cannot connect to server. Please make sure the backend server is running on port 8000.');
+        setError(t('fertilizerPrediction.serverConnectionError'));
       } else if (err.message.includes('500')) {
-        setError('Server error occurred. Please try again later.');
+        setError(t('fertilizerPrediction.serverError'));
       } else {
-        setError(`Failed to get fertilizer prediction: ${err.message}`);
+        setError(`${t('fertilizerPrediction.predictionError')} ${err.message}`);
       }
     } finally {
       setLoading(false);
@@ -293,17 +307,20 @@ const FertilizerPrediction = () => {
     <div className="fertilizer-prediction">
       <div className="prediction-container">
         <div className="prediction-header">
-          <h1>🌱 Fertilizer Prediction</h1>
-          <p>Get AI-powered fertilizer recommendations for your crops</p>
+          <div className="header-with-language">
+            <h1>🌱 {t('fertilizerPrediction.title')}</h1>
+            <LanguageSelector />
+          </div>
+          <p>{t('fertilizerPrediction.subtitle')}</p>
         </div>
 
         <div className="prediction-content">
           <div className="input-section">
-            <h3>📊 Soil & Crop Information</h3>
+            <h3>📊 {t('fertilizerPrediction.soilCropInfo')}</h3>
             <form onSubmit={handleSubmit} className="prediction-form">
               <div className="form-row">
                 <div className="form-group">
-                  <label htmlFor="nitrogen">Nitrogen (N)</label>
+                  <label htmlFor="nitrogen">{t('fertilizerPrediction.nitrogen')}</label>
                   <input
                     type="number"
                     id="nitrogen"
@@ -317,7 +334,7 @@ const FertilizerPrediction = () => {
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="phosphorous">Phosphorous (P)</label>
+                  <label htmlFor="phosphorous">{t('fertilizerPrediction.phosphorous')}</label>
                   <input
                     type="number"
                     id="phosphorous"
@@ -334,7 +351,7 @@ const FertilizerPrediction = () => {
 
               <div className="form-row">
                 <div className="form-group">
-                  <label htmlFor="potassium">Potassium (K)</label>
+                  <label htmlFor="potassium">{t('fertilizerPrediction.potassium')}</label>
                   <input
                     type="number"
                     id="potassium"
@@ -348,7 +365,7 @@ const FertilizerPrediction = () => {
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="moisture">Moisture (%) - Auto from Weather</label>
+                  <label htmlFor="moisture">{t('fertilizerPrediction.moisture')}</label>
                   <div className="weather-input-group">
                     <input
                       type="number"
@@ -359,7 +376,7 @@ const FertilizerPrediction = () => {
                       min="0"
                       max="100"
                       step="0.1"
-                      placeholder="Auto-filled from weather"
+                      placeholder={t('fertilizerPrediction.moisturePlaceholder')}
                       className={weatherLoading ? 'loading-input' : ''}
                     />
                     <button
@@ -367,7 +384,7 @@ const FertilizerPrediction = () => {
                       onClick={() => getWeatherData(formData.city)}
                       disabled={weatherLoading || !formData.city}
                       className="weather-btn"
-                      title="Refresh weather data"
+                      title={t('fertilizerPrediction.refreshWeather')}
                     >
                       {weatherLoading ? (
                         <span className="loading-spinner"></span>
@@ -392,7 +409,7 @@ const FertilizerPrediction = () => {
 
               <div className="form-row">
                 <div className="form-group">
-                  <label htmlFor="soilType">Soil Type</label>
+                  <label htmlFor="soilType">{t('fertilizerPrediction.soilType')}</label>
                   <select
                     id="soilType"
                     name="soilType"
@@ -400,14 +417,14 @@ const FertilizerPrediction = () => {
                     onChange={handleInputChange}
                     required
                   >
-                    <option value="">Select Soil Type</option>
+                    <option value="">{t('fertilizerPrediction.selectSoilType')}</option>
                     {soilTypes.map(type => (
-                      <option key={type} value={type}>{type}</option>
+                      <option key={type.key} value={type.value}>{type.label}</option>
                     ))}
                   </select>
                 </div>
                 <div className="form-group">
-                  <label htmlFor="crop">Crop</label>
+                  <label htmlFor="crop">{t('fertilizerPrediction.crop')}</label>
                   <select
                     id="crop"
                     name="crop"
@@ -415,16 +432,16 @@ const FertilizerPrediction = () => {
                     onChange={handleInputChange}
                     required
                   >
-                    <option value="">Select Crop</option>
+                    <option value="">{t('fertilizerPrediction.selectCrop')}</option>
                     {crops.map(crop => (
-                      <option key={crop} value={crop}>{crop}</option>
+                      <option key={crop.key} value={crop.value}>{crop.label}</option>
                     ))}
                   </select>
                 </div>
               </div>
 
               <div className="form-group full-width">
-                <label htmlFor="city">District/City</label>
+                <label htmlFor="city">{t('fertilizerPrediction.districtCity')}</label>
                 <div className="location-input-group">
                   <input
                     type="text"
@@ -432,7 +449,7 @@ const FertilizerPrediction = () => {
                     name="city"
                     value={formData.city}
                     onChange={handleCityChange}
-                    placeholder="Enter your district or use location"
+                    placeholder={t('fertilizerPrediction.districtPlaceholder')}
                     required
                   />
                   <button
@@ -440,7 +457,7 @@ const FertilizerPrediction = () => {
                     onClick={getCurrentLocation}
                     disabled={locationLoading}
                     className="location-btn"
-                    title="Get current location"
+                    title={t('fertilizerPrediction.getCurrentLocation')}
                   >
                     {locationLoading ? (
                       <span className="loading-spinner"></span>
@@ -473,10 +490,10 @@ const FertilizerPrediction = () => {
 
               <div className="form-actions">
                 <button type="button" onClick={handleClear} className="clear-btn">
-                  Clear
+                  {t('fertilizerPrediction.clear')}
                 </button>
                 <button type="submit" disabled={loading} className="submit-btn">
-                  {loading ? 'Analyzing...' : 'Submit'}
+                  {loading ? t('fertilizerPrediction.analyzing') : t('fertilizerPrediction.submit')}
                 </button>
               </div>
             </form>
@@ -490,26 +507,26 @@ const FertilizerPrediction = () => {
 
           {prediction && (
             <div className="results-section">
-              <h3>🎯 AI Fertilizer Recommendation</h3>
+              <h3>🎯 {t('fertilizerPrediction.aiRecommendation')}</h3>
               <div className="prediction-result">
                 <div className="result-card">
-                  <h4>Expert Recommendation</h4>
+                  <h4>{t('fertilizerPrediction.expertRecommendation')}</h4>
                   <div className="fertilizer-recommendation">
                     {prediction && typeof prediction === 'object' && prediction.fertilizerName ? (
                       // Display structured format
                       <div className="structured-recommendation">
                         <div className="recommendation-item">
-                          <h5>🌱 Recommended Fertilizer:</h5>
+                          <h5>🌱 {t('fertilizerPrediction.recommendedFertilizer')}</h5>
                           <p className="fertilizer-name">{prediction.fertilizerName}</p>
                         </div>
                         
                         <div className="recommendation-item">
-                          <h5>📋 Explanation:</h5>
+                          <h5>📋 {t('fertilizerPrediction.explanation')}</h5>
                           <p className="explanation">{prediction.explanation}</p>
                         </div>
                         
                         <div className="recommendation-item">
-                          <h5>⚖️ Application Rate:</h5>
+                          <h5>⚖️ {t('fertilizerPrediction.applicationRate')}</h5>
                           <p className="application-rate">{prediction.applicationRate}</p>
                         </div>
                       </div>

@@ -105,8 +105,9 @@ const DiseasePrediction = () => {
     try {
       const formData = new FormData();
       formData.append('file', selectedFile);
+      formData.append('language', i18n.language); // Pass the selected language
 
-      const response = await fetch('http://localhost:8001/predict-disease', {
+      const response = await fetch('http://192.168.137.1:8001/predict-disease', {
         method: 'POST',
         body: formData,
       });
@@ -133,7 +134,7 @@ const DiseasePrediction = () => {
     } catch (error) {
       console.error('Error predicting disease:', error);
       
-      // Show error message to user
+      // Show error message in result format - no connection error overlay
       setResult({
         crop: t('diseasePrediction.errorConnection'),
         disease: t('diseasePrediction.errorApi'),

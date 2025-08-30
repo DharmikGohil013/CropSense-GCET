@@ -4,28 +4,32 @@ import './Home.css';
 const Home = ({ onNavigateToPredict }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   
-  // Crop data for carousel - Real disease images
+  // Crop data for carousel - Supported crops only
   const cropData = [
     {
-      name: "Rice",
+      name: "Apple",
       image: "/images/diseases/r.jpg",
-      diseases: "Blast Disease Detected"
+      diseases: "Apple Scab, Fire Blight"
     },
     {
-      name: "Corn",
-      image: "/images/diseases/c.jpg    ",
-      diseases: "Smut Disease Detected"
+      name: "Corn (Maize)",
+      image: "/images/diseases/c.jpg",
+      diseases: "Corn Smut, Leaf Blight"
     },
-
     {
-      name: "Rice",
-      image: "/images/diseases/r.jpg",
-      diseases: "Leaf Scorch Detected"
+      name: "Tomato",
+      image: "/images/diseases/t.jpg",
+      diseases: "Early Blight, Late Blight"
     },
     {
       name: "Potato",
       image: "/images/diseases/p.jpg",
-      diseases: "Scab Disease Detected"
+      diseases: "Potato Scab, Early Blight"
+    },
+    {
+      name: "Grape",
+      image: "/images/diseases/w.jpg",
+      diseases: "Powdery Mildew, Black Rot"
     }
   ];
   
@@ -67,8 +71,9 @@ const Home = ({ onNavigateToPredict }) => {
                   Advanced AI-powered crop disease detection for modern agriculture
                 </p>
                 <p className="hero-description">
-                  Upload an image of your crop leaves and get instant, accurate disease 
-                  identification with detailed information and recommendations.
+                  Upload an image of your crop leaves from our supported crops (Apple, Blueberry, Cherry, 
+                  Corn, Grape, Orange, Peach, Bell Pepper, Potato, Raspberry, Soybean, Squash, Strawberry, Tomato) 
+                  and get instant, accurate disease identification with detailed information and recommendations.
                 </p>
               </div>
             </div>
@@ -86,7 +91,7 @@ const Home = ({ onNavigateToPredict }) => {
                       </div>
                       <div className="crop-info">
                         <h3 className="crop-name">{crop.name}</h3>
-                        <p className="disease-info">Common: {crop.diseases}</p>
+                        <p className="disease-info">Common Diseases: {crop.diseases}</p>
                       </div>
                     </div>
                   ))}
@@ -131,7 +136,7 @@ const Home = ({ onNavigateToPredict }) => {
               </div>
               <h3 className="feature-title">Easy Upload</h3>
               <p className="feature-description">
-                Simply upload an image of your crop leaf and get instant results
+                Simply upload an image of your supported crop leaf and get instant results
               </p>
             </div>
 
@@ -179,6 +184,34 @@ const Home = ({ onNavigateToPredict }) => {
         </div>
       </div>
 
+      <div className="supported-crops-section">
+        <div className="container">
+          <h2 className="section-title">Supported Crops</h2>
+          <p className="section-subtitle">
+            Our AI model is trained to detect diseases in the following crops:
+          </p>
+          <div className="crops-grid">
+            <div className="crop-item">🍎 Apple</div>
+            <div className="crop-item">🫐 Blueberry</div>
+            <div className="crop-item">🍒 Cherry</div>
+            <div className="crop-item">🌽 Corn (Maize)</div>
+            <div className="crop-item">🍇 Grape</div>
+            <div className="crop-item">🍊 Orange</div>
+            <div className="crop-item">🍑 Peach</div>
+            <div className="crop-item">🫑 Bell Pepper</div>
+            <div className="crop-item">🥔 Potato</div>
+            <div className="crop-item">🍇 Raspberry</div>
+            <div className="crop-item">🌱 Soybean</div>
+            <div className="crop-item">🎃 Squash</div>
+            <div className="crop-item">🍓 Strawberry</div>
+            <div className="crop-item">🍅 Tomato</div>
+          </div>
+          <p className="crops-note">
+            <strong>Note:</strong> For accurate disease detection, please upload images only from these supported crop types.
+          </p>
+        </div>
+      </div>
+
       <div className="how-it-works-section">
         <div className="container">
           <h2 className="section-title">How It Works</h2>
@@ -187,7 +220,7 @@ const Home = ({ onNavigateToPredict }) => {
               <div className="step-number">1</div>
               <h3 className="step-title">Upload Image</h3>
               <p className="step-description">
-                Take a clear photo of the affected crop leaf and upload it
+                Take a clear photo of the affected leaf from supported crops and upload it
               </p>
             </div>
             <div className="step-card">
@@ -216,13 +249,16 @@ const Home = ({ onNavigateToPredict }) => {
               CropSense AI is designed to help farmers, agricultural professionals, and 
               gardening enthusiasts quickly identify crop diseases using cutting-edge 
               artificial intelligence. Our system can detect various plant diseases 
-              from simple leaf images, providing valuable insights for crop management 
+              from simple leaf images of <strong>14 supported crops: Apple, Blueberry, Cherry, 
+              Corn (Maize), Grape, Orange, Peach, Bell Pepper, Potato, Raspberry, Soybean, 
+              Squash, Strawberry, and Tomato</strong>, providing valuable insights for crop management 
               and treatment decisions.
             </p>
             <p className="about-text">
-              With our easy-to-use interface and powerful AI backend, you can make 
-              informed decisions about your crops and take preventive measures to 
-              protect your harvest.
+              With our easy-to-use interface and powerful AI backend specialized for these 
+              specific crops, you can make informed decisions about your crops and take 
+              preventive measures to protect your harvest. Please ensure your uploaded 
+              images are from one of the supported crop types for accurate disease detection.
             </p>
           </div>
         </div>
