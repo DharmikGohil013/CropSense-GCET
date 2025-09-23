@@ -88,7 +88,7 @@ const DiseasePrediction = () => {
       const formData = new FormData();
       formData.append('file', selectedFile);
 
-      const response = await fetch('http://localhost:8001/predict-disease', {
+      const response = await fetch('http://127.0.0.1:7863/predict-disease', {
         method: 'POST',
         body: formData,
       });

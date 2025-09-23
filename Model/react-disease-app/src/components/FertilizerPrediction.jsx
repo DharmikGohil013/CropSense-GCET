@@ -244,7 +244,7 @@ const FertilizerPrediction = () => {
     
     try {
       // Call the backend API instead of Gemini directly
-      const response = await fetch('http://localhost:8000/predict-fertilizer', {
+      const response = await fetch('http://127.0.0.1:7863/predict-fertilizer', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -171,7 +171,8 @@ crop_interface = gr.Interface(
     fn=crop_predict,
     inputs=crop_inputs,
     outputs=[gr.Textbox(label="Predicted Crop"), gr.Image(label="Crop Image")],
-    title="Crop Prediction",
+    title="🌱 Crop Prediction",
+    description="Get intelligent crop recommendations based on soil conditions and weather data",
 )
 
 
@@ -250,7 +251,8 @@ yield_interface = gr.Interface(
     fn=yield_predict,
     inputs=yield_inputs,
     outputs=gr.Textbox(label="Predicted Yield"),
-    title="Yield Prediction",
+    title="📊 Yield Prediction",
+    description="Estimate crop yield based on environmental factors and farming practices",
 )
 
 
@@ -308,7 +310,8 @@ fertilizer_interface = gr.Interface(
     fn=fertilizer_predict,
     inputs=fertilizer_inputs,
     outputs=[gr.Textbox(label="Predicted Fertilizer"), gr.Textbox(label="Description")],
-    title="Fertilizer Prediction",
+    title="🧪 Fertilizer Recommendation",
+    description="Get personalized fertilizer recommendations for optimal crop growth",
 )
 
 
@@ -379,18 +382,150 @@ disease_interface = gr.Interface(
         gr.Textbox(label="Disease"),
         gr.Textbox(label="Description"),
     ],
-    title="Disease Prediction",
+    title="🔬 Disease Detection",
+    description="AI-powered plant disease detection and treatment recommendations",
 )
 
-# Launch the interfaces together
+# Launch the interfaces together with custom theme
+custom_theme = gr.themes.Soft().set(
+    body_background_fill="transparent",
+    body_text_color="#000000",
+    block_background_fill="rgba(255, 255, 255, 0.95)",
+    block_border_color="rgba(255, 255, 255, 0.3)",
+    block_label_text_color="#000000",
+    block_title_text_color="#000000",
+    button_primary_background_fill="#3b82f6",
+    button_primary_background_fill_hover="#1d4ed8",
+    button_primary_text_color="white",
+    input_background_fill="rgba(255, 255, 255, 0.9)",
+    input_border_color="rgba(0, 0, 0, 0.2)"
+)
+
 iface = gr.TabbedInterface(
     [crop_interface, yield_interface, fertilizer_interface, disease_interface],
     [
-        "Crop Prediction",
-        "Yield Prediction",
-        "Fertilizer Recommendation",
-        "Disease Prediction",
+        "🌱 Crop Prediction",
+        "📊 Yield Prediction", 
+        "🧪 Fertilizer Recommendation",
+        "🔬 Disease Detection",
     ],
+    theme=custom_theme,
+    title="🌾 CropSense - Agricultural Intelligence System 🌾",
+    css="""
+        .gradio-container {
+            background-image: url('/static/images/background.jpg') !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-attachment: fixed !important;
+            background-repeat: no-repeat !important;
+            position: relative !important;
+        }
+        
+        .gradio-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.6) !important;
+            z-index: 0 !important;
+        }
+        
+        .gradio-container > * {
+            position: relative !important;
+            z-index: 1 !important;
+        }
+        
+        .block {
+            background-color: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px) !important;
+            border-radius: 15px !important;
+            border: 1px solid rgba(255, 255, 255, 0.3) !important;
+            margin: 10px !important;
+            padding: 20px !important;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+        }
+        
+        .tab-nav {
+            background-color: rgba(255, 255, 255, 0.9) !important;
+            backdrop-filter: blur(10px) !important;
+            border-radius: 10px !important;
+            margin-bottom: 20px !important;
+        }
+        
+        .tab-nav button {
+            background-color: rgba(255, 255, 255, 0.8) !important;
+            border: 1px solid rgba(0, 0, 0, 0.1) !important;
+            border-radius: 8px !important;
+            margin: 5px !important;
+            color: black !important;
+            font-weight: 600 !important;
+            transition: all 0.3s ease !important;
+        }
+        
+        .tab-nav button:hover {
+            background-color: rgba(255, 255, 255, 1) !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+        }
+        
+        .tab-nav button.selected {
+            background-color: rgba(59, 130, 246, 0.9) !important;
+            color: white !important;
+            border-color: rgba(59, 130, 246, 1) !important;
+        }
+        
+        h1, h2, h3 {
+            color: black !important;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8) !important;
+            font-weight: 700 !important;
+            text-align: center !important;
+            margin-bottom: 30px !important;
+        }
+        
+        label, p, span, div {
+            color: black !important;
+        }
+        
+        input, textarea, select {
+            background-color: rgba(255, 255, 255, 0.9) !important;
+            border: 1px solid rgba(0, 0, 0, 0.2) !important;
+            border-radius: 8px !important;
+            backdrop-filter: blur(5px) !important;
+            color: black !important;
+        }
+        
+        .primary {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important;
+            border: none !important;
+            border-radius: 8px !important;
+            color: white !important;
+            font-weight: 600 !important;
+            transition: all 0.3s ease !important;
+        }
+        
+        .primary:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3) !important;
+        }
+        
+        /* Ensure all text is black */
+        * {
+            color: black !important;
+        }
+        
+        /* Override for buttons and selected elements where we want white text */
+        .primary, .tab-nav button.selected {
+            color: white !important;
+        }
+        
+        /* Output text areas */
+        .output, .textbox {
+            background-color: rgba(248, 250, 252, 0.95) !important;
+            color: black !important;
+        }
+    """
 )
 
 # Create a custom Gradio app with manifest.json support
@@ -449,4 +584,4 @@ app = gr.mount_gradio_app(app, iface, path="/")
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=7862)
+    uvicorn.run(app, host="127.0.0.1", port=7863)

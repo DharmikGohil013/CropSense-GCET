@@ -13,13 +13,12 @@ const Home = ({ onNavigateToPredict }) => {
     },
     {
       name: "Corn",
-      image: "/images/diseases/c.jpg    ",
+      image: "/images/diseases/c.jpg",
       diseases: "Smut Disease Detected"
     },
-
     {
-      name: "Rice",
-      image: "/images/diseases/r.jpg",
+      name: "Wheat",
+      image: "/images/diseases/w.jpg",
       diseases: "Leaf Scorch Detected"
     },
     {

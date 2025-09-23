@@ -13,7 +13,7 @@ start "React App" cmd /k "cd /d d:\Model\react-disease-app && npm run dev"
 
 echo.
 echo Both servers are starting...
-echo API Server: http://localhost:8001
+echo API Server: http://127.0.0.1:7863
 echo React App: http://localhost:5173
 echo.
 pause

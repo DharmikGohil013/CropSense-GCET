@@ -1,10 +1,12 @@
 import os
+import sys
 
 import pandas as pd
 import torch
 import torch.nn.functional as F
 from fastai.metrics import error_rate
 from fastai.vision.all import *
+from packaging import version
 from PIL import Image
 
 # Load the DataFrame containing variety information
@@ -18,6 +20,43 @@ except FileNotFoundError:
     print(f"Warning: train.csv not found at {train_csv_path}")
     # Create a dummy DataFrame if train.csv doesn't exist
     df = pd.DataFrame({'variety': ['variety1', 'variety2']}, index=['img1', 'img2'])
+
+
+def _ensure_fastai_legacy_shims():
+    """Ensure fastai exports saved with fastcore<1.6 load under fastai>=2.8."""
+    try:
+        import fastai
+    except ImportError:
+        return
+    if version.parse(fastai.__version__) < version.parse("2.8.0"):
+        return
+    existing_transform = sys.modules.get("fastcore.transform")
+    existing_dispatch = sys.modules.get("fastcore.dispatch")
+    if (
+        existing_transform is not None
+        and hasattr(existing_transform, "Pipeline")
+        and existing_dispatch is not None
+        and hasattr(existing_dispatch, "TypeDispatch")
+    ):
+        return
+    from utils import legacy_fastcore_dispatch as legacy_dispatch
+    from utils import legacy_fastcore_transform as legacy_transform
+
+    legacy_dispatch.__name__ = "fastcore.dispatch"
+    legacy_dispatch.__package__ = "fastcore"
+    legacy_transform.__name__ = "fastcore.transform"
+    legacy_transform.__package__ = "fastcore"
+
+    sys.modules["fastcore.dispatch"] = legacy_dispatch
+    sys.modules["fastcore.transform"] = legacy_transform
+
+    try:
+        import fastcore
+
+        fastcore.dispatch = legacy_dispatch
+        fastcore.transform = legacy_transform
+    except ImportError:
+        pass
 
 
 # Define get_variety function
@@ -80,6 +119,7 @@ def load_rice_model(model_path):
         globals()['variety_err'] = variety_err
         globals()['df'] = df
         
+        _ensure_fastai_legacy_shims()
         learn = load_learner(model_path, cpu=torch.cuda.is_available() == False)
         return learn
     except Exception as e:
@@ -113,7 +153,7 @@ def predict_rice(learn, img_path, resize=True):
         dls = learn.dls
 
         # Create a test DataLoader with a single image
-        test_dl = dls.test_dl([fastai_img])
+        test_dl = dls.test_dl([fastai_img], bs=1, num_workers=0, shuffle=False, pin_memory=False, persistent_workers=False)
 
         # Get predictions
         preds, _ = learn.get_preds(dl=test_dl)
@@ -143,3 +183,4 @@ def predict_rice(learn, img_path, resize=True):
     except Exception as e:
         print(f"Error during prediction: {str(e)}")
         raise RuntimeError(f"Error during prediction: {str(e)}")
+
